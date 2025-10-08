@@ -39,95 +39,81 @@ git push -u origin feature/name-of-new-feature
 For Merging of branches into main, inform in the group chat!
 The person responsible for merging will handle it
 
+---
 
 ## Developer Log
 * Follow the format strictly for easy navigation of progress
 
 ### 10 October
---------------------
+
 Peter
--
+- xyz
 
---------------------
+
 Vinz
--
+- xyz
 
---------------------
+
 Javier
--
+- xyz
 
---------------------
+
 Chun Wai
--
+- xyz
 
---------------------
+
 Yichen
--
-
---------------------
-END 10 October
+- xyz
 
 
 
 ### 9 October
---------------------
+
 Peter
--
+- xyz
 
---------------------
+
 Vinz
--
+- xyz
 
---------------------
+
 Javier
--
+- xyz
 
---------------------
+
 Chun Wai
--
+- xyz
 
---------------------
+
 Yichen
--
-
---------------------
-END 9 October
+- xyz
 
 
 
 ### 8 October
---------------------
+
 Peter
 - Merged feature/new-pages into main
 
---------------------
 Vinz
-Added
-- Bootstrap 5 integration
-- Navbar for WelcomePage.vue
-- Role-based NavBars:
+- Added Bootstrap 5 integration
+- Added Navbar for WelcomePage.vue
+- Added Role-based NavBars:
     ProfNavBar.vue → for professor pages (ProfDashboard.vue, ProfReportDashboard.vue)
     TANavBar.vue → for TA pages (TeachingAssistantDashboard.vue, TAReports.vue)
     StudentNavBar.vue → for student pages (StudentDashboard.vue, MarketPlace.vue)
-
-Edited
-- index.html → changed page title to Smart Classroom
-
-* All Navbars share consistent design (dark theme, sticky-top, responsive)
-
---------------------
-END 8 October
+    All Navbars share consistent design (dark theme, sticky-top, responsive)
+- Edited index.html → changed page title to Smart Classroom
 
 
 
 ### 7 October
---------------------
+
 Peter
 - Created base folder structure:
 - Initialized Vite + Vue project
 - Setup .gitignore and repository configuration
 
---------------------
 Vinz
 - Created Pages under branch feature/new-pages
     WelcomePage.vue
@@ -142,6 +128,3 @@ Vinz
 
 * Pages functional but incomplete — to be redesigned for UI consistency
 * Added inline comments for clarity and logic explanation
-
---------------------
-END 7 October
