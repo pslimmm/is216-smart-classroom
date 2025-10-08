@@ -1,40 +1,147 @@
-# ?
+# Smart Classroom Developer Log
 
-## To run Vite + Vue
-Type into the console the following:
-- npm install
-- npm run dev
+This document tracks all development activities, updates, and decisions made for the **Smart Classroom Web Application** project.
 
-Click on the Local link generated
+---
 
-## Logs
-7 Oct
-Peter created Folders
+## Tech Stack
 
-8 Oct
-Vinz created the following under branch feature/new-pages:
-- LoginPage.vue
-- ProfDashboard.vue
-- ProfReportDashboard.vue
-- RegisterPage.vue
-- StudentDashboard.vue
-- TeachingAssistantDashboard.vue
-- WelcomePage.vue
-    
-**Note: All these pages are incomplete, will need to be redesign. Priority was to get the pages running and linked up together
-    Please read through the pages codes and understand how it works, I have left some comments for parts that may be difficult to understand
+- **Framework:** Vue 3
+- **Build Tool:** Vite
+- **Styling:** Bootstrap 5
+- **Routing:** Vue Router
+- **Version Control:** Git + GitHub
 
-9 Oct
-Peter merged feature/new-pages into main
+---
 
-Vinz added:
-- Bootstrap
-- Navbar Section for WelcomePage.vue
-- ProfNavBar.vue 
-    (To use for all Prof-related Pages, Eg ProfDashboard.vue, ProfReportDashboard.vue)
-- TANavBar.vue 
-    (To use for all TA-related Pages, Eg TeachingAssistantDashboard.vue)
-- StudentNavBar.vue
-    (To use for all Student-related Pages, Eg StudentDashboard.vue, MarketPlace.vue?)
-Vinz edited:
-- ./index.html -> Changed title to "Smart Classroom"
+## Quick Start
+
+Run this project locally (Type into your terminal):
+npm install
+npm run dev
+
+## !!! Adding New Features !!!
+DO NOT push directly to 'main' branch
+    (This is to protect our past progress so far, and can rollback if things stop working. Basically our "last checkpoint")
+Always create a new branch for each new feature, fix or update
+
+1) To create a new branch
+git checkout -b feature/name-of-new-feature
+
+2) Ensure you are in the new branch. If yes then can start editing!
+git branch
+
+3) When you are done
+git add .
+git commit -m "Insert whatever message"
+git push -u origin feature/name-of-new-feature
+
+For Merging of branches into main, inform in the group chat!
+The person responsible for merging will handle it
+
+
+## Developer Log
+* Follow the format strictly for easy navigation of progress
+
+### 10 October
+--------------------
+Peter
+-
+
+--------------------
+Vinz
+-
+
+--------------------
+Javier
+-
+
+--------------------
+Chun Wai
+-
+
+--------------------
+Yichen
+-
+
+--------------------
+END 10 October
+
+
+
+### 9 October
+--------------------
+Peter
+-
+
+--------------------
+Vinz
+-
+
+--------------------
+Javier
+-
+
+--------------------
+Chun Wai
+-
+
+--------------------
+Yichen
+-
+
+--------------------
+END 9 October
+
+
+
+### 8 October
+--------------------
+Peter
+- Merged feature/new-pages into main
+
+--------------------
+Vinz
+Added
+- Bootstrap 5 integration
+- Navbar for WelcomePage.vue
+- Role-based NavBars:
+    ProfNavBar.vue → for professor pages (ProfDashboard.vue, ProfReportDashboard.vue)
+    TANavBar.vue → for TA pages (TeachingAssistantDashboard.vue, TAReports.vue)
+    StudentNavBar.vue → for student pages (StudentDashboard.vue, MarketPlace.vue)
+
+Edited
+- index.html → changed page title to Smart Classroom
+
+* All Navbars share consistent design (dark theme, sticky-top, responsive)
+
+--------------------
+END 8 October
+
+
+
+### 7 October
+--------------------
+Peter
+- Created base folder structure:
+- Initialized Vite + Vue project
+- Setup .gitignore and repository configuration
+
+--------------------
+Vinz
+- Created Pages under branch feature/new-pages
+    WelcomePage.vue
+    LoginPage.vue
+    RegisterPage.vue
+    ProfDashboard.vue
+    ProfReportDashboard.vue
+    TeachingAssistantDashboard.vue
+    StudentDashboard.vue
+- Linked all Pages via Vue Router
+- Verified navigation routes /, /login, /register, /prof, /ta, /student
+
+* Pages functional but incomplete — to be redesigned for UI consistency
+* Added inline comments for clarity and logic explanation
+
+--------------------
+END 7 October
