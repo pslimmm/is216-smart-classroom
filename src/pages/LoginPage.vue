@@ -10,7 +10,7 @@
 
     <p>Don't have an account? <router-link to="/register">Register here</router-link></p>
 
-    <router-link to="/welcome" class="back-link">← Back to Welcome</router-link>
+    <router-link to="/" class="back-link">← Back to Welcome</router-link>
   </div>
 </template>
 
