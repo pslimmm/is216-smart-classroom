@@ -1,50 +1,56 @@
 <template>
-  <div class="prof-report">
-    <h1>Professor's Report Dashboard</h1>
-    <p>📊 Overview of student performance and course insights</p>
+  <div>
+    <ProfNavBar />
 
-    <section class="summary">
-      <div class="card">
-        <h3>Total Students</h3>
-        <p>{{ report.totalStudents }}</p>
-      </div>
-      <div class="card">
-        <h3>Average Score</h3>
-        <p>{{ report.averageScore }}%</p>
-      </div>
-      <div class="card">
-        <h3>Courses Managed</h3>
-        <p>{{ report.courses.length }}</p>
-      </div>
-    </section>
+    <!-- main report Content -->
+    <div class="prof-report">
+      <h1>Professor's Report Dashboard</h1>
+      <p>📊 Overview of student performance and course insights</p>
 
-    <section class="details">
-      <h2>Course Reports</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Course</th>
-            <th>Avg Grade</th>
-            <th>Top Student</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="course in report.courses" :key="course.name">
-            <td>{{ course.name }}</td>
-            <td>{{ course.avgGrade }}%</td>
-            <td>{{ course.topStudent }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+      <section class="summary">
+        <div class="card">
+          <h3>Total Students</h3>
+          <p>{{ report.totalStudents }}</p>
+        </div>
+        <div class="card">
+          <h3>Average Score</h3>
+          <p>{{ report.averageScore }}%</p>
+        </div>
+        <div class="card">
+          <h3>Courses Managed</h3>
+          <p>{{ report.courses.length }}</p>
+        </div>
+      </section>
 
-    <button @click="logout">Logout</button>
+      <section class="details">
+        <h2>Course Reports</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Avg Grade</th>
+              <th>Top Student</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="course in report.courses" :key="course.name">
+              <td>{{ course.name }}</td>
+              <td>{{ course.avgGrade }}%</td>
+              <td>{{ course.topStudent }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
+import ProfNavBar from "../components/ProfNavBar.vue";
+
 export default {
   name: "ProfReportDashboard",
+  components: { ProfNavBar },
   data() {
     return {
       report: {
@@ -64,12 +70,6 @@ export default {
     if (role !== "prof") {
       this.$router.push("/");
     }
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem("role");
-      this.$router.push("/login");
-    }
   }
 };
 </script>
@@ -77,7 +77,7 @@ export default {
 <style scoped>
 .prof-report {
   max-width: 900px;
-  margin: 40px auto;
+  margin: 80px auto 40px; /* extra top margin to clear navbar */
   padding: 20px;
   text-align: center;
 }
@@ -93,7 +93,7 @@ export default {
 .card {
   background-color: #f0f8ff;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 200px;
 }
@@ -108,7 +108,8 @@ table {
   margin-top: 10px;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 10px;
 }
@@ -118,17 +119,5 @@ th {
   color: white;
 }
 
-button {
-  margin-top: 30px;
-  background-color: #004080;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0059b3;
-}
+/* remove old logout button styles */
 </style>

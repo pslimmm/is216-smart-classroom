@@ -1,21 +1,27 @@
 <template>
-  <div class="ta-dashboard">
-    <h1>Teaching Assistant Dashboard</h1>
-    <p>Welcome, TA 👋 Here’s your teaching overview:</p>
+  <div>
+    <TANavBar />
 
-    <ul>
-      <li>Assigned courses: {{ courses.length }}</li>
-      <li>Pending reviews: {{ pendingReviews }}</li>
-      <li>Active students: {{ activeStudents }}</li>
-    </ul>
+    <!-- main Dashboard Content -->
+    <div class="ta-dashboard">
+      <h1>Teaching Assistant Dashboard</h1>
+      <p>Welcome, TA 👋 Here’s your teaching overview:</p>
 
-    <button @click="logout">Logout</button>
+      <ul>
+        <li>Assigned courses: {{ courses.length }}</li>
+        <li>Pending reviews: {{ pendingReviews }}</li>
+        <li>Active students: {{ activeStudents }}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import TANavBar from "../components/TANavBar.vue";
+
 export default {
   name: "TaDashboard",
+  components: { TANavBar },
   data() {
     return {
       courses: ["Math 101", "Science 202"],
@@ -29,12 +35,6 @@ export default {
     if (role !== "ta") {
       this.$router.push("/");
     }
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem("role");
-      this.$router.push("/login");
-    }
   }
 };
 </script>
@@ -42,7 +42,7 @@ export default {
 <style scoped>
 .ta-dashboard {
   max-width: 600px;
-  margin: 50px auto;
+  margin: 80px auto 50px; /* added top margin for navbar space */
   padding: 20px;
   background-color: #f0f8ff;
   border-radius: 10px;
@@ -57,18 +57,5 @@ ul {
   list-style: none;
   padding: 0;
   line-height: 1.8;
-}
-
-button {
-  background-color: #004080;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0059b3;
 }
 </style>
