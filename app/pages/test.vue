@@ -1,6 +1,6 @@
 <template>
 
-  <div class="card">
+  <div>
     <p>{{ data.msg }}</p>
   </div>
   

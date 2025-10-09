@@ -1,3 +1,13 @@
+@import url('bootstrap/dist/css/bootstrap.min.css');
+
+html,
+body,
+#__nuxt {
+    min-height: 100vh;
+    min-width: 100vw;
+    font-size: 16px;
+}
+
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
