@@ -61,7 +61,7 @@ p.nav-link {
                 </ul>
                 <ul class="navbar-nav ms-auto">
                         <li class="nav-item" v-if="['prof', 'ta'].includes(role)">
-                            <NuxtLink to="/class-report" class="nav-link">Reports</NuxtLink>
+                            <NuxtLink to="/classreport" class="nav-link">Reports</NuxtLink>
                         </li>
                     <li class="nav-item" v-if="!role">
                         <NuxtLink to="/login" class="nav-link">Log In</NuxtLink>
