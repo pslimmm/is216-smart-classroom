@@ -5,7 +5,7 @@
 
 Peter
 - merged fix/nuxt-rewrite into main
-- rewrote the codebase using Nuxt 4. This is to allow serverless functions within the same app, as well as 
+- rewrote the codebase using Nuxt 4. This is to allow serverless functions within the same app,  automatic page routing, and auto import of all modules throughout the app
 - rewrote the scripts in Vue files to use Composition API (Vue 3) instead of Options API (Vue 2) in order to future-proof code and have easier access to documentation and debugging
 - renamed all files and routes so it matches the desired routes in the website and general naming conventions for routes
 - added error.vue for custom error messages
