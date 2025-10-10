@@ -1,14 +1,14 @@
 <template>
 
   <div>
-    <p>{{ data.msg }}</p>
+    <!-- <p>{{ data.msg }}</p> -->
   </div>
   
 </template>
 
 <script setup>
 
-const { data } = await useFetch('/api/hello')
+// const { data } = await useFetch('/api/hello')
 
 
 </script>
