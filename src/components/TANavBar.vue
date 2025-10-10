@@ -27,7 +27,7 @@
           </li>
           <li class="nav-item">
             <!-- clicking on Action#1 will just bring back to /ta webpage -->
-            <router-link to="/ta" class="nav-link" active-class="active">Action#1</router-link>
+            <router-link to="/ta/submit" class="nav-link" active-class="active">Submit CP</router-link>
           </li>
           <li class="nav-item">
             <!-- clicking on Action#2 will just bring back to /ta webpage -->

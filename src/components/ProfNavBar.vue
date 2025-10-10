@@ -30,6 +30,9 @@
             <router-link to="/prof-report" class="nav-link" active-class="active">Reports</router-link>
           </li>
           <li class="nav-item">
+            <router-link to="/prof/review" class="nav-link" active-class="active">Review CP</router-link>
+          </li>
+          <li class="nav-item">
             <button @click="logout" class="btn btn-outline-light btn-sm ms-2">Logout</button>
           </li>
         </ul>
