@@ -9,7 +9,7 @@ export const useRole = () => {
     const clearRole = () => {
         localStorage.removeItem('role');
         role.value = "";
-        navigateTo('/');
+        navigateTo('/login'); //change from '/' to '/login' 
     }
 
     onNuxtReady(() => {

@@ -10,6 +10,7 @@ const taData = {
 </script>
 
 <template>
+    <Navbar />
     <div>
 
         <!-- main Dashboard Content -->
