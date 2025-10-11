@@ -4,8 +4,8 @@ import ParticipationReview from '~/components/professor/ParticipationReview.vue'
 import RewardsManagement from '~/components/professor/RewardsManagement.vue';
 
 const stats = ref({
-  totalStudents: 32,
-  pendingReviews: 2,
+  totalStudents: 31,
+  pendingReviews: 4,
   totalRewards: 2,
   coinsAwarded: 1200,
 })
@@ -34,7 +34,7 @@ const loadStats = () => {
         <div class="card shadow-sm">
           <div class="card-body d-flex justify-content-between align-items-center pb-2">
             <h6 class="mb-0 text-muted small">Total Students</h6>
-            <i class="bi bi-people text-primary display-6"></i>
+            <i class="bi bi-people text-primary" style="font-size: 1.5rem;"></i>
           </div>
           <div class="card-body pt-0">
             <div class="fs-4 fw-bold">{{ stats.totalStudents }}</div>
@@ -45,7 +45,8 @@ const loadStats = () => {
       <div class="col-md-3">
         <div class="card shadow-sm">
           <div class="card-body d-flex justify-content-between align-items-center pb-2">
-            <h6 class="mb-0 text-muted small">Pending Reviews</h6> <i class="bi bi-graph-up text-success display-6"></i>
+            <h6 class="mb-0 text-muted small">Pending Reviews</h6> 
+            <i class="bi bi-graph-up text-success" style="font-size: 1.5rem;"></i>
           </div>
           <div class="card-body pt-0">
             <div class="fs-4 fw-bold">{{ stats.pendingReviews }}</div>
@@ -56,7 +57,8 @@ const loadStats = () => {
       <div class="col-md-3">
         <div class="card shadow-sm">
           <div class="card-body d-flex justify-content-between align-items-center pb-2">
-            <h6 class="mb-0 text-muted small">Active Rewards</h6> <i class="bi bi-gift text-info display-6"></i>
+            <h6 class="mb-0 text-muted small">Active Rewards</h6>
+            <i class="bi bi-gift text-info" style="font-size: 1.5rem;"></i>
           </div>
           <div class="card-body pt-0">
             <div class="fs-4 fw-bold">{{ stats.totalRewards }}</div>
@@ -67,7 +69,8 @@ const loadStats = () => {
       <div class="col-md-3">
         <div class="card shadow-sm">
           <div class="card-body d-flex justify-content-between align-items-center pb-2">
-            <h6 class="mb-0 text-muted small">Coins Awarded</h6> <i class="bi bi-coin text-warning display-6"></i>
+            <h6 class="mb-0 text-muted small">Coins Awarded</h6> 
+            <i class="bi bi-coin text-warning" style="font-size: 1.5rem;"></i>
           </div>
           <div class="card-body pt-0">
             <div class="fs-4 fw-bold">{{ stats.coinsAwarded }}</div>
