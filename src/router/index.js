@@ -5,6 +5,7 @@ import WelcomePage from '../pages/WelcomePage.vue'
 import ProfDashboard from '../pages/ProfDashboard.vue'
 import TeachingAssistantDashboard from '../pages/TeachingAssistantDashboard.vue'
 
+
 const routes = [
   { path: '/', component: WelcomePage }, // default route aka welcomepage
   { path: '/login', component: LoginPage },
@@ -12,7 +13,9 @@ const routes = [
   { path: '/student', component: StudentDashboard },
   { path: '/prof', component: ProfDashboard },
   { path: '/prof-report', component: () => import('../pages/ProfReportDashboard.vue') }, //load only when it is visited
-  { path: '/ta', component: TeachingAssistantDashboard}
+  { path: '/ta', component: TeachingAssistantDashboard},
+  { path: '/shop', component: () => import('../pages/Shop.vue')}
+
 ]
 
 const router = createRouter({
