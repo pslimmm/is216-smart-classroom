@@ -14,7 +14,16 @@ Peter
 - added components/Navbar.vue, simplifying the previous role-based navbars implemented by Vinz enhancing component reusability
 - created dev-logs.txt to separate app information in README.md and developer logs
 
-
+Javier
+- created Pages under branch feature/submit-classpart
+      SubmitPage.vue
+      RejectedPage.vue
+      ReviewPage.vue
+      ApprovedPage.vue
+- linked all Pages via Vue Router
+- verified nagivation routes /ta/submit, /prof/review, /prof/approve, /prof/rejected
+- added button linking new sites from TA and prof navbars
+- added new folder store with logs.js to locally add logs (to be removed once implement DB)
 
 ### 9 October
 --
