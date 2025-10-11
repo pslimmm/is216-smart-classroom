@@ -32,6 +32,7 @@ const formData = ref({
     role: '',
 })
 
+        console.log(role)
 // Submit form
 const handleSubmit = () => {
     if (activeTab.value === 'login') {

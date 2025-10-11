@@ -93,13 +93,13 @@ const loadStats = () => {
 
     <div class="tab-content mt-3">
       <div class="tab-pane fade" :class="{ show: activeTab === 'review', active: activeTab === 'review' }">
-        <ParticipationReview />
-        <!-- <ParticipationReview @update="loadStats" /> -->
+        <!-- <ParticipationReview /> -->
+        <ProfParticipationReview @update="loadStats" />
       </div>
 
       <div class="tab-pane fade" :class="{ show: activeTab === 'rewards', active: activeTab === 'rewards' }">
-        <RewardsManagement />
-        <!-- <RewardsManagement @update="loadStats" /> -->
+        <!-- <RewardsManagement /> -->
+        <ProfRewardsManagement @update="loadStats" />
       </div>
     </div>
   </main>

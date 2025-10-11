@@ -1,12 +1,13 @@
 export default defineNuxtRouteMiddleware((to, from) => {
     const { role } = useRole();
 
-    const noRoleRoutes = ['/login', '/register'];
     const commonRoutes = ['/forbidden', '/'];
-    const loggedInRoutes = ['/profile', '/dashboard', '/courses'];
-    const studentRoutes = ['/student', '/marketplace'];
-    const taRoutes = ['/ta', '/classreport'];
-    const profRoutes = ['/prof', '/marketplace', '/classreport'];
+
+    const noRoleRoutes = ['/login', '/register', ...commonRoutes];
+    const loggedInRoutes = ['/profile', '/dashboard', '/courses', ...commonRoutes];
+    const studentRoutes = ['/student', '/marketplace', ...loggedInRoutes];
+    const taRoutes = ['/ta', '/classreport', loggedInRoutes];
+    const profRoutes = ['/prof', '/marketplace', '/classreport', ...loggedInRoutes];
 
     if ([...noRoleRoutes, ...commonRoutes].includes(to.path)) {
         return;
@@ -17,9 +18,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
 
     const allowedRoutes = {
-        student: [...loggedInRoutes, ...studentRoutes, ...commonRoutes],
-        ta: [...loggedInRoutes, ...taRoutes, ...commonRoutes],
-        prof: [...loggedInRoutes, ...profRoutes, ...commonRoutes],
+        student: studentRoutes,
+        ta: taRoutes,
+        prof: profRoutes,
     };
 
     const allowed = allowedRoutes[role.value] || [];
