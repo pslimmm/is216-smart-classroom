@@ -1,20 +1,20 @@
 <script setup>
-    const { role, setRole, clearRole } = useRole();
+const { role, setRole, clearRole } = useRole();
 
-    // Compute default path based on role
-    const defaultPath = computed(() => {
-        if (!role.value) return '/';
-        if (role.value == 'prof') return '/prof';
-        if (role.value == 'student') return '/student';
-        if (role.value == 'ta') return '/ta';
+// Compute default path based on role
+const defaultPath = computed(() => {
+    if (!role.value) return '/';
+    if (role.value == 'prof') return '/prof';
+    if (role.value == 'student') return '/student';
+    if (role.value == 'ta') return '/ta';
 
-        return '/'
-    });
+    return '/'
+});
 
-    // Logout function
-    const logout = () => {
-        clearRole();
-    }
+// Logout function
+const logout = () => {
+    clearRole();
+}
 
 </script>
 
@@ -56,11 +56,17 @@ p.nav-link {
                     <li class="nav-item" v-if="['prof', 'student'].includes(role)">
                         <NuxtLink to="/marketplace" class="nav-link">Marketplace</NuxtLink>
                     </li>
+                    <li class="nav-item" v-if="role == 'prof'">
+                        <NuxtLink to="/prof/review" class="nav-link" active-class="active">Review CP</NuxtLink>
+                    </li>
+                    <li class="nav-item" v-if="role == 'ta'">
+                        <NuxtLink to="/ta/submit" class="nav-link" active-class="active">Submit CP</NuxtLink>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
-                        <li class="nav-item" v-if="['prof', 'ta'].includes(role)">
-                            <NuxtLink to="/classreport" class="nav-link">Reports</NuxtLink>
-                        </li>
+                    <li class="nav-item" v-if="['prof', 'ta'].includes(role)">
+                        <NuxtLink to="/classreport" class="nav-link">Reports</NuxtLink>
+                    </li>
                     <li class="nav-item" v-if="!role">
                         <NuxtLink to="/login" class="nav-link">Log In</NuxtLink>
                     </li>

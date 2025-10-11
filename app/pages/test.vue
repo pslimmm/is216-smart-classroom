@@ -10,7 +10,7 @@
   </div>
 
   <div>
-    <p>{{ data.msg }}</p>
+    <!-- <p>{{ data.msg }}</p> -->
   </div>
 
 </template>
@@ -24,7 +24,7 @@ const flipCoin = () => {
   flipped.value = true
 }
 
-const { data } = await useFetch('/api/hello')
+// const { data } = await useFetch('/api/hello')
 
 
 </script>
