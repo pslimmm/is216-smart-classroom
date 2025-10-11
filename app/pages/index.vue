@@ -1,13 +1,19 @@
 <script setup>
+
 const { role } = useRole();
 
 </script>
+
+<!-- Will work on this again, ran out of creativity -->
+
 <template>
-  <section class="bg-primary text-white py-5 px-3 text-center">
+  <section class="bg-primary bg-gradient-primary text-white py-5 px-3 text-center">
     <div class="container">
       <div class="mb-4 d-flex justify-content-center">
         <svg width="80" height="80" fill="currentColor" class="bi bi-mortarboard"></svg>
       </div>
+      <!-- graduation hat bootstrap icon -->
+      <i class="bi bi-mortarboard" style="font-size: 5rem;"></i>
       <h1 class="display-4 fw-bold mb-4">Smart Classroom</h1>
       <p class="lead mb-4 mx-auto" style="max-width: 720px;">
         Transform class participation into achievement. Track, reward, and motivate students with our comprehensive
@@ -27,8 +33,8 @@ const { role } = useRole();
           <div class="card h-100 shadow-sm border rounded">
             <div class="card-body text-center p-4">
               <div class="mb-3 d-flex justify-content-center">
-                (ProfPNG)
-                <!-- Insert Prof PNG later -->
+                <!-- professor bootstrap icon -->
+                <i class="bi bi-people text-primary display-3"></i>
               </div>
               <h5 class="card-title fw-bold mb-3">For Professors</h5>
               <ul class="list-unstyled text-muted text-start">
@@ -46,8 +52,8 @@ const { role } = useRole();
           <div class="card h-100 shadow-sm border rounded">
             <div class="card-body text-center p-4">
               <div class="mb-3 d-flex justify-content-center">
-                (StudentPNG)
-                <!-- Insert Student PNG Later -->
+                <!-- student bootstrap icon -->
+                <i class="bi bi-graph-up-arrow text-success display-3"></i>
               </div>
               <h5 class="card-title fw-bold mb-3">For Students</h5>
               <ul class="list-unstyled text-muted text-start">
@@ -65,8 +71,8 @@ const { role } = useRole();
           <div class="card h-100 shadow-sm border rounded">
             <div class="card-body text-center p-4">
               <div class="mb-3 d-flex justify-content-center">
-                (TAPNG)
-                <!-- Insert Student PNG Later -->
+                <!-- ta bootstrap icon -->
+                <i class="bi bi-award text-warning display-3"></i>
               </div>
               <h5 class="card-title fw-bold mb-3">For TAs</h5>
               <ul class="list-unstyled text-muted text-start">

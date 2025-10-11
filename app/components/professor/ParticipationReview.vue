@@ -23,6 +23,20 @@ onMounted(() => {
                 date: '2025-10-02',
                 profiles: { full_name: 'Bob Smith' },
             },
+            {
+                id: '3',
+                student_id: 'stu_003',
+                description: 'Set up project.',
+                date: '2025-10-11',
+                profiles: { full_name: 'Peter'},
+            },
+            {
+                id: '3',
+                student_id: 'stu_004',
+                description: 'Did Student Dashboard.',
+                date: '2025-10-09',
+                profiles: { full_name: 'Yichen'},
+            }
         ]
         loading.value = false
     }, 1000)
@@ -182,7 +196,7 @@ const formatDate = (dateStr) => {
 
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label text-muted">Description:</label>
                         <p class="form-control-plaintext mb-0">{{ p.description }}</p>
                     </div>
 
@@ -192,7 +206,7 @@ const formatDate = (dateStr) => {
                             <label :for="`coins-${p.id}`" class="form-label">Coins to Award</label>
                             <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="bi bi-coin text-warning"></i>
+                                    <i class="bi bi-coin text-warning display-6"></i>
                                 </span>
                                 <input :id="`coins-${p.id}`" type="number" class="form-control"
                                     v-model.number="coinsToAward[p.id]" min="1" max="100" placeholder="0" />
