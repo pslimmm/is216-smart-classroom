@@ -29,21 +29,19 @@ p.nav-link {
     height: 5rem;
 }
 </style>
+
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <!-- brand -->
             <NuxtLink :to="defaultPath" class="navbar-brand fw-bold">
                 Smart Classroom
             </NuxtLink>
 
-            <!-- toggle for mobile view -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarComponent"
                 aria-controls="navbarComponent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- menu -->
             <div class="collapse navbar-collapse" id="navbarComponent">
                 <ul class="navbar-nav">
                     <li class="nav-item">
