@@ -22,7 +22,7 @@ export const useAuthState = () => {
         session.value = null
         role.value = null
         localStorage.removeItem('authState');
-        navigateTo('/auth');
+        navigateTo('/');
     };
 
     return {
