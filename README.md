@@ -21,6 +21,12 @@ Run this project locally (Type these into your terminal):
 npm install
 npm run dev
 ```
+or if you are using pnpm (recommended)
+```bash
+pnpm i
+pnpm dev
+```
+
 ## !!! Adding New Features !!!
 DO NOT push directly to 'main' branch
     (This is to protect our past progress so far, and can rollback if things stop working. Basically our "last checkpoint")
