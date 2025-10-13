@@ -1,7 +1,4 @@
 <script setup>
-    //import componenets
-    import ProductCard from '~/components/ProductCard.vue';
-    import Navbar from '~/components/Navbar.vue';
     
     
     const props = defineProps({
@@ -99,8 +96,7 @@
 </script>
 
 <template>
-    <NuxtPage />
-    <Navbar />
+    <!-- <NuxtPage /> -->
 
     <div>
 
