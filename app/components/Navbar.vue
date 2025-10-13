@@ -1,3 +1,4 @@
+<!-- no longer used, will remove once everything is fixed -->
 <script setup>
 const { role, setRole, clearRole } = useRole();
 

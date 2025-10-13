@@ -1,7 +1,4 @@
 <script setup>
-
-const { role } = useRole();
-
 </script>
 
 <!-- Will work on this again, ran out of creativity -->

@@ -4,7 +4,9 @@ const props = defineProps({
   error: {},
 })
 
-const handleError = () => clearError({ redirect: '/' })
+const handleError = () => {
+    clearError({ redirect: '/' });
+}
 </script>
 
 <template>

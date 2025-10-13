@@ -1,5 +1,4 @@
 <script setup>
-const { role } = useRole();
 
 const stats = ref({
   totalStudents: 31,
@@ -17,7 +16,6 @@ const loadStats = () => {
 </script>
 
 <template>
-  <TopBar />
 
   <main class="container py-4 flex-grow-1">
     <div>

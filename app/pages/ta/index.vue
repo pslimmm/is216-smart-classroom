@@ -1,5 +1,4 @@
-<script setup>
-const { role } = useRole();
+<script setup>;
 
 const taData = {
     courses: ["Math 101", "Science 202"],
