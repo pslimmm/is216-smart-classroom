@@ -1,6 +1,12 @@
 ## Developer Log
 * Follow the format strictly for easy navigation of progress
 
+### 14 October
+Peter
+- added authentication using supabase auth
+- redesigned the login and registration page
+- reworked the role based page access using sessions + role
+
 ### 10 October
 
 Peter

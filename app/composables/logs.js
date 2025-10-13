@@ -1,5 +1,3 @@
-import { reactive, watch } from 'vue'
-
 const savedLogs = JSON.parse(localStorage.getItem('logs') || '[]')
 
 export const logsStore = reactive({

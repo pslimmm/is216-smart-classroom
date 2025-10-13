@@ -8,7 +8,7 @@ export const useRole = () => {
 
     const clearRole = () => {
         localStorage.removeItem('role');
-        role.value = "";
+        role.value = null;
         navigateTo('/login'); //change from '/' to '/login' 
     }
 

@@ -1,0 +1,137 @@
+<script setup>
+// for dynamic updates/toggling
+const isSignUp = defineModel("is-sign-up");
+
+// show error alert if true
+const showErrorAlert = ref(false);
+const errorMsg = ref('');
+
+const showErrorBox = (msg) => {
+    showErrorAlert.value = true;
+    errorMsg.value = msg;
+    console.log(errorMsg);
+}
+
+// show password in plaintext
+const showPassword = ref(false);
+const showCfmPassword = ref(false);
+
+// For Sign up form submission
+const formData = ref({
+    fullName: '',
+    email: '',
+    password: '',
+    role: '',
+    cfmPassword: ''
+})
+
+
+const handleSubmit = async () => {
+    if (!formData.value.email || !formData.value.password) {
+        showErrorBox('Please fill in all fields');
+        return;
+    }
+    if (formData.value.cfmPassword != formData.value.password) {
+        showErrorBox("Passwords don't match!");
+        return;
+    }
+
+    const response = await $fetch(
+        '/api/auth/register', { 
+            method: 'POST',
+            body: unref(formData)
+        }
+    );
+    if(!response.ok){
+        if(response.error.statusCode == 422){
+            showErrorBox("Account already exists, try logging in instead");
+        } else {
+            showError(response.error);
+        }
+        
+    }
+}
+</script>
+
+<template>
+    <h2 class="fw-bold text-center">Create your account</h2>
+    <p class="text-center">Sign up for an account</p>
+    <form @submit.prevent="handleSubmit">
+        <!-- full name -->
+        <div class="mb-3">
+            <label for="signupName" class="form-label">Full Name</label>
+            <input v-model="formData.fullName" type="text" class="form-control" id="signupName" placeholder="John Doe"
+                required />
+        </div>
+        <!-- email -->
+        <div class="mb-3">
+            <label for="signupEmail" class="form-label">Email</label>
+            <input v-model="formData.email" type="email" class="form-control" id="signupEmail"
+                placeholder="you@example.com" required />
+        </div>
+        <!-- password -->
+        <div class="mb-3">
+            <label for="signupPassword" class="form-label">Password</label>
+            <div class="input-group">
+                <input v-model="formData.password" :type="showPassword ? 'text' : 'password'" class="form-control"
+                    id="signupPassword" minlength="8" required />
+                <button type="button" class="inputButton" @click="showPassword = !showPassword">
+                    <i v-if="showPassword" class="bi bi-eye"></i>
+                    <i v-else class="bi bi-eye-slash"></i>
+                </button>
+            </div>
+        </div>
+        <!-- cfm password -->
+        <div class="mb-3">
+            <label for="cfmPassword" class="form-label">Confirm Password</label>
+            <div class="input-group">
+                <input v-model="formData.cfmPassword" :type="showCfmPassword ? 'text' : 'password'" class="form-control"
+                    id="signupPassword" minlength="8" required />
+                <button type="button" class="inputButton" @click="showCfmPassword = !showCfmPassword" >
+                    <i v-if="showCfmPassword" class="bi bi-eye"></i>
+                    <i v-else class="bi bi-eye-slash"></i>
+                </button>
+            </div>
+        </div>
+        <!-- role -->
+        <div class="mb-3">
+            <label for="signupRole" class="form-label">I am a...</label>
+            <select v-model="formData.role" class="form-select" id="signupRole" required>
+                <option selected disabled value="">Choose...</option>
+                <option value="student">Student</option>
+                <option value="prof">Professor</option>
+                <option value="ta">Teaching Assistant</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">
+            Create Account
+        </button>
+
+        <div class="text-center mt-4 pt-3 border-top">
+            <p>
+                Already have an account?
+                <a role="button" @click="isSignUp = false"
+                    class="link-body-emphasis link-offset-2 link-underline-opacity-75 link-underline-opacity-25-hover">
+                    Log in
+                </a>
+            </p>
+        </div>
+    </form>
+
+    <ErrorBox v-if="showErrorAlert" v-model:show-error="showErrorAlert" :msg="errorMsg" />
+</template>
+
+<style scoped>
+.inputButton {
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-left: 0;
+}
+
+.input-group input{
+    border-right: 0;
+}
+
+</style>

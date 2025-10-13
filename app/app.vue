@@ -6,6 +6,7 @@
         <!-- <NuxtPage class="w-100 h-100" /> -->
         <NuxtPage />
         <!-- </div> -->
+
     </div>
 </template>
 
@@ -15,4 +16,5 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 
 
 
-<style scoped></style>
+<style scoped>
+</style>
