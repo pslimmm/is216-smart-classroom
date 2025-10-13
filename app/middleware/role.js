@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     const commonRoutes = ['/forbidden', '/'];
 
-    const noRoleRoutes = ['/login', '/register', ...commonRoutes];
+    const noRoleRoutes = ['/auth', ...commonRoutes];
     const loggedInRoutes = ['/profile', '/dashboard', '/courses', ...commonRoutes];
     const studentRoutes = ['/student', '/marketplace', ...loggedInRoutes];
     const taRoutes = ['/ta', '/classreport', loggedInRoutes];
@@ -30,12 +30,12 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
 });
 
-// Edited as I was having issues going from /index -> /login - Vinz
+// Edited as I was having issues going from /index -> /auth - Vinz
 
 // export default defineNuxtRouteMiddleware((to, from) => {
 //     const { role } = useRole();
 
-//     const noRoleRoutes = ['/login', '/register'];
+//     const noRoleRoutes = ['/auth', '/register'];
 //     const commonRoutes = ['/forbidden', '/']
 //     const loggedInRoutes = ['/profile', '/profile', '/dashboard', '/courses'];
 //     const studentRoutes = ['/student', '/marketplace'];

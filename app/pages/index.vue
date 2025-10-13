@@ -19,7 +19,7 @@ const { role } = useRole();
         Transform class participation into achievement. Track, reward, and motivate students with our comprehensive
         classroom management platform.
       </p>
-      <NuxtLink to="/login" class="btn btn-success btn-lg px-4 py-3">Get Started</NuxtLink>
+      <NuxtLink to="/auth" class="btn btn-success btn-lg px-4 py-3">Get Started</NuxtLink>
     </div>
   </section>
 

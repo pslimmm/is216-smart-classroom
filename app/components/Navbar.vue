@@ -68,7 +68,7 @@ p.nav-link {
                         <NuxtLink to="/classreport" class="nav-link">Reports</NuxtLink>
                     </li>
                     <li class="nav-item" v-if="!role">
-                        <NuxtLink to="/login" class="nav-link">Log In</NuxtLink>
+                        <NuxtLink to="/auth" class="nav-link">Log In</NuxtLink>
                     </li>
                     <li class="nav-item" v-if="!role">
                         <NuxtLink to="/register" class="nav-link">Register</NuxtLink>
