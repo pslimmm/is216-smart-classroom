@@ -6,6 +6,7 @@ Peter
 - added authentication using supabase auth
 - redesigned the login and registration page
 - reworked the role based page access using sessions + role
+- added a sidebar for better access to links and cleanliness of the UI overall
 
 ### 10 October
 

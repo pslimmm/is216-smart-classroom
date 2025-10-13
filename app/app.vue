@@ -1,20 +1,25 @@
 <template>
-    <!-- <Navbar /> -->
-    <div class="d-flex flex-column" style="min-height: 100vh;">
-        <!-- <div class="container-fluid text-center flex-grow-1 d-flex justify-content-center align-items-center flex-column"
-            style="margin-top: 5rem;"> -->
-        <!-- <NuxtPage class="w-100 h-100" /> -->
-        <NuxtPage />
-        <!-- </div> -->
+    <div class="mw-100" style="min-height: 100vh;" v-if="!['/forbidden', '/', '/auth'].includes(route.path)">
+        <Sidebar>
+        </Sidebar>
 
+        <main class="main-content">
+            <NuxtPage />
+        </main>
     </div>
+    <NuxtPage v-else class="mw-100" />
 </template>
 
 <script setup>
-import 'bootstrap-icons/font/bootstrap-icons.css'
+const route = useRoute();
 </script>
 
-
+<style></style>
 
 <style scoped>
+.main-content {
+    /* padding: 1rem; */
+    padding-left: 4rem;
+    /* Space for the toggle button */
+}
 </style>

@@ -282,7 +282,6 @@ const getRatingBadgeClass = (rating) => {
 </script>
 
 <template>
-    <Navbar />
     <div>
 
         <!-- ============================================ -->
