@@ -19,7 +19,7 @@ export const useAuthState = () => {
 
     // for logout
     const clearAuthState = () => {
-        session.value = null
+        session.value = null    
         role.value = null
         localStorage.removeItem('authState');
         navigateTo('/');

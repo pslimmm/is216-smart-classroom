@@ -2,14 +2,28 @@
 // for dynamic updates/toggling
 const isSignUp = defineModel("is-sign-up");
 
+// to set the alert type
+const alertType = ref('');
+
+// show alert if true
+const showAlert = ref(false);
+
 // show error alert if true
-const showErrorAlert = ref(false);
 const errorMsg = ref('');
 
 const showErrorBox = (msg) => {
-    showErrorAlert.value = true;
+    showAlert.value = true;
     errorMsg.value = msg;
-    console.log(errorMsg);
+    alertType.value = 'alert-danger';
+}
+
+// show success alert if true
+const successMsg = ref('');
+
+const showSuccessBox = (msg) => {
+    showAlert.value = true;
+    successMsg.value = msg;
+    alertType.value = 'alert-success';
 }
 
 // show password in plaintext
@@ -45,11 +59,16 @@ const handleSubmit = async () => {
     if(!response.ok){
         if(response.error.statusCode == 422){
             showErrorBox("Account already exists, try logging in instead");
+            return;
         } else {
             showError(response.error);
+            return;
         }
-        
+    } else {
+        // isSignUp.value = false;
+        showSuccessBox("Account created successfully! Please log in.");
     }
+    
 }
 </script>
 
@@ -119,7 +138,8 @@ const handleSubmit = async () => {
         </div>
     </form>
 
-    <ErrorBox v-if="showErrorAlert" v-model:show-error="showErrorAlert" :msg="errorMsg" />
+    <AlertBox v-if="showAlert" v-model:show-alert="showAlert" :msg="errorMsg || successMsg" :alert-type="alertType"/>
+
 </template>
 
 <style scoped>

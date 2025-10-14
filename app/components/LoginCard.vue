@@ -5,13 +5,19 @@ const isSignUp = defineModel("is-sign-up");
 // for setting app wide session
 const { setAuthState } = useAuthState();
 
+// to set the alert type
+const alertType = ref('');
+
+// show alert if true
+const showAlert = ref(false);
+
 // show error alert if true
-const showErrorAlert = ref(false);
 const errorMsg = ref('');
 
 const showErrorBox = (msg) => {
-    showErrorAlert.value = true;
+    showAlert.value = true;
     errorMsg.value = msg;
+    alertType.value = 'alert-danger';
 }
 
 // show password in plaintext
@@ -37,7 +43,7 @@ const handleSubmit = async () => {
     );
     if (!response.ok) {
         showErrorBox(response.error);
-    } else{
+    } else {
         setAuthState(response.session, response.role);
         navigateTo('/' + response.role);
     }
@@ -79,9 +85,8 @@ const handleSubmit = async () => {
                 </a>
             </p>
         </div>
-
-        <ErrorBox v-if="showErrorAlert" v-model:show-error="showErrorAlert" :msg="errorMsg" />
     </form>
+    <AlertBox v-if="showAlert" v-model:show-alert="showAlert" :msg="errorMsg" :alert-type="alertType" />
 
 </template>
 
@@ -93,7 +98,7 @@ const handleSubmit = async () => {
     border-left: 0;
 }
 
-.input-group input{
+.input-group input {
     border-right: 0;
 }
 </style>

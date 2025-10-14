@@ -62,6 +62,7 @@
                 </div>
                 <div class="mt-auto logout-wrapper">
                     <button v-if="role" class="btn nav-item" @click="clearAuthState">
+                        <i class="bi bi-box-arrow-left"></i>
                         <span class="nav-link">Log Out</span>
                     </button>
                 </div>
@@ -76,7 +77,7 @@
 <script setup>
 const isOpen = ref(false)
 const { role, clearAuthState } = useAuthState();
-console.log(role);
+
 const toggleSidebar = () => {
     isOpen.value = !isOpen.value
 }
@@ -123,7 +124,13 @@ const closeSidebar = () => {
     margin-left: 1rem;
     color: #333;
 }
-
+.nav-item span:hover {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 1rem;
+    color: #333;
+}
 .sidebar-expanded .nav-item span {
     visibility: visible;
     opacity: 1;
@@ -174,6 +181,7 @@ const closeSidebar = () => {
 
 .logout-wrapper {
     visibility: hidden;
+    margin-bottom: 1rem;
 }
 
 .sidebar-expanded .logout-wrapper {

@@ -7,7 +7,7 @@
             <NuxtPage />
         </main>
     </div>
-    <NuxtPage v-else class="mw-100" />
+    <NuxtPage v-else />
 </template>
 
 <script setup>
