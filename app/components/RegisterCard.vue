@@ -51,13 +51,13 @@ const handleSubmit = async () => {
     }
 
     const response = await $fetch(
-        '/api/auth/register', { 
-            method: 'POST',
-            body: unref(formData)
-        }
+        '/api/auth/register', {
+        method: 'POST',
+        body: unref(formData)
+    }
     );
-    if(!response.ok){
-        if(response.error.statusCode == 422){
+    if (!response.ok) {
+        if (response.error.statusCode == 422) {
             showErrorBox("Account already exists, try logging in instead");
             return;
         } else {
@@ -68,7 +68,7 @@ const handleSubmit = async () => {
         // isSignUp.value = false;
         showSuccessBox("Account created successfully! Please log in.");
     }
-    
+
 }
 </script>
 
@@ -106,7 +106,7 @@ const handleSubmit = async () => {
             <div class="input-group">
                 <input v-model="formData.cfmPassword" :type="showCfmPassword ? 'text' : 'password'" class="form-control"
                     id="signupPassword" minlength="8" required />
-                <button type="button" class="inputButton" @click="showCfmPassword = !showCfmPassword" >
+                <button type="button" class="inputButton" @click="showCfmPassword = !showCfmPassword">
                     <i v-if="showCfmPassword" class="bi bi-eye"></i>
                     <i v-else class="bi bi-eye-slash"></i>
                 </button>
@@ -138,7 +138,11 @@ const handleSubmit = async () => {
         </div>
     </form>
 
-    <AlertBox v-if="showAlert" v-model:show-alert="showAlert" :msg="errorMsg || successMsg" :alert-type="alertType"/>
+    <AlertBox v-if="showAlert" v-model:show-alert="showAlert" :alert-type="alertType">
+        <template v-slot:msg>
+            {{ errorMsg || successMsg }}
+        </template>
+    </AlertBox>
 
 </template>
 
@@ -150,8 +154,7 @@ const handleSubmit = async () => {
     border-left: 0;
 }
 
-.input-group input{
+.input-group input {
     border-right: 0;
 }
-
 </style>

@@ -86,7 +86,12 @@ const handleSubmit = async () => {
             </p>
         </div>
     </form>
-    <AlertBox v-if="showAlert" v-model:show-alert="showAlert" :msg="errorMsg" :alert-type="alertType" />
+    <AlertBox v-if="showAlert" v-model:show-alert="showAlert" :alert-type="alertType">
+        <template v-slot:msg>
+            <div>{{ errorMsg }}</div>
+        </template>
+    </AlertBox>
+
 
 </template>
 
