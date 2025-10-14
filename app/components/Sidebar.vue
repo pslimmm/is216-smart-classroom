@@ -111,7 +111,7 @@ const closeSidebar = () => {
 .sidebar-wrapper button {
     width: 3rem;
     height: 3rem;
-
+    
 }
 
 .sidebar-expanded {
@@ -124,13 +124,7 @@ const closeSidebar = () => {
     margin-left: 1rem;
     color: #333;
 }
-.nav-item span:hover {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-left: 1rem;
-    color: #333;
-}
+
 .sidebar-expanded .nav-item span {
     visibility: visible;
     opacity: 1;
@@ -221,6 +215,7 @@ const closeSidebar = () => {
     transform: translateX(200px);
 }
 
+/* overlay the content (makes the background darker) */
 .overlay {
     position: fixed;
     top: 0;
