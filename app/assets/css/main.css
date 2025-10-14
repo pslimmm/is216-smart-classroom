@@ -4,7 +4,8 @@ html,
 body,
 #__nuxt {
     min-height: 100vh;
-    min-width: 100vw;
+    max-width: 100%;
+    width: 100%;
     font-size: 12px;
 }
 

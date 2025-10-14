@@ -1,97 +1,94 @@
 <script setup>
+import topBar from '~/components/topBar.vue';
 </script>
 
 <!-- Will work on this again, ran out of creativity -->
 
 <template>
-  <section class="bg-primary bg-gradient-primary text-white py-5 px-3 text-center">
+  <header class="border-bottom bg-white shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center py-3">
+      <h1 class="h4 text-primary fw-bold mb-0">Smart Classroom</h1>
+      <!-- <button class="btn btn-outline-primary" @click="handleLogout">Logout</button> -->
+    </div>
+  </header>
+  <section class="pt-3 pb-4 mb-1 bg-body-secondary">
     <div class="container">
-      <div class="mb-4 d-flex justify-content-center">
-        <svg width="80" height="80" fill="currentColor" class="bi bi-mortarboard"></svg>
-      </div>
-      <!-- graduation hat bootstrap icon -->
-      <i class="bi bi-mortarboard" style="font-size: 5rem;"></i>
-      <h1 class="display-4 fw-bold mb-4">Smart Classroom</h1>
-      <p class="lead mb-4 mx-auto" style="max-width: 720px;">
-        Transform class participation into achievement. Track, reward, and motivate students with our comprehensive
-        classroom management platform.
+      <h1 class="fw-bold my-2">
+        Empower Your Learning with <span class="text-primary">Smart Classroom</span>
+      </h1>
+      <p class="lead text-secondary my-4">
+        Join thousands of students and educators in a revolutionary learning experience. Expert-led courses, flexible
+        schedules, and interactive content designed for your success.
       </p>
-      <NuxtLink to="/auth" class="btn btn-success btn-lg px-4 py-3">Get Started</NuxtLink>
-    </div>
-  </section>
 
-  <section class="py-5 px-3">
-    <div class="container">
-      <h2 class="text-center display-5 fw-bold mb-5">Features for Everyone</h2>
-      <div class="row g-4">
+      <div class="d-flex flex-wrap gap-3 my-4">
+        <NuxtLink to="/auth" class="btn btn-primary btn-lg px-4 py-3">Get Started</NuxtLink>
+        <NuxtLink to="/" class="btn btn-outline-primary btn-lg px-4 py-3">Watch Demo</NuxtLink>
+      </div>
 
-        <!-- Card: Professors -->
+      <div class="row text-center g-1">
         <div class="col-md-4">
-          <div class="card h-100 shadow-sm border rounded">
-            <div class="card-body text-center p-4">
-              <div class="mb-3 d-flex justify-content-center">
-                <!-- professor bootstrap icon -->
-                <i class="bi bi-people text-primary display-3"></i>
-              </div>
-              <h5 class="card-title fw-bold mb-3">For Professors</h5>
-              <ul class="list-unstyled text-muted text-start">
-                <li>• Review and approve participations</li>
-                <li>• Award coins to students</li>
-                <li>• Create marketplace rewards</li>
-                <li>• Track class engagement</li>
-              </ul>
-            </div>
-          </div>
+          <div class="fs-2 fw-bold text-body mb-1">50K+</div>
+          <div class="text-secondary">Active Students</div>
         </div>
-
-        <!-- Card: Students -->
         <div class="col-md-4">
-          <div class="card h-100 shadow-sm border rounded">
-            <div class="card-body text-center p-4">
-              <div class="mb-3 d-flex justify-content-center">
-                <!-- student bootstrap icon -->
-                <i class="bi bi-graph-up-arrow text-success display-3"></i>
-              </div>
-              <h5 class="card-title fw-bold mb-3">For Students</h5>
-              <ul class="list-unstyled text-muted text-start">
-                <li>• Record class participations</li>
-                <li>• Track your grade projections</li>
-                <li>• Earn coins for engagement</li>
-                <li>• Claim exciting rewards</li>
-              </ul>
-            </div>
-          </div>
+          <div class="fs-2 fw-bold text-body mb-1">1000+</div>
+          <div class="text-secondary">Courses</div>
         </div>
-
-        <!-- Card: TAs -->
         <div class="col-md-4">
-          <div class="card h-100 shadow-sm border rounded">
-            <div class="card-body text-center p-4">
-              <div class="mb-3 d-flex justify-content-center">
-                <!-- ta bootstrap icon -->
-                <i class="bi bi-award text-warning display-3"></i>
-              </div>
-              <h5 class="card-title fw-bold mb-3">For TAs</h5>
-              <ul class="list-unstyled text-muted text-start">
-                <li>• Record student participations</li>
-                <li>• Monitor class activity</li>
-                <li>• Assist with tracking</li>
-                <li>• Support student success</li>
-              </ul>
-            </div>
-          </div>
+          <div class="fs-2 fw-bold text-body mb-1">98%</div>
+          <div class="text-secondary">Success Rate</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Need to see if still want to keep this, seems redundant with Get Started at the beginning -->
-  <!-- maybe add something different? -->
+  <section class="px-3 py-4 mt-3">
+    <div>
+      <!-- Option 1 -->
+      <div class="container bg-body-secondary rounded-4" style="transform: rotate(90deg);"></div>
+      <div class="p-4 p-md-5 rounded-4 text-white bg-gradient-primary">
 
-  <!-- <section class="bg-success text-white py-5 px-3 text-center">
-    <div class="container">
-      <h2 class="display-6 fw-bold mb-4">Ready to Transform Your Classroom?</h2>
-      <a href="/auth" class="btn btn-light btn-lg px-4 py-3">Sign Up Now</a>
+        <div class="d-flex align-items-start gap-4 p-3 bg-white bg-opacity-10 rounded-3 mb-4">
+          <div class="bg-white bg-opacity-50 p-3 rounded-2">
+            <i class="bi bi-people display-4 text-primary"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold fs-3 text-white mb-1">Professors</h4>
+            <ul class="text-white-50 fs-5 mb-0">
+              <li>Review and approve participations</li>
+              <li>Track class engagement</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start gap-4 p-3 bg-white bg-opacity-10 rounded-3 mb-4">
+          <div class="bg-white bg-opacity-50 p-3 rounded-2">
+            <i class="bi bi-graph-up-arrow display-4 text-success"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold fs-3 text-white mb-1">Students</h4>
+            <ul class="text-white-50 fs-5 mb-0">
+              <li>Record class participations</li>
+              <li>Track your grade projections</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start gap-4 p-3 bg-white bg-opacity-10 rounded-3">
+          <div class="bg-white bg-opacity-50 p-3 rounded-2">
+            <i class="bi bi-award display-4 text-warning"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold fs-3 text-white mb-1">Teaching Assistant</h4>
+            <ul class="text-white-50 fs-5 mb-0">
+              <li>Record student participations</li>
+              <li>Assist with tracking</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
     </div>
-  </section> -->
+  </section>
 </template>
