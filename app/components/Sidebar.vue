@@ -11,42 +11,42 @@
                 <div class="nav-menu">
                     <!-- Main Navigation -->
                     <button class="btn nav-item">
-                        <NuxtLink to="/" class="nav-link">
+                        <NuxtLink to="/" class="nav-link w-100 text-start">
                             <i class="bi bi-house"></i>
                             <span>Home</span>
                         </NuxtLink>
                     </button>
 
                     <button v-if="role" class="btn nav-item">
-                        <NuxtLink :to="'/' + role" class="nav-link">
+                        <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
                             <i class="bi bi-bar-chart-line"></i>
                             <span>Dashboard</span>
                         </NuxtLink>
                     </button>
 
                     <button v-if="role" class="btn nav-item">
-                        <NuxtLink to="/courses" class="nav-link">
+                        <NuxtLink to="/courses" class="nav-link w-100 text-start">
                             <i class="bi bi-journals"></i>
                             <span>Courses</span>
                         </NuxtLink>
                     </button>
 
                     <button v-if="['prof', 'student'].includes(role)" class="btn nav-item">
-                        <NuxtLink to="/marketplace" class="nav-link">
+                        <NuxtLink to="/marketplace" class="nav-link w-100 text-start">
                             <i class="bi bi-bag"></i>
                             <span>Marketplace</span>
                         </NuxtLink>
                     </button>
 
                     <button v-if="role === 'prof'" class="btn nav-item">
-                        <NuxtLink to="/prof/review" class="nav-link" active-class="active">
+                        <NuxtLink to="/prof/review" class="nav-link w-100 text-start" active-class="active">
                             <i class="bi bi-card-checklist"></i>
                             <span>Review CP</span>
                         </NuxtLink>
                     </button>
 
                     <button v-if="role === 'ta'" class="btn nav-item">
-                        <NuxtLink to="/ta/submit" class="nav-link" active-class="active">
+                        <NuxtLink to="/ta/submit" class="nav-link w-100 text-start" active-class="active">
                             <i class="bi bi-card-checklist"></i>
                             <span>Submit CP</span>
                         </NuxtLink>
@@ -54,7 +54,7 @@
 
                     <!-- Right-aligned items -->
                     <button v-if="['prof', 'ta'].includes(role)" class="btn nav-item">
-                        <NuxtLink to="/classreport" class="nav-link">
+                        <NuxtLink to="/classreport" class="nav-link w-100 text-start">
                             <i class="bi bi-file-earmark-text"></i>
                             <span>Reports</span>
                         </NuxtLink>

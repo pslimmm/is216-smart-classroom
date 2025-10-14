@@ -11,7 +11,7 @@ import Chart from 'chart.js/auto'; // Chart.js library for data visualization
 // ============================================
 // Basic student information
 const enrolledCourses = ref(["Math 101", "Physics 202"]); // List of enrolled courses
-const coins = ref(125); // Total coins for marketplace purchases (managed by Chun Wai)
+const coins = ref(100); // Total coins for marketplace purchases (managed by Chun Wai)
 
 // ========== Participation Tracking Data ==========
 const currentWeek = ref(7); // Current academic week (1-13 typically)
@@ -229,7 +229,7 @@ const createCountChart = () => {
 
     // Color-code bars based on participation count
     const colors = counts.map(count => {
-        if (count >= 3) return 'rgba(75, 192, 192, 0.7)'; // Green - meets requirement
+        if (count >= 3) return 'rgba(13, 110, 253, 0.7)'; // Green - meets requirement
         if (count >= 2) return 'rgba(255, 206, 86, 0.7)'; // Yellow - close
         return 'rgba(255, 99, 132, 0.7)'; // Red - needs improvement
     });
@@ -253,7 +253,7 @@ const createCountChart = () => {
                 y: {
                     beginAtZero: true,
                     ticks: { stepSize: 1 }, // Integer steps
-                    title: { display: true, text: 'Number of Participations' }
+                    title: { display: true, text: 'No. of Participations' }
                 },
                 x: {
                     title: { display: true, text: 'Week Number' }
@@ -282,169 +282,153 @@ const getRatingBadgeClass = (rating) => {
 </script>
 
 <template>
-    <div>
+    <main class="container py-4 flex-grow-1">
 
-        <!-- ============================================ -->
-        <!-- MAIN CONTAINER -->
-        <!-- Offset for fixed navbar, bottom padding for scroll -->
-        <!-- ============================================ -->
-        <div class="container" style="margin-top: 80px; padding-bottom: 40px;">
-            <h1 class="mb-4">👋 Welcome back, Student!</h1>
+        <h1 class="mb-4 d-flex align-items-center gap-2">
+            <span class="fw-bold">Welcome back, John Doe!</span>
+        </h1>
 
-            <!-- ============================================ -->
-            <!-- SECTION 1: QUICK OVERVIEW CARDS -->
-            <!-- Top row showing enrolled courses, coins, and grade -->
-            <!-- ============================================ -->
-            <div class="row mb-4">
-
-                <!-- Card 1: Enrolled Courses -->
-                <div class="col-md-4">
-                    <div class="info-card">
-                        <div class="info-icon">📚</div>
-                        <div class="info-content">
-                            <div class="info-label">Enrolled Courses</div>
-                            <!-- <div class="info-value">{{ enrolledCourses.length }}</div> -->
-                            <!-- Display course badges dynamically -->
-                            <div class="course-list">
-                                <span v-for="(course, idx) in enrolledCourses" :key="idx" class="badge bg-primary me-1">
-                                    {{ course }}
-                                </span>
+        <!-- Overview Cards -->
+        <div class="row g-4 mb-4">
+            <!-- Enrolled Courses -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex gap-3">
+                        <div class="display-5">
+                            <i class="bi bi-book-half text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="text-muted text-uppercase small">Enrolled Courses</div>
+                            <div class="mt-2">
+                                <span v-for="(course, i) in enrolledCourses" :key="i" class="badge bg-primary me-1">{{
+                                    course }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Card 2: Total Coins (Highlighted) -->
-                <!-- Coins earned from class participation, used in marketplace -->
-                <!-- Managed by Chun Wai's marketplace feature -->
-                <div class="col-md-4">
-                    <div class="info-card highlight-card">
-                        <div class="info-icon">🪙</div>
-                        <div class="info-content">
-                            <div class="info-label">Total Coins</div>
-                            <div class="info-value">{{ coins }}</div>
-                            <a href="/marketplace" class="btn btn-sm btn-success mt-2">Visit Marketplace</a>
+            <!-- Total Coins -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 border border-warning-subtle bg-gradient-primary text-white">
+                    <div class="card-body d-flex gap-3">
+                        <div class="display-5">
+                            <i class="bi bi-coin text-warning"></i>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Card 3: Projected Grade -->
-                <!-- Calculated based on participation frequency and quality -->
-                <div class="col-md-4">
-                    <div class="info-card">
-                        <div class="info-icon">🎓</div>
-                        <div class="info-content">
-                            <div class="info-label">Projected Grade</div>
-                            <div class="info-value">{{ gradeProjection }}</div>
-                            <div class="info-subtext">Based on participation</div>
+                        <div class="flex-grow-1">
+                            <div class="text-uppercase small">Total Coins</div>
+                            <div class="h3 fw-bold">{{ coins }}</div>
+                            <NuxtLink to="/marketplace" class="btn btn-sm btn-light mt-2">
+                                <i class="bi bi-shop me-1"></i> Visit Marketplace
+                            </NuxtLink>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Divider between overview and participation sections -->
-            <hr class="my-4">
-
-            <!-- ============================================ -->
-            <!-- SECTION 2: CLASS PARTICIPATION TRACKING -->
-            <!-- Main feature: Charts and metrics for participation -->
-            <!-- ============================================ -->
-            <h2 class="mb-4">📊 My Class Participation</h2>
-
-            <!-- Participation Metrics Cards -->
-            <div class="row mb-4">
-
-                <!-- Metric 1: Total Participations This Term -->
-                <div class="col-md-3">
-                    <div class="metric-card">
-                        <div class="metric-icon">🎯</div>
-                        <div class="metric-value">{{ totalParticipations }}</div>
-                        <div class="metric-label">Total Participations</div>
+            <!-- Projected Grade -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex gap-3">
+                        <div class="display-5">
+                            <i class="bi bi-mortarboard-fill"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="text-muted text-uppercase small">Projected Grade</div>
+                            <div class="h3 fw-bold">{{ gradeProjection }}</div>
+                            <div class="text-muted small fst-italic">Based on participation</div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Metric 2: Student's Average Rating -->
-                <!-- Average across all weeks (1-5 scale) -->
-                <div class="col-md-3">
-                    <div class="metric-card">
-                        <div class="metric-icon">⭐</div>
-                        <div class="metric-value">{{ myOverallAvgRating.toFixed(2) }}</div>
-                        <div class="metric-label">My Avg Rating</div>
-                    </div>
-                </div>
+        <!-- Section Title -->
+        <h2 class="mb-4 d-flex align-items-center gap-2">
+            <span class="fw-semibold">My Class Participation</span>
+        </h2>
 
-                <!-- Metric 3: Class Average Rating -->
-                <!-- For comparison with student's performance -->
-                <div class="col-md-3">
-                    <div class="metric-card">
-                        <div class="metric-icon">📈</div>
-                        <div class="metric-value">{{ classOverallAvgRating.toFixed(2) }}</div>
-                        <div class="metric-label">Class Avg Rating</div>
-                    </div>
-                </div>
-
-                <!-- Metric 4: Current Week Progress -->
-                <!-- Shows progress toward weekly goal of 3 participations -->
-                <div class="col-md-3">
-                    <div class="metric-card">
-                        <div class="metric-icon">📅</div>
-                        <div class="metric-value">{{ currentWeekParticipations }}/3</div>
-                        <div class="metric-label">This Week</div>
+        <!-- Participation Metrics -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="fs-3 mb-2 bi bi-clipboard-check text-primary"></div>
+                        <div class="h4 fw-bold">26</div>
+                        <div class="text-muted small">Total Participations</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ============================================ -->
-            <!-- CURRENT WEEK ALERT -->
-            <!-- Color-coded alert based on weekly progress -->
-            <!-- Green (≥3): Met target, Yellow (2): Close, Red (<2): Needs more -->
-            <!-- ============================================ -->
-            <div class="alert" :class="weeklyAlertClass" role="alert">
-                <strong>Week {{ currentWeek }} Progress:</strong>
-                {{ currentWeekParticipations }} participation(s) this week.
-                <!-- Dynamic message based on progress -->
-                <span v-if="currentWeekParticipations >= 3">🎉 Great job! You've met the weekly target!</span>
-                <span v-else-if="currentWeekParticipations >= 2">⚠️ One more to reach your target!</span>
-                <span v-else>❗ You need {{ 3 - currentWeekParticipations }} more to meet the weekly minimum.</span>
+            <div class="col-md-3">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="fs-3 mb-2 bi bi-star-fill text-warning"></div>
+                        <div class="h4 fw-bold">4.03</div>
+                        <div class="text-muted small">My Average Rating</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- ============================================ -->
-            <!-- SECTION 3: CHARTS (Chart.js Visualizations) -->
-            <!-- Two side-by-side charts for data analysis -->
-            <!-- ============================================ -->
-            <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="fs-3 mb-2 bi bi-graph-up-arrow text-success"></div>
+                        <div class="h4 fw-bold">3.79</div>
+                        <div class="text-muted small">Class Average Rating</div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Chart 1: Quality Rating Comparison -->
-                <!-- Bar chart: Student avg rating vs Class avg rating per week -->
-                <div class="col-lg-6 mb-4">
-                    <div class="chart-container">
-                        <h4 class="mb-3">📊 Quality Rating: Me vs Class</h4>
-                        <!-- Canvas element for Chart.js rendering -->
+            <div class="col-md-3">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="fs-3 mb-2 bi bi-calendar-date text-info"></div>
+                        <div class="h4 fw-bold">2/3</div>
+                        <div class="text-muted small">This Week</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Weekly Alert -->
+        <div class="alert" :class="weeklyAlertClass" role="alert">
+            <strong>Week {{ currentWeek }} Progress:</strong>
+            {{ currentWeekParticipations }} participation(s) this week.
+            <span v-if="currentWeekParticipations >= 3">Great job! You've met the weekly target!</span>
+            <span v-else-if="currentWeekParticipations >= 2">One more to reach your target!</span>
+            <span v-else>❗ You need {{ 3 - currentWeekParticipations }} more to meet the weekly minimum.</span>
+        </div>
+
+        <!-- Charts -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-semibold mb-3">Quality Rating: Me vs Class</h5>
                         <canvas id="qualityChart"></canvas>
                     </div>
                 </div>
+            </div>
 
-                <!-- Chart 2: Weekly Participation Count -->
-                <!-- Bar chart with color-coding: Green (≥3), Yellow (2), Red (<2) -->
-                <div class="col-lg-6 mb-4">
-                    <div class="chart-container">
-                        <h4 class="mb-3">📈 Weekly Participation Count</h4>
-                        <!-- Canvas element for Chart.js rendering -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-semibold mb-3">Weekly Participation Count</h5>
                         <canvas id="countChart"></canvas>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- ============================================ -->
-            <!-- SECTION 4: RECENT PARTICIPATION HISTORY -->
-            <!-- Table displaying recent submissions with details -->
-            <!-- Data populated by Javier's TA submission feature -->
-            <!-- ============================================ -->
-            <div class="chart-container">
-                <h4 class="mb-3">📝 Recent Participation History</h4>
+        <!-- Recent History Table -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="fw-semibold mb-3">Recent Participation History</h5>
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
-                        <thead>
+                        <thead class="table-light">
                             <tr>
                                 <th>Date</th>
                                 <th>Week</th>
@@ -454,20 +438,17 @@ const getRatingBadgeClass = (rating) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Loop through recent participations -->
-                            <tr v-for="(participation, index) in recentParticipations" :key="index">
-                                <td>{{ participation.date }}</td>
-                                <td>Week {{ participation.week }}</td>
-                                <td>{{ participation.contribution }}</td>
-                                <!-- Color-coded rating badge based on quality -->
+                            <tr v-for="(p, i) in recentParticipations" :key="i">
+                                <td>{{ p.date }}</td>
+                                <td>Week {{ p.week }}</td>
+                                <td>{{ p.contribution }}</td>
                                 <td>
-                                    <span class="badge" :class="getRatingBadgeClass(participation.rating)">
-                                        {{ participation.rating }} ⭐
+                                    <span class="badge" :class="getRatingBadgeClass(p.rating)">
+                                        {{ p.rating }} <i class="bi bi-star-fill text-warning"></i>
                                     </span>
                                 </td>
-                                <!-- Coins earned from this participation (approved by professor) -->
                                 <td>
-                                    <span class="badge bg-warning text-dark">+{{ participation.coinsEarned }} 🪙</span>
+                                    <span class="badge bg-warning text-dark">+{{ p.coinsEarned }} <i class="bi bi-coin text-danger"></i> </span>
                                 </td>
                             </tr>
                         </tbody>
@@ -475,129 +456,27 @@ const getRatingBadgeClass = (rating) => {
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </template>
 
 
 
 <style scoped>
-/* ============================================ */
-/* INFO CARDS (Top Overview Section) */
-/* ============================================ */
-.info-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    transition: transform 0.2s;
+.bg-gradient-primary {
+    background: var(--gradient-primary);
+    color: hsl(var(--primary-foreground));
 }
 
-.info-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Special styling for coins card */
-.highlight-card {
-    border: 2px solid #ffc107;
-    background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
-}
-
-.info-icon {
-    font-size: 2.5rem;
-    flex-shrink: 0;
-}
-
-.info-content {
-    flex: 1;
-}
-
-.info-label {
-    font-size: 0.9rem;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.info-value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    margin: 5px 0;
-}
-
-.info-subtext {
-    font-size: 0.85rem;
-    color: #888;
-    font-style: italic;
-}
-
-.course-list {
-    margin-top: 8px;
-}
-
-/* ============================================ */
-/* METRIC CARDS (Participation Statistics) */
-/* ============================================ */
-.metric-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.metric-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.metric-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.metric-value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.metric-label {
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 5px;
-}
-
-/* ============================================ */
-/* CHART CONTAINERS */
-/* ============================================ */
-.chart-container {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.chart-container h4 {
-    color: #333;
-    border-bottom: 3px solid #007bff;
-    padding-bottom: 10px;
-}
-
-/* ============================================ */
-/* TABLE STYLING */
-/* ============================================ */
-.table {
-    margin-top: 15px;
+.card {
+    border-radius: 0.75rem;
 }
 
 .table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
+    background-color: var(--bs-gray-100);
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
 }
 </style>
