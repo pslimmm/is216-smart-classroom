@@ -1,46 +1,31 @@
 <script setup>
-// ============================================
-// IMPORTS
-// ============================================
-import Chart from 'chart.js/auto'; // Chart.js for data visualization
-// ============================================
-// DATA
-// Hardcoded test data - will be replaced with API calls
-// ============================================
+import Chart from 'chart.js/auto';
 
-// ========== Search & Selection State ==========
-const searchQuery = ref('') // User's search input
-const selectedStudentId = ref('');  // Currently selected student ID
-const currentWeek = ref(7); // Current academic week (1-13 typically)
+const searchQuery = ref('')
+const selectedStudentId = ref('');
+const currentWeek = ref(7);
 
-// ========== Class-wide Statistics ==========
-// Summary metrics for the entire class
 const classStats = {
-    totalStudents: 52, // Total number of students
-    classAvgRating: 3.85, // Overall class average rating
-    studentsOnTrack: 38, // Students meeting ≥3 participations/week
-    studentsNeedHelp: 14 // Students below requirements
+    totalStudents: 6,
+    classAvgRating: 3.85,
+    studentsOnTrack: 4,
+    studentsNeedHelp: 2
 };
 
-// ========== Student List ==========
-// All students in the class (fetched from backend in production)
 const allStudents = [
-    { id: "S123", name: "John Doe" },
-    { id: "S124", name: "Alice Tan" },
-    { id: "S125", name: "David Wong" },
-    { id: "S126", name: "Siti Rahman" },
-    { id: "S127", name: "Michael Chen" },
-    { id: "S128", name: "Emily Lim" }
+    { id: "1", name: "Alice" },
+    { id: "2", name: "Bob" },
+    { id: "3", name: "Charlie" },
+    { id: "4", name: "Davis" },
+    { id: "5", name: "Peter" },
+    { id: "6", name: "Yichen" }
 ];
-const filteredStudents = ref([]); // Students after search filter applied
+const filteredStudents = ref([]);
 
-// ========== Individual Student Data ==========
-// Detailed participation data for each student
-// In production, this would be fetched from backend when student is selected
 const studentsData = {
-    "S123": {
-        id: "S123",
-        name: "John Doe",
+    "1": {
+        id: "1",
+        name: "Alice",
         weeks: [1, 2, 3, 4, 5, 6, 7], // Week numbers
         myAvgRating: [3.5, 4.0, 3.2, 4.5, 4.8, 4.0, 4.2], // Weekly avg ratings
         classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0], // Class avg for comparison
@@ -51,21 +36,57 @@ const studentsData = {
             { date: "2025-10-01", week: 6, contribution: "Helped classmate debug code", rating: 4.0, ratedBy: "Prof. Lee" }
         ]
     },
-    "S124": {
-        id: "S124",
-        name: "Alice Tan",
+    "2": {
+        id: "2",
+        name: "Bob",
         weeks: [1, 2, 3, 4, 5, 6, 7],
         myAvgRating: [4.5, 4.8, 4.6, 4.9, 5.0, 4.7, 4.8],
         classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
-        myWeeklyCount: [5, 6, 4, 5, 6, 5, 4],
+        myWeeklyCount: [3, 2, 3, 3, 2, 3, 2],
         recentParticipations: [
             { date: "2025-10-07", week: 7, contribution: "Led group discussion on algorithms", rating: 5.0, ratedBy: "Prof. Lee" },
             { date: "2025-10-06", week: 7, contribution: "Presented excellent solution", rating: 4.8, ratedBy: "Prof. Lee" }
         ]
     },
-    "S125": {
-        id: "S125",
-        name: "David Wong",
+    "3": {
+        id: "3",
+        name: "Charlie",
+        weeks: [1, 2, 3, 4, 5, 6, 7],
+        myAvgRating: [2.5, 2.8, 2.0, 3.0, 2.5, 2.2, 2.8],
+        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
+        myWeeklyCount: [1, 2, 1, 2, 1, 1, 3],
+        recentParticipations: [
+            { date: "2025-10-06", week: 7, contribution: "Basic question about syntax", rating: 2.5, ratedBy: "TA Smith" },
+            { date: "2025-10-04", week: 7, contribution: "Participated in discussion", rating: 3.0, ratedBy: "TA Johnson" }
+        ]
+    },
+    "4": {
+        id: "4",
+        name: "Davis",
+        weeks: [1, 2, 3, 4, 5, 6, 7],
+        myAvgRating: [2.5, 2.8, 2.0, 3.0, 2.5, 2.2, 2.8],
+        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
+        myWeeklyCount: [1, 2, 1, 2, 1, 1, 2],
+        recentParticipations: [
+            { date: "2025-10-06", week: 7, contribution: "Basic question about syntax", rating: 2.5, ratedBy: "TA Smith" },
+            { date: "2025-10-04", week: 7, contribution: "Participated in discussion", rating: 3.0, ratedBy: "TA Johnson" }
+        ]
+    },
+    "5": {
+        id: "5",
+        name: "Peter",
+        weeks: [1, 2, 3, 4, 5, 6, 7],
+        myAvgRating: [4.5, 4.8, 4.6, 4.9, 5.0, 4.7, 4.8],
+        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
+        myWeeklyCount: [4, 3, 1, 2, 3, 4, 4],
+        recentParticipations: [
+            { date: "2025-10-06", week: 7, contribution: "Basic question about syntax", rating: 4, ratedBy: "TA Smith" },
+            { date: "2025-10-04", week: 7, contribution: "Participated in discussion", rating: 4.5, ratedBy: "TA Johnson" }
+        ]
+    },
+    "6": {
+        id: "6",
+        name: "Yichen",
         weeks: [1, 2, 3, 4, 5, 6, 7],
         myAvgRating: [2.5, 2.8, 2.0, 3.0, 2.5, 2.2, 2.8],
         classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
@@ -77,32 +98,13 @@ const studentsData = {
     }
 };
 
-// ========== Currently Selected Student ==========
-const selectedStudent = ref(null) // Will hold computed student data when selected
-
-// ========== Chart Instances ==========
-// Store Chart.js instances for cleanup on component unmount
-const charts = ref({}) // Key: chartId (e.g., 'qualityChart-S123'), Value: Chart instance
-
-// ============================================
-// LIFECYCLE HOOKS
-// ============================================
-
+const selectedStudent = ref(null)
+const charts = ref({})
 
 onMounted(() => {
-    // Initialize with full student list
     filteredStudents.value = [...allStudents];
 });
 
-
-// ============================================
-// METHODS
-// ============================================
-/**
- * Filter students based on search query
- * Searches both student name and ID (case-insensitive)
- * Updates filteredStudents array in real-time
- */
 const filterStudents = () => {
     const query = searchQuery.value.toLowerCase();
     filteredStudents.value = allStudents.filter(student =>
@@ -111,15 +113,8 @@ const filterStudents = () => {
     );
 };
 
-/**
- * Load selected student's data and calculate metrics
- * Called when professor selects a student from dropdown
- * - Fetches student data (from hardcoded data, will be API call in production)
- * - Calculates derived metrics (totals, averages, projected grade)
- * - Triggers chart creation after DOM update
- */
+
 const loadStudentData = () => {
-    // Clear selection if dropdown is empty
     if (!selectedStudentId.value) {
         selectedStudent.value = null;
         return;
@@ -129,22 +124,11 @@ const loadStudentData = () => {
     const data = studentsData[selectedStudentId.value];
     if (!data) return;
 
-    // ========== Calculate Derived Metrics ==========
-
-    // Total participations across all weeks
     const totalParticipations = data.myWeeklyCount.reduce((sum, count) => sum + count, 0);
-
-    // Average rating across all weeks
     const avgRating = data.myAvgRating.reduce((sum, r) => sum + r, 0) / data.myAvgRating.length;
-
-    // Average participations per week
     const avgPerWeek = totalParticipations / currentWeek.value;
-
-    // Current week's participation count
     const currentWeekCount = data.myWeeklyCount[currentWeek.value - 1] || 0;
 
-    // ========== Calculate Projected Grade ==========
-    // Based on participation frequency and quality
     let projectedGrade = "C";
     if (avgPerWeek >= 3 && avgRating >= 4.0) projectedGrade = "A+";
     else if (avgPerWeek >= 3 && avgRating >= 3.5) projectedGrade = "A";
@@ -167,20 +151,12 @@ const loadStudentData = () => {
     });
 };
 
-/**
- * Create both quality and count charts for selected student
- * - Destroys old charts first to prevent memory leaks
- * - Creates new charts with unique IDs based on student ID
- * - Uses different chart types: line for quality, bar for count
- */
 const createStudentCharts = () => {
     if (!selectedStudent.value) return;
 
-    // Generate unique chart IDs based on student ID
     const qualityChartId = 'qualityChart-' + selectedStudent.value.id;
     const countChartId = 'countChart-' + selectedStudent.value.id;
 
-    // ========== Cleanup: Destroy Existing Charts ==========
     if (charts[qualityChartId]) {
         charts[qualityChartId].destroy();
     }
@@ -188,8 +164,6 @@ const createStudentCharts = () => {
         charts[countChartId].destroy();
     }
 
-    // ========== Create Quality Rating Chart ==========
-    // Line chart comparing student rating vs class average
     const qualityCtx = document.getElementById(qualityChartId);
     if (qualityCtx) {
         charts[qualityChartId] = new Chart(qualityCtx, {
@@ -201,8 +175,8 @@ const createStudentCharts = () => {
                         label: selectedStudent.value.name + ' Rating',
                         data: selectedStudent.value.myAvgRating,
                         backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
-                        borderColor: 'rgba(54, 162, 235, 1)', // Blue line
-                        borderWidth: 3,
+                        borderColor: 'rgba(13, 110, 253, 1)', // Blue line
+                        borderWidth: 2,
                         fill: true,
                         tension: 0.4 // Smooth curve
                     },
@@ -210,8 +184,8 @@ const createStudentCharts = () => {
                         label: 'Class Average',
                         data: selectedStudent.value.classAvgRating,
                         backgroundColor: 'rgba(255, 159, 64, 0.2)', // Light orange fill
-                        borderColor: 'rgba(255, 159, 64, 1)', // Orange line
-                        borderWidth: 3,
+                        borderColor: 'rgba(255, 193, 7, 1)', // Orange line
+                        borderWidth: 2,
                         borderDash: [5, 5], // Dashed line for class average
                         fill: true,
                         tension: 0.4
@@ -228,32 +202,30 @@ const createStudentCharts = () => {
                         ticks: { stepSize: 0.5 },
                         title: {
                             display: true,
-                            text: 'Rating (1-5)'
+                            text: 'Rating'
                         }
                     },
                     x: {
                         title: {
                             display: true,
-                            text: 'Week'
+                            text: 'Weeks'
                         }
                     }
                 },
                 plugins: {
-                    legend: { display: true, position: 'top' }
+                    legend: { display: true, position: 'bottom' }
                 }
             }
         });
     }
 
-    // ========== Create Participation Count Chart ==========
-    // Bar chart with color-coding based on performance
     const countCtx = document.getElementById(countChartId);
     if (countCtx) {
         const counts = selectedStudent.value.myWeeklyCount;
 
         // Color-code bars: Green (≥3), Yellow (2), Red (<2)
         const colors = counts.map(count => {
-            if (count >= 3) return 'rgba(75, 192, 192, 0.7)'; // Green - meets requirement
+            if (count >= 3) return 'rgba(13, 110, 253, 0.7)'; // Primary - meets requirement
             if (count >= 2) return 'rgba(255, 206, 86, 0.7)'; // Yellow - close
             return 'rgba(255, 99, 132, 0.7)'; // Red - needs attention
         });
@@ -279,131 +251,121 @@ const createStudentCharts = () => {
                         ticks: { stepSize: 1 }, // Integer steps
                         title: {
                             display: true,
-                            text: 'Number of Participations'
+                            text: 'No. of Participations'
                         }
                     },
                     x: {
                         title: {
                             display: true,
-                            text: 'Week'
+                            text: 'Weeks'
                         }
                     }
                 },
                 plugins: {
-                    legend: { display: false } // Hide legend for cleaner look
+                    legend: { display: false }
                 }
             }
         });
     }
 };
 
-/**
- * Get Bootstrap badge color class based on rating
- * Used for color-coding ratings in participation history table
- * @param {number} rating - Rating value (1-5)
- * @returns {string} Bootstrap badge class
- */
 const getRatingBadgeClass = (rating) => {
-    if (rating >= 4.5) return 'bg-success';  // Excellent (green) - 4.5-5.0
-    if (rating >= 4.0) return 'bg-primary';  // Very good (blue) - 4.0-4.4
-    if (rating >= 3.5) return 'bg-info';     // Good (light blue) - 3.5-3.9
-    if (rating >= 3.0) return 'bg-warning';  // Average (yellow) - 3.0-3.4
-    return 'bg-danger';                       // Needs improvement (red) - <3.0
+    if (rating >= 4.5) return 'bg-success';
+    if (rating >= 4.0) return 'bg-primary';
+    if (rating >= 3.5) return 'bg-info';
+    if (rating >= 3.0) return 'bg-warning';
+    return 'bg-danger';
 };
 
-/**
- * Get grade badge styling class
- * Color-codes the projected grade badge
- * @param {string} grade - Projected grade (A+, A, B+, B, C)
- * @returns {string} CSS class name
- */
 const getGradeBadgeClass = (grade) => {
-    if (grade.startsWith('A')) return 'grade-excellent'; // Green gradient for A grades
-    if (grade.startsWith('B')) return 'grade-good'; // Yellow gradient for B grades
-    return 'grade-needs-improvement'; // Red gradient for C and below
+    if (grade.startsWith('A')) return 'grade-excellent';
+    if (grade.startsWith('B')) return 'grade-good';
+    return 'grade-needs-improvement';
 }
+
+// Tried doing a loop but failed... will try again next time
+// const metrics = [
+//   { icon: 'bi-people-fill', value: classStats.totalStudents, label: 'Total Students' },
+//   { icon: 'bi-bar-chart-line-fill', value: classStats.classAvgRating.toFixed(2), label: 'Class Avg Rating' },
+//   { icon: 'bi-check-circle-fill', value: classStats.studentsOnTrack, label: 'Students On Track' },
+//   { icon: 'bi-exclamation-triangle-fill', value: classStats.studentsNeedHelp, label: 'Need Attention', variant: 'border border-danger' },
+// ];
+
+// const studentStats = [
+//   { icon: 'bi-bullseye', value: selectedStudent.totalParticipations, label: 'Total Participations' },
+//   { icon: 'bi-star-fill', value: selectedStudent.avgRating.toFixed(2), label: 'Avg Rating' },
+//   { icon: 'bi-calendar-event', value: selectedStudent.currentWeekCount, label: 'This Week' },
+//   { icon: 'bi-graph-up-arrow', value: selectedStudent.avgPerWeek.toFixed(1), label: 'Avg Per Week' },
+// ];
 </script>
 
 <template>
-    <div>
+    <main class="container py-4 flex-grow-1">
+        <div class="container py-5">
+            <h1 class="display-5 fw-bold mb-4 d-flex align-items-center gap-2">
+                Class Participation Report
+            </h1>
 
-        <!-- ============================================ -->
-        <!-- MAIN CONTAINER -->
-        <!-- Offset for fixed navbar, bottom padding for scroll -->
-        <!-- ============================================ -->
-        <div class="container" style="margin-top: 80px; padding-bottom: 40px;">
-            <h1 class="mb-4">👨‍🏫 Class Participation Dashboard</h1>
-
-            <!-- ============================================ -->
-            <!-- SECTION 1: CLASS OVERVIEW STATISTICS -->
-            <!-- High-level metrics for entire class -->
-            <!-- ============================================ -->
-            <div class="row mb-4">
-
-                <!-- Metric 1: Total Students in Class -->
+            <div class="row g-4 mb-5">
+                <!-- Total Students Card -->
                 <div class="col-md-3">
-                    <div class="metric-card">
-                        <div class="metric-icon">👥</div>
-                        <div class="metric-value">{{ classStats.totalStudents }}</div>
-                        <div class="metric-label">Total Students</div>
+                    <div class="card shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="bi bi-people-fill text-primary fs-1 mb-3"></i>
+                            <h4 class="fw-bold">6</h4>
+                            <p class="text-muted mb-0">Total Students</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Metric 2: Class Average Rating -->
-                <!-- Overall average rating across all students -->
+                <!-- Class Avg Rating Card -->
                 <div class="col-md-3">
-                    <div class="metric-card">
-                        <div class="metric-icon">📊</div>
-                        <div class="metric-value">{{ classStats.classAvgRating.toFixed(2) }}</div>
-                        <div class="metric-label">Class Avg Rating</div>
+                    <div class="card shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="bi bi-bar-chart-line-fill text-info fs-1 mb-3"></i>
+                            <h4 class="fw-bold">3.85</h4>
+                            <p class="text-muted mb-0">Class Average Rating</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Metric 3: Students Meeting Requirements -->
-                <!-- Students with ≥3 participations per week on average -->
+                <!-- Students on Track -->
                 <div class="col-md-3">
-                    <div class="metric-card">
-                        <div class="metric-icon">✅</div>
-                        <div class="metric-value">{{ classStats.studentsOnTrack }}</div>
-                        <div class="metric-label">Students On Track</div>
+                    <div class="card shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
+                            <h4 class="fw-bold">4</h4>
+                            <p class="text-muted mb-0">Students On Track</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Metric 4: Students Needing Attention (Alert Card) -->
-                <!-- Students below 3 participations per week -->
+                <!-- Attention -->
                 <div class="col-md-3">
-                    <div class="metric-card alert-danger-card">
-                        <div class="metric-icon">⚠️</div>
-                        <div class="metric-value">{{ classStats.studentsNeedHelp }}</div>
-                        <div class="metric-label">Need Attention</div>
+                    <div class="card shadow-sm text-center h-100 border border-danger">
+                        <div class="card-body">
+                            <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-3"></i>
+                            <h4 class="fw-bold">2</h4>
+                            <p class="text-muted mb-0">Students Need Attention</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ============================================ -->
-            <!-- SECTION 2: STUDENT SELECTION INTERFACE -->
-            <!-- Search bar and dropdown to select individual student -->
-            <!-- ============================================ -->
-            <div class="selection-container mb-4">
-                <h3 class="mb-3">Select Student to View Details</h3>
-                <div class="row">
-
-                    <!-- Search Input -->
-                    <!-- Real-time filtering by student name or ID -->
+            <!-- Select Student to View Details -->
+            <div class="bg-white p-4 rounded-4 shadow-sm mb-5">
+                <h3 class="mb-4">Select Student to View Details</h3>
+                <div class="row g-3 align-items-center">
                     <div class="col-md-8">
                         <div class="input-group">
-                            <span class="input-group-text">🔍</span>
-                            <input type="text" class="form-control" placeholder="Search student by name or ID..."
-                                v-model="searchQuery" @input="filterStudents" />
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input v-model="searchQuery" @input="filterStudents" type="text" class="form-control"
+                                placeholder="Filter by name or ID" />
                         </div>
                     </div>
-
-                    <!-- Student Dropdown -->
-                    <!-- Shows filtered list of students -->
                     <div class="col-md-4">
-                        <select class="form-select" v-model="selectedStudentId" @change="loadStudentData">
+                        <select v-model="selectedStudentId" @change="loadStudentData" class="form-select">
                             <option value="">-- Select a student --</option>
-                            <!-- Loop through filtered students -->
                             <option v-for="student in filteredStudents" :key="student.id" :value="student.id">
                                 {{ student.name }} ({{ student.id }})
                             </option>
@@ -412,120 +374,56 @@ const getGradeBadgeClass = (grade) => {
                 </div>
             </div>
 
-            <!-- ============================================ -->
-            <!-- SECTION 3: SELECTED STUDENT DETAILS -->
-            <!-- Shows detailed analytics when a student is selected -->
-            <!-- ============================================ -->
-            <div v-if="selectedStudent" class="student-details">
-
-                <!-- Student Info Header -->
-                <div class="student-header mb-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <!-- Student Name and ID -->
-                        <div>
-                            <h2>{{ selectedStudent.name }}</h2>
-                            <p class="text-muted mb-0">Student ID: {{ selectedStudent.id }}</p>
-                        </div>
-                        <!-- Projected Grade Badge (Color-coded) -->
-                        <!-- Green for A grades, yellow for B, red for C -->
-                        <div class="grade-badge" :class="getGradeBadgeClass(selectedStudent.projectedGrade)">
-                            <div class="grade-label">Projected Grade</div>
-                            <div class="grade-value">{{ selectedStudent.projectedGrade }}</div>
+            <!-- Section: Student Detail View -->
+            <div v-if="selectedStudent" class="bg-white p-4 rounded-4 shadow-sm mb-5">
+                <div class="d-flex justify-content-around align-items-center mb-4 border-bottom pb-3">
+                    <div>
+                        <h2 class="fw-bold">{{ selectedStudent.name }}</h2>
+                        <p class="text-muted mb-0">Student ID: {{ selectedStudent.id }}</p>
+                    </div>
+                    <div>
+                        <h4>Projected Grade:</h4>
+                        <div :class="['badge fs-5 p-3 rounded-4', getGradeBadgeClass(selectedStudent.projectedGrade)]">
+                            {{ selectedStudent.projectedGrade }}
                         </div>
                     </div>
                 </div>
 
-                <!-- ============================================ -->
-                <!-- STUDENT PERFORMANCE METRICS -->
-                <!-- Four key metrics for the selected student -->
-                <!-- ============================================ -->
-                <div class="row mb-4">
-
-                    <!-- Metric 1: Total Participations -->
-                    <div class="col-md-3">
-                        <div class="metric-card-sm">
-                            <div class="metric-icon-sm">🎯</div>
-                            <div class="metric-value-sm">{{ selectedStudent.totalParticipations }}</div>
-                            <div class="metric-label-sm">Total Participations</div>
-                        </div>
-                    </div>
-
-                    <!-- Metric 2: Average Rating -->
-                    <!-- Student's overall average rating (1-5 scale) -->
-                    <div class="col-md-3">
-                        <div class="metric-card-sm">
-                            <div class="metric-icon-sm">⭐</div>
-                            <div class="metric-value-sm">{{ selectedStudent.avgRating.toFixed(2) }}</div>
-                            <div class="metric-label-sm">Avg Rating</div>
-                        </div>
-                    </div>
-
-                    <!-- Metric 3: Current Week Count -->
-                    <!-- Number of participations in current week -->
-                    <div class="col-md-3">
-                        <div class="metric-card-sm">
-                            <div class="metric-icon-sm">📅</div>
-                            <div class="metric-value-sm">{{ selectedStudent.currentWeekCount }}</div>
-                            <div class="metric-label-sm">This Week</div>
-                        </div>
-                    </div>
-
-                    <!-- Metric 4: Average Per Week -->
-                    <!-- Average participations across all weeks -->
-                    <div class="col-md-3">
-                        <div class="metric-card-sm">
-                            <div class="metric-icon-sm">📈</div>
-                            <div class="metric-value-sm">{{ selectedStudent.avgPerWeek.toFixed(1) }}</div>
-                            <div class="metric-label-sm">Avg Per Week</div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3" v-for="stat in studentStats" :key="stat.label">
+                        <div class="bg-light p-3 rounded-3 text-center border">
+                            <i :class="['bi fs-4 mb-2', stat.icon]"></i>
+                            <h5 class="fw-bold">{{ stat.value }}</h5>
+                            <small class="text-muted">{{ stat.label }}</small>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============================================ -->
-                <!-- ALERT: STUDENT NEEDS ATTENTION -->
-                <!-- Shows if student is below 3 participations/week average -->
-                <!-- ============================================ -->
-                <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning" role="alert">
-                    <strong>⚠️ Attention:</strong> This student is below the recommended 3 participations per week.
-                    Current average: {{ selectedStudent.avgPerWeek.toFixed(1) }} participations/week.
+                <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    This student is below 3 participations/week: <strong>{{ selectedStudent.avgPerWeek.toFixed(1)
+                    }}</strong>
                 </div>
 
-                <!-- ============================================ -->
-                <!-- SECTION 4: STUDENT CHARTS (Chart.js) -->
-                <!-- Two side-by-side charts for detailed analysis -->
-                <!-- ============================================ -->
                 <div class="row">
-
-                    <!-- Chart 1: Quality Rating Comparison -->
-                    <!-- Line chart: Student rating vs Class average per week -->
                     <div class="col-md-6 mb-4">
-                        <div class="chart-container">
-                            <h4 class="mb-3">Quality Rating Comparison</h4>
-                            <!-- Unique canvas ID per student to avoid chart conflicts -->
+                        <div class="bg-body-secondary p-4 rounded-3 border">
+                            <h5 class="mb-3">Quality Rating Comparison</h5>
                             <canvas :id="'qualityChart-' + selectedStudent.id"></canvas>
                         </div>
                     </div>
-
-                    <!-- Chart 2: Weekly Participation Count -->
-                    <!-- Bar chart with color-coding (green/yellow/red) -->
                     <div class="col-md-6 mb-4">
-                        <div class="chart-container">
-                            <h4 class="mb-3">Weekly Participation Count</h4>
-                            <!-- Unique canvas ID per student -->
+                        <div class="bg-body-secondary p-4 rounded-3 border">
+                            <h5 class="mb-3">Weekly Participation Count</h5>
                             <canvas :id="'countChart-' + selectedStudent.id"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============================================ -->
-                <!-- SECTION 5: RECENT PARTICIPATION HISTORY -->
-                <!-- Table showing detailed participation records -->
-                <!-- Data populated by Javier's TA submission feature -->
-                <!-- ============================================ -->
-                <div class="chart-container">
-                    <h4 class="mb-3">Recent Participation History</h4>
-                    <table class="table table-striped table-hover">
-                        <thead>
+                <div class="table-responsive">
+                    <h5 class="mb-3">Recent Participation History</h5>
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light">
                             <tr>
                                 <th>Date</th>
                                 <th>Week</th>
@@ -535,35 +433,188 @@ const getGradeBadgeClass = (grade) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Loop through student's recent participations -->
-                            <tr v-for="(participation, index) in selectedStudent.recentParticipations" :key="index">
-                                <td>{{ participation.date }}</td>
-                                <td>Week {{ participation.week }}</td>
-                                <td>{{ participation.contribution }}</td>
-                                <!-- Color-coded rating badge -->
+                            <tr v-for="p in selectedStudent.recentParticipations" :key="p.date">
+                                <td>{{ p.date }}</td>
+                                <td>Week {{ p.week }}</td>
+                                <td>{{ p.contribution }}</td>
                                 <td>
-                                    <span class="badge" :class="getRatingBadgeClass(participation.rating)">
-                                        {{ participation.rating }} ⭐
+                                    <span :class="['badge', getRatingBadgeClass(p.rating)]">
+                                        {{ p.rating }} ⭐
                                     </span>
                                 </td>
-                                <td>{{ participation.ratedBy }}</td>
+                                <td>{{ p.ratedBy }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- ============================================ -->
-            <!-- NO SELECTION MESSAGE -->
-            <!-- Shows when no student is selected yet -->
-            <!-- ============================================ -->
-            <div v-else class="text-center py-5">
-                <i class="text-muted" style="font-size: 3rem;">📋</i>
-                <p class="text-muted mt-3">Select a student from the dropdown above to view their participation details.
-                </p>
+            <!-- Empty State -->
+            <div v-else class="text-center py-5 text-muted">
+                <i class="bi bi-clipboard fs-1 mb-3"></i>
+                <p>Select a student above to view participation analytics.</p>
             </div>
         </div>
-    </div>
+
+        <!-- OLD CODE -->
+        <!-- <div>
+            <div class="container" style="margin-top: 80px; padding-bottom: 40px;">
+                <h1 class="mb-4">👨‍🏫 Class Participation Dashboard</h1>
+                <div class="row mb-4">
+
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-icon">👥</div>
+                            <div class="metric-value">{{ classStats.totalStudents }}</div>
+                            <div class="metric-label">Total Students</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-icon">📊</div>
+                            <div class="metric-value">{{ classStats.classAvgRating.toFixed(2) }}</div>
+                            <div class="metric-label">Class Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-icon">✅</div>
+                            <div class="metric-value">{{ classStats.studentsOnTrack }}</div>
+                            <div class="metric-label">Students On Track</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card alert-danger-card">
+                            <div class="metric-icon">⚠️</div>
+                            <div class="metric-value">{{ classStats.studentsNeedHelp }}</div>
+                            <div class="metric-label">Need Attention</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="selection-container mb-4">
+                    <h3 class="mb-3">Select Student to View Details</h3>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <span class="input-group-text">🔍</span>
+                                <input type="text" class="form-control" placeholder="Search student by name or ID..."
+                                    v-model="searchQuery" @input="filterStudents" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" v-model="selectedStudentId" @change="loadStudentData">
+                                <option value="">-- Select a student --</option>
+                                <option v-for="student in filteredStudents" :key="student.id" :value="student.id">
+                                    {{ student.name }} ({{ student.id }})
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="selectedStudent" class="student-details">
+
+                    <div class="student-header mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2>{{ selectedStudent.name }}</h2>
+                                <p class="text-muted mb-0">Student ID: {{ selectedStudent.id }}</p>
+                            </div>
+                            <div class="grade-badge" :class="getGradeBadgeClass(selectedStudent.projectedGrade)">
+                                <div class="grade-label">Projected Grade</div>
+                                <div class="grade-value">{{ selectedStudent.projectedGrade }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="metric-card-sm">
+                                <div class="metric-icon-sm">🎯</div>
+                                <div class="metric-value-sm">{{ selectedStudent.totalParticipations }}</div>
+                                <div class="metric-label-sm">Total Participations</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card-sm">
+                                <div class="metric-icon-sm">⭐</div>
+                                <div class="metric-value-sm">{{ selectedStudent.avgRating.toFixed(2) }}</div>
+                                <div class="metric-label-sm">Avg Rating</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card-sm">
+                                <div class="metric-icon-sm">📅</div>
+                                <div class="metric-value-sm">{{ selectedStudent.currentWeekCount }}</div>
+                                <div class="metric-label-sm">This Week</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card-sm">
+                                <div class="metric-icon-sm">📈</div>
+                                <div class="metric-value-sm">{{ selectedStudent.avgPerWeek.toFixed(1) }}</div>
+                                <div class="metric-label-sm">Avg Per Week</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning" role="alert">
+                        <strong>⚠️ Attention:</strong> This student is below the recommended 3 participations per week.
+                        Current average: {{ selectedStudent.avgPerWeek.toFixed(1) }} participations/week.
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <h4 class="mb-3">Quality Rating Comparison</h4>
+                                <canvas :id="'qualityChart-' + selectedStudent.id"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <h4 class="mb-3">Weekly Participation Count</h4>
+                                <canvas :id="'countChart-' + selectedStudent.id"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h4 class="mb-3">Recent Participation History</h4>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Week</th>
+                                    <th>Contribution</th>
+                                    <th>Rating</th>
+                                    <th>Rated By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(participation, index) in selectedStudent.recentParticipations" :key="index">
+                                    <td>{{ participation.date }}</td>
+                                    <td>Week {{ participation.week }}</td>
+                                    <td>{{ participation.contribution }}</td>
+                                    <td>
+                                        <span class="badge" :class="getRatingBadgeClass(participation.rating)">
+                                            {{ participation.rating }} ⭐
+                                        </span>
+                                    </td>
+                                    <td>{{ participation.ratedBy }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div v-else class="text-center py-5">
+                    <i class="text-muted" style="font-size: 3rem;">📋</i>
+                    <p class="text-muted mt-3">Select a student from the dropdown above to view their participation
+                        details.
+                    </p>
+                </div>
+            </div>
+        </div> -->
+    </main>
 </template>
 
 
