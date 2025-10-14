@@ -88,7 +88,6 @@
 
     }
 
-    console.log(cart);
     
 
     
