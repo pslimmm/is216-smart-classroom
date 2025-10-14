@@ -7,6 +7,8 @@ Peter
 - redesigned the login and registration page
 - reworked the role based page access using sessions + role
 - added a sidebar for better access to links and cleanliness of the UI overall
+- fixed role based routing to allow nested routes like /ta/submit
+- reworked alerts to allow for dynamic assignment of alert classes (success/danger)
 
 ### 10 October
 
