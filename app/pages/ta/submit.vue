@@ -32,7 +32,16 @@ const submitLog = () => {
   } else {
 
     loading.value = true;
+    const newLog = {
+        id: Date.now(),
+        studentName: studentName.value,
+        description: description.value,
+        rating: rating.value,
+        status: 'pending'
+      }
 
+      logsStore.logs.push(newLog)
+      localStorage.setItem('logs', JSON.stringify(logsStore.logs))
     setTimeout(() => {
       console.log('Participation recorded:', {
         student_id: studentName.value,
@@ -68,7 +77,7 @@ const submitLog = () => {
             <label for="student" class="form-label">Student Name:</label>
             <select id="student" v-model="studentName" class="form-select" required>
               <option value="" disabled>Select a student</option>
-              <option v-for="student in students" :key="student.user_id" :value="student.user_id">{{
+              <option v-for="student in students" :key="student.user_id" :value="student.profiles.name">{{
                 student.profiles.name }}</option>
             </select>
           </div>
