@@ -58,10 +58,10 @@ const submitLog = () => {
     <!-- <div class="card shadow-sm w-100" style="max-width: 600px;"> -->
     <div class="card shadow-sm w-100 h-100">
       <div class="card-header bg-gradient-primary">
-        <h4 class="card-title mb-0">Record Student Participation</h4>
+        <h4 class="card-title mb-0 display-2">Record Student Participation</h4>
       </div>
 
-      <div class="card-body">
+      <div class="card-body display-5">
         <form @submit.prevent="submitLog" class="vstack gap-3">
 
           <div>
@@ -94,8 +94,8 @@ const submitLog = () => {
           </div>
 
 
-          <button type="submit" class="btn btn-primary w-100">Submit</button>
-          <NuxtLink to="/ta" class="btn text-primary">Back</NuxtLink>
+          <button type="submit" class="btn btn-primary w-100 fs-3">Submit</button>
+          <NuxtLink to="/ta" class="btn text-primary fs-3">Back</NuxtLink>
 
         </form>
       </div>

@@ -223,7 +223,7 @@ const createStudentCharts = () => {
     if (countCtx) {
         const counts = selectedStudent.value.myWeeklyCount;
 
-        // Color-code bars: Green (≥3), Yellow (2), Red (<2)
+        // Color-code bars: Primary (≥3), Yellow (2), Red (<2)
         const colors = counts.map(count => {
             if (count >= 3) return 'rgba(13, 110, 253, 0.7)'; // Primary - meets requirement
             if (count >= 2) return 'rgba(255, 206, 86, 0.7)'; // Yellow - close
@@ -302,51 +302,59 @@ const getGradeBadgeClass = (grade) => {
 <template>
     <main class="container py-4 flex-grow-1">
         <div class="container py-5">
-            <h1 class="display-5 fw-bold mb-4 d-flex align-items-center gap-2">
+            <h1 class="display-1 fw-bold mb-4 d-flex align-items-center gap-2">
                 Class Participation Report
             </h1>
 
             <div class="row g-4 mb-5">
                 <!-- Total Students Card -->
                 <div class="col-md-3">
-                    <div class="card shadow-sm text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-people-fill text-primary fs-1 mb-3"></i>
-                            <h4 class="fw-bold">6</h4>
-                            <p class="text-muted mb-0">Total Students</p>
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
+                            <h6 class="fs-2 mb-0 text-muted">Total Students</h6>
+                            <i class="bi bi-people-fill text-primary fs-1"></i>
+                        </div>
+                        <div class="card-body pt-0">
+                            <h4 class="fs-3 fw-bold">6</h4>
                         </div>
                     </div>
                 </div>
 
                 <!-- Class Avg Rating Card -->
                 <div class="col-md-3">
-                    <div class="card shadow-sm text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-bar-chart-line-fill text-info fs-1 mb-3"></i>
-                            <h4 class="fw-bold">3.85</h4>
-                            <p class="text-muted mb-0">Class Average Rating</p>
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
+                            <h6 class="fs-2 mb-0 text-muted">Class Avg Rating</h6>
+                            <i class="bi bi-bar-chart-line-fill text-info fs-1"></i>
+                        </div>
+                        <div class="card-body pt-0">
+                            <h4 class="fs-3 fw-bold">3.85</h4>
                         </div>
                     </div>
                 </div>
 
                 <!-- Students on Track -->
                 <div class="col-md-3">
-                    <div class="card shadow-sm text-center h-100">
-                        <div class="card-body">
-                            <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
-                            <h4 class="fw-bold">4</h4>
-                            <p class="text-muted mb-0">Students On Track</p>
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
+                            <h6 class="fs-2 mb-0 text-muted">Students on Track</h6>
+                            <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                        </div>
+                        <div class="card-body pt-0">
+                            <h4 class="fs-3 fw-bold">4</h4>
                         </div>
                     </div>
                 </div>
 
                 <!-- Attention -->
                 <div class="col-md-3">
-                    <div class="card shadow-sm text-center h-100 border border-danger">
-                        <div class="card-body">
-                            <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-3"></i>
-                            <h4 class="fw-bold">2</h4>
-                            <p class="text-muted mb-0">Students Need Attention</p>
+                    <div class="card shadow-sm h-100 border border-danger">
+                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
+                            <h6 class="fs-2 mb-0 text-muted">Need Attention</h6>
+                            <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
+                        </div>
+                        <div class="card-body pt-0">
+                            <h4 class="fs-3 fw-bold">1</h4>
                         </div>
                     </div>
                 </div>
@@ -455,165 +463,6 @@ const getGradeBadgeClass = (grade) => {
                 <p>Select a student above to view participation analytics.</p>
             </div>
         </div>
-
-        <!-- OLD CODE -->
-        <!-- <div>
-            <div class="container" style="margin-top: 80px; padding-bottom: 40px;">
-                <h1 class="mb-4">👨‍🏫 Class Participation Dashboard</h1>
-                <div class="row mb-4">
-
-                    <div class="col-md-3">
-                        <div class="metric-card">
-                            <div class="metric-icon">👥</div>
-                            <div class="metric-value">{{ classStats.totalStudents }}</div>
-                            <div class="metric-label">Total Students</div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="metric-card">
-                            <div class="metric-icon">📊</div>
-                            <div class="metric-value">{{ classStats.classAvgRating.toFixed(2) }}</div>
-                            <div class="metric-label">Class Avg Rating</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="metric-card">
-                            <div class="metric-icon">✅</div>
-                            <div class="metric-value">{{ classStats.studentsOnTrack }}</div>
-                            <div class="metric-label">Students On Track</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="metric-card alert-danger-card">
-                            <div class="metric-icon">⚠️</div>
-                            <div class="metric-value">{{ classStats.studentsNeedHelp }}</div>
-                            <div class="metric-label">Need Attention</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="selection-container mb-4">
-                    <h3 class="mb-3">Select Student to View Details</h3>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <span class="input-group-text">🔍</span>
-                                <input type="text" class="form-control" placeholder="Search student by name or ID..."
-                                    v-model="searchQuery" @input="filterStudents" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-select" v-model="selectedStudentId" @change="loadStudentData">
-                                <option value="">-- Select a student --</option>
-                                <option v-for="student in filteredStudents" :key="student.id" :value="student.id">
-                                    {{ student.name }} ({{ student.id }})
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div v-if="selectedStudent" class="student-details">
-
-                    <div class="student-header mb-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h2>{{ selectedStudent.name }}</h2>
-                                <p class="text-muted mb-0">Student ID: {{ selectedStudent.id }}</p>
-                            </div>
-                            <div class="grade-badge" :class="getGradeBadgeClass(selectedStudent.projectedGrade)">
-                                <div class="grade-label">Projected Grade</div>
-                                <div class="grade-value">{{ selectedStudent.projectedGrade }}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="metric-card-sm">
-                                <div class="metric-icon-sm">🎯</div>
-                                <div class="metric-value-sm">{{ selectedStudent.totalParticipations }}</div>
-                                <div class="metric-label-sm">Total Participations</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="metric-card-sm">
-                                <div class="metric-icon-sm">⭐</div>
-                                <div class="metric-value-sm">{{ selectedStudent.avgRating.toFixed(2) }}</div>
-                                <div class="metric-label-sm">Avg Rating</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="metric-card-sm">
-                                <div class="metric-icon-sm">📅</div>
-                                <div class="metric-value-sm">{{ selectedStudent.currentWeekCount }}</div>
-                                <div class="metric-label-sm">This Week</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="metric-card-sm">
-                                <div class="metric-icon-sm">📈</div>
-                                <div class="metric-value-sm">{{ selectedStudent.avgPerWeek.toFixed(1) }}</div>
-                                <div class="metric-label-sm">Avg Per Week</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning" role="alert">
-                        <strong>⚠️ Attention:</strong> This student is below the recommended 3 participations per week.
-                        Current average: {{ selectedStudent.avgPerWeek.toFixed(1) }} participations/week.
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <div class="chart-container">
-                                <h4 class="mb-3">Quality Rating Comparison</h4>
-                                <canvas :id="'qualityChart-' + selectedStudent.id"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <div class="chart-container">
-                                <h4 class="mb-3">Weekly Participation Count</h4>
-                                <canvas :id="'countChart-' + selectedStudent.id"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-container">
-                        <h4 class="mb-3">Recent Participation History</h4>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Week</th>
-                                    <th>Contribution</th>
-                                    <th>Rating</th>
-                                    <th>Rated By</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(participation, index) in selectedStudent.recentParticipations" :key="index">
-                                    <td>{{ participation.date }}</td>
-                                    <td>Week {{ participation.week }}</td>
-                                    <td>{{ participation.contribution }}</td>
-                                    <td>
-                                        <span class="badge" :class="getRatingBadgeClass(participation.rating)">
-                                            {{ participation.rating }} ⭐
-                                        </span>
-                                    </td>
-                                    <td>{{ participation.ratedBy }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div v-else class="text-center py-5">
-                    <i class="text-muted" style="font-size: 3rem;">📋</i>
-                    <p class="text-muted mt-3">Select a student from the dropdown above to view their participation
-                        details.
-                    </p>
-                </div>
-            </div>
-        </div> -->
     </main>
 </template>
 
