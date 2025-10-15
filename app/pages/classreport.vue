@@ -354,7 +354,7 @@ const getGradeBadgeClass = (grade) => {
                             <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
                         </div>
                         <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">1</h4>
+                            <h4 class="fs-3 fw-bold">3</h4>
                         </div>
                     </div>
                 </div>
