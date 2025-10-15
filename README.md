@@ -11,7 +11,7 @@ This document tracks all development activities, updates, and decisions made for
 - **Styling:** [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
 - **Routing:** Built-in [Nuxt routing](https://nuxt.com/docs/4.x/getting-started/routing) based on vue-router
 - **Version Control:** Git + GitHub
-
+- **Deployment:** Vercel
 ---
 
 ## Quick Start
