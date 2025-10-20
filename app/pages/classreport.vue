@@ -1,9 +1,14 @@
 <script setup>
 import Chart from 'chart.js/auto';
 
-const searchQuery = ref('')
+definePageMeta({
+    middleware: 'role'
+});
+
+const searchQuery = ref('');
 const selectedStudentId = ref('');
 const currentWeek = ref(7);
+const showSuggestions = ref(false);
 
 const classStats = {
     totalStudents: 6,
@@ -14,31 +19,39 @@ const classStats = {
 
 const allStudents = [
     { id: "1", name: "Alice" },
-    { id: "2", name: "Bob" },
-    { id: "3", name: "Charlie" },
-    { id: "4", name: "Davis" },
-    { id: "5", name: "Peter" },
-    { id: "6", name: "Yichen" }
+    { id: "2", name: "Albert" },
+    { id: "3", name: "Alana" },
+    { id: "4", name: "Bob" },
+    { id: "5", name: "Charlie" },
+    { id: "6", name: "Davis" }
 ];
+
 const filteredStudents = ref([]);
+const searchSuggestions = computed(() => {
+    if (!searchQuery.value.trim()) return [];
+    const query = searchQuery.value.toLowerCase();
+    return allStudents.filter(student =>
+        student.name.toLowerCase().includes(query) ||
+        student.id.toLowerCase().includes(query)
+    );
+});
 
 const studentsData = {
     "1": {
         id: "1",
         name: "Alice",
-        weeks: [1, 2, 3, 4, 5, 6, 7], // Week numbers
-        myAvgRating: [3.5, 4.0, 3.2, 4.5, 4.8, 4.0, 4.2], // Weekly avg ratings
-        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0], // Class avg for comparison
-        myWeeklyCount: [4, 5, 2, 6, 3, 4, 2], // Participations per week
+        weeks: [1, 2, 3, 4, 5, 6, 7],
+        myAvgRating: [3.5, 4.0, 3.2, 4.5, 4.8, 4.0, 4.2],
+        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
+        myWeeklyCount: [4, 5, 2, 6, 3, 4, 2],
         recentParticipations: [
             { date: "2025-10-06", week: 7, contribution: "Explained recursion concept clearly", rating: 4.5, ratedBy: "TA Smith" },
-            { date: "2025-10-05", week: 7, contribution: "Asked insightful question", rating: 3.5, ratedBy: "TA Johnson" },
-            { date: "2025-10-01", week: 6, contribution: "Helped classmate debug code", rating: 4.0, ratedBy: "Prof. Lee" }
+            { date: "2025-10-05", week: 7, contribution: "Asked insightful question", rating: 3.5, ratedBy: "TA Johnson" }
         ]
     },
     "2": {
         id: "2",
-        name: "Bob",
+        name: "Albert",
         weeks: [1, 2, 3, 4, 5, 6, 7],
         myAvgRating: [4.5, 4.8, 4.6, 4.9, 5.0, 4.7, 4.8],
         classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
@@ -50,7 +63,7 @@ const studentsData = {
     },
     "3": {
         id: "3",
-        name: "Charlie",
+        name: "Alana",
         weeks: [1, 2, 3, 4, 5, 6, 7],
         myAvgRating: [2.5, 2.8, 2.0, 3.0, 2.5, 2.2, 2.8],
         classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
@@ -62,48 +75,52 @@ const studentsData = {
     },
     "4": {
         id: "4",
+        name: "Bob",
+        weeks: [1, 2, 3, 4, 5, 6, 7],
+        myAvgRating: [2.5, 2.8, 2.0, 3.0, 2.5, 2.2, 2.8],
+        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
+        myWeeklyCount: [1, 2, 1, 2, 1, 1, 2],
+        recentParticipations: [
+            { date: "2025-10-06", week: 7, contribution: "Basic question about syntax", rating: 2.5, ratedBy: "TA Smith" }
+        ]
+    },
+    "5": {
+        id: "5",
+        name: "Charlie",
+        weeks: [1, 2, 3, 4, 5, 6, 7],
+        myAvgRating: [4.5, 4.8, 4.6, 4.9, 5.0, 4.7, 4.8],
+        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
+        myWeeklyCount: [4, 3, 1, 2, 3, 4, 4],
+        recentParticipations: [
+            { date: "2025-10-06", week: 7, contribution: "Great contribution", rating: 4, ratedBy: "TA Smith" }
+        ]
+    },
+    "6": {
+        id: "6",
         name: "Davis",
         weeks: [1, 2, 3, 4, 5, 6, 7],
         myAvgRating: [2.5, 2.8, 2.0, 3.0, 2.5, 2.2, 2.8],
         classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
         myWeeklyCount: [1, 2, 1, 2, 1, 1, 2],
         recentParticipations: [
-            { date: "2025-10-06", week: 7, contribution: "Basic question about syntax", rating: 2.5, ratedBy: "TA Smith" },
-            { date: "2025-10-04", week: 7, contribution: "Participated in discussion", rating: 3.0, ratedBy: "TA Johnson" }
-        ]
-    },
-    "5": {
-        id: "5",
-        name: "Peter",
-        weeks: [1, 2, 3, 4, 5, 6, 7],
-        myAvgRating: [4.5, 4.8, 4.6, 4.9, 5.0, 4.7, 4.8],
-        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
-        myWeeklyCount: [4, 3, 1, 2, 3, 4, 4],
-        recentParticipations: [
-            { date: "2025-10-06", week: 7, contribution: "Basic question about syntax", rating: 4, ratedBy: "TA Smith" },
-            { date: "2025-10-04", week: 7, contribution: "Participated in discussion", rating: 4.5, ratedBy: "TA Johnson" }
-        ]
-    },
-    "6": {
-        id: "6",
-        name: "Yichen",
-        weeks: [1, 2, 3, 4, 5, 6, 7],
-        myAvgRating: [2.5, 2.8, 2.0, 3.0, 2.5, 2.2, 2.8],
-        classAvgRating: [3.2, 3.8, 3.5, 4.1, 4.0, 3.9, 4.0],
-        myWeeklyCount: [1, 2, 1, 2, 1, 1, 2],
-        recentParticipations: [
-            { date: "2025-10-06", week: 7, contribution: "Basic question about syntax", rating: 2.5, ratedBy: "TA Smith" },
-            { date: "2025-10-04", week: 7, contribution: "Participated in discussion", rating: 3.0, ratedBy: "TA Johnson" }
+            { date: "2025-10-06", week: 7, contribution: "Basic question", rating: 2.5, ratedBy: "TA Smith" }
         ]
     }
 };
 
-const selectedStudent = ref(null)
-const charts = ref({})
+const selectedStudent = ref(null);
+const charts = ref({});
 
 onMounted(() => {
     filteredStudents.value = [...allStudents];
 });
+
+const selectSuggestion = (student) => {
+    searchQuery.value = student.name;
+    selectedStudentId.value = student.id;
+    showSuggestions.value = false;
+    loadStudentData();
+};
 
 const filterStudents = () => {
     const query = searchQuery.value.toLowerCase();
@@ -111,8 +128,8 @@ const filterStudents = () => {
         student.name.toLowerCase().includes(query) ||
         student.id.toLowerCase().includes(query)
     );
+    showSuggestions.value = query.length > 0;
 };
-
 
 const loadStudentData = () => {
     if (!selectedStudentId.value) {
@@ -120,7 +137,6 @@ const loadStudentData = () => {
         return;
     }
 
-    // Fetch student data (from hardcoded data, will be API call)
     const data = studentsData[selectedStudentId.value];
     if (!data) return;
 
@@ -135,7 +151,6 @@ const loadStudentData = () => {
     else if (avgPerWeek >= 2.5) projectedGrade = "B+";
     else if (avgPerWeek >= 2) projectedGrade = "B";
 
-    // Store computed student data
     selectedStudent.value = {
         ...data,
         totalParticipations,
@@ -145,7 +160,6 @@ const loadStudentData = () => {
         projectedGrade
     };
 
-    // Wait for DOM to update, then create charts
     nextTick(() => {
         createStudentCharts();
     });
@@ -157,36 +171,36 @@ const createStudentCharts = () => {
     const qualityChartId = 'qualityChart-' + selectedStudent.value.id;
     const countChartId = 'countChart-' + selectedStudent.value.id;
 
-    if (charts[qualityChartId]) {
-        charts[qualityChartId].destroy();
+    if (charts.value[qualityChartId]) {
+        charts.value[qualityChartId].destroy();
     }
-    if (charts[countChartId]) {
-        charts[countChartId].destroy();
+    if (charts.value[countChartId]) {
+        charts.value[countChartId].destroy();
     }
 
     const qualityCtx = document.getElementById(qualityChartId);
     if (qualityCtx) {
-        charts[qualityChartId] = new Chart(qualityCtx, {
-            type: 'line', // Line chart for trend visualization
+        charts.value[qualityChartId] = new Chart(qualityCtx, {
+            type: 'line',
             data: {
-                labels: selectedStudent.value.weeks, // X-axis: Week numbers
+                labels: selectedStudent.value.weeks,
                 datasets: [
                     {
                         label: selectedStudent.value.name + ' Rating',
                         data: selectedStudent.value.myAvgRating,
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
-                        borderColor: 'rgba(13, 110, 253, 1)', // Blue line
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(13, 110, 253, 1)',
                         borderWidth: 2,
                         fill: true,
-                        tension: 0.4 // Smooth curve
+                        tension: 0.4
                     },
                     {
                         label: 'Class Average',
                         data: selectedStudent.value.classAvgRating,
-                        backgroundColor: 'rgba(255, 159, 64, 0.2)', // Light orange fill
-                        borderColor: 'rgba(255, 193, 7, 1)', // Orange line
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 193, 7, 1)',
                         borderWidth: 2,
-                        borderDash: [5, 5], // Dashed line for class average
+                        borderDash: [5, 5],
                         fill: true,
                         tension: 0.4
                     }
@@ -198,18 +212,12 @@ const createStudentCharts = () => {
                 scales: {
                     y: {
                         min: 0,
-                        max: 5, // Rating scale 1-5
+                        max: 5,
                         ticks: { stepSize: 0.5 },
-                        title: {
-                            display: true,
-                            text: 'Rating'
-                        }
+                        title: { display: true, text: 'Rating' }
                     },
                     x: {
-                        title: {
-                            display: true,
-                            text: 'Weeks'
-                        }
+                        title: { display: true, text: 'Weeks' }
                     }
                 },
                 plugins: {
@@ -222,23 +230,21 @@ const createStudentCharts = () => {
     const countCtx = document.getElementById(countChartId);
     if (countCtx) {
         const counts = selectedStudent.value.myWeeklyCount;
-
-        // Color-code bars: Primary (≥3), Yellow (2), Red (<2)
         const colors = counts.map(count => {
-            if (count >= 3) return 'rgba(13, 110, 253, 0.7)'; // Primary - meets requirement
-            if (count >= 2) return 'rgba(255, 206, 86, 0.7)'; // Yellow - close
-            return 'rgba(255, 99, 132, 0.7)'; // Red - needs attention
+            if (count >= 3) return 'rgba(13, 110, 253, 0.7)';
+            if (count >= 2) return 'rgba(255, 206, 86, 0.7)';
+            return 'rgba(255, 99, 132, 0.7)';
         });
 
-        charts[countChartId] = new Chart(countCtx, {
-            type: 'bar', // Bar chart for discrete counts
+        charts.value[countChartId] = new Chart(countCtx, {
+            type: 'bar',
             data: {
-                labels: selectedStudent.value.weeks, // X-axis: Week numbers
+                labels: selectedStudent.value.weeks,
                 datasets: [{
                     label: 'Participations',
                     data: counts,
-                    backgroundColor: colors, // Dynamic colors per bar
-                    borderColor: colors.map(c => c.replace('0.7', '1')), // Solid border
+                    backgroundColor: colors,
+                    borderColor: colors.map(c => c.replace('0.7', '1')),
                     borderWidth: 2
                 }]
             },
@@ -248,66 +254,51 @@ const createStudentCharts = () => {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { stepSize: 1 }, // Integer steps
-                        title: {
-                            display: true,
-                            text: 'No. of Participations'
-                        }
+                        ticks: { stepSize: 1 },
+                        title: { display: true, text: 'No. of Participations' }
                     },
                     x: {
-                        title: {
-                            display: true,
-                            text: 'Weeks'
-                        }
+                        title: { display: true, text: 'Week Number' }
                     }
-                },
-                plugins: {
-                    legend: { display: false }
                 }
             }
         });
     }
 };
 
-const getRatingBadgeClass = (rating) => {
-    if (rating >= 4.5) return 'bg-success';
-    if (rating >= 4.0) return 'bg-primary';
-    if (rating >= 3.5) return 'bg-info';
-    if (rating >= 3.0) return 'bg-warning';
+const getGradeBadgeClass = (grade) => {
+    if (grade.startsWith('A')) return 'bg-success';
+    if (grade.startsWith('B')) return 'bg-warning';
     return 'bg-danger';
 };
 
-const getGradeBadgeClass = (grade) => {
-    if (grade.startsWith('A')) return 'grade-excellent';
-    if (grade.startsWith('B')) return 'grade-good';
-    return 'grade-needs-improvement';
-}
+const getRatingBadgeClass = (rating) => {
+    if (rating >= 4) return 'bg-success';
+    if (rating >= 3) return 'bg-warning';
+    return 'bg-danger';
+};
 
-// Tried doing a loop but failed... will try again next time
-// const metrics = [
-//   { icon: 'bi-people-fill', value: classStats.totalStudents, label: 'Total Students' },
-//   { icon: 'bi-bar-chart-line-fill', value: classStats.classAvgRating.toFixed(2), label: 'Class Avg Rating' },
-//   { icon: 'bi-check-circle-fill', value: classStats.studentsOnTrack, label: 'Students On Track' },
-//   { icon: 'bi-exclamation-triangle-fill', value: classStats.studentsNeedHelp, label: 'Need Attention', variant: 'border border-danger' },
-// ];
+const studentStats = computed(() => {
+    if (!selectedStudent.value) return [];
+    return [
+        { label: 'Total Participations', value: selectedStudent.value.totalParticipations, icon: 'bi-card-list' },
+        { label: 'Avg Rating', value: selectedStudent.value.avgRating.toFixed(2), icon: 'bi-star-fill' },
+        { label: 'Avg Per Week', value: selectedStudent.value.avgPerWeek.toFixed(1), icon: 'bi-calendar-week' },
+        { label: 'This Week', value: selectedStudent.value.currentWeekCount, icon: 'bi-calendar-check' }
+    ];
+});
 
-// const studentStats = [
-//   { icon: 'bi-bullseye', value: selectedStudent.totalParticipations, label: 'Total Participations' },
-//   { icon: 'bi-star-fill', value: selectedStudent.avgRating.toFixed(2), label: 'Avg Rating' },
-//   { icon: 'bi-calendar-event', value: selectedStudent.currentWeekCount, label: 'This Week' },
-//   { icon: 'bi-graph-up-arrow', value: selectedStudent.avgPerWeek.toFixed(1), label: 'Avg Per Week' },
-// ];
+onBeforeUnmount(() => {
+    Object.values(charts.value).forEach(chart => chart?.destroy());
+});
 </script>
 
 <template>
-    <main class="container py-4 flex-grow-1">
-        <div class="container py-5">
-            <h1 class="display-1 fw-bold mb-4 d-flex align-items-center gap-2">
-                Class Participation Report
-            </h1>
+    <main class="container py-4 my-4">
+        <div class="container-fluid">
+            <h1 class="mb-4 display-1 fw-bold">Class Participation Report</h1>
 
-            <div class="row g-4 mb-5">
-                <!-- Total Students Card -->
+            <div class="row g-3 mb-5">
                 <div class="col-md-3">
                     <div class="card shadow-sm h-100">
                         <div class="card-body d-flex justify-content-between align-items-center pb-2">
@@ -315,12 +306,11 @@ const getGradeBadgeClass = (grade) => {
                             <i class="bi bi-people-fill text-primary fs-1"></i>
                         </div>
                         <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">6</h4>
+                            <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
                         </div>
                     </div>
                 </div>
 
-                <!-- Class Avg Rating Card -->
                 <div class="col-md-3">
                     <div class="card shadow-sm h-100">
                         <div class="card-body d-flex justify-content-between align-items-center pb-2">
@@ -328,12 +318,11 @@ const getGradeBadgeClass = (grade) => {
                             <i class="bi bi-bar-chart-line-fill text-info fs-1"></i>
                         </div>
                         <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">3.85</h4>
+                            <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
                         </div>
                     </div>
                 </div>
 
-                <!-- Students on Track -->
                 <div class="col-md-3">
                     <div class="card shadow-sm h-100">
                         <div class="card-body d-flex justify-content-between align-items-center pb-2">
@@ -341,12 +330,11 @@ const getGradeBadgeClass = (grade) => {
                             <i class="bi bi-check-circle-fill text-success fs-1"></i>
                         </div>
                         <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">4</h4>
+                            <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
                         </div>
                     </div>
                 </div>
 
-                <!-- Attention -->
                 <div class="col-md-3">
                     <div class="card shadow-sm h-100 border border-danger">
                         <div class="card-body d-flex justify-content-between align-items-center pb-2">
@@ -354,21 +342,44 @@ const getGradeBadgeClass = (grade) => {
                             <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
                         </div>
                         <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">3</h4>
+                            <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Select Student to View Details -->
             <div class="bg-white p-4 rounded-4 shadow-sm mb-5">
                 <h3 class="mb-4">Select Student to View Details</h3>
                 <div class="row g-3 align-items-center">
                     <div class="col-md-8">
-                        <div class="input-group">
+                        <div class="input-group position-relative">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input v-model="searchQuery" @input="filterStudents" type="text" class="form-control"
-                                placeholder="Filter by name or ID" />
+                            <input 
+                                v-model="searchQuery" 
+                                @input="filterStudents" 
+                                @focus="showSuggestions = searchQuery.length > 0"
+                                @blur="setTimeout(() => showSuggestions = false, 200)"
+                                type="text" 
+                                class="form-control"
+                                placeholder="Search by name (e.g., 'Al' for Alice, Albert, Alana)" 
+                            />
+                            <div 
+                                v-if="showSuggestions && searchSuggestions.length > 0" 
+                                class="suggestions-dropdown position-absolute w-100 bg-white border rounded shadow-sm"
+                                style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto;"
+                            >
+                                <div 
+                                    v-for="student in searchSuggestions" 
+                                    :key="student.id"
+                                    @click="selectSuggestion(student)"
+                                    class="suggestion-item p-2 border-bottom"
+                                    style="cursor: pointer;"
+                                    @mouseenter="$event.target.style.backgroundColor = '#f8f9fa'"
+                                    @mouseleave="$event.target.style.backgroundColor = 'white'"
+                                >
+                                    <strong>{{ student.name }}</strong> <span class="text-muted">(ID: {{ student.id }})</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -382,7 +393,6 @@ const getGradeBadgeClass = (grade) => {
                 </div>
             </div>
 
-            <!-- Section: Student Detail View -->
             <div v-if="selectedStudent" class="bg-white p-4 rounded-4 shadow-sm mb-5">
                 <div class="d-flex justify-content-around align-items-center mb-4 border-bottom pb-3">
                     <div>
@@ -409,8 +419,7 @@ const getGradeBadgeClass = (grade) => {
 
                 <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    This student is below 3 participations/week: <strong>{{ selectedStudent.avgPerWeek.toFixed(1)
-                    }}</strong>
+                    This student is below 3 participations/week: <strong>{{ selectedStudent.avgPerWeek.toFixed(1) }}</strong>
                 </div>
 
                 <div class="row">
@@ -457,7 +466,6 @@ const getGradeBadgeClass = (grade) => {
                 </div>
             </div>
 
-            <!-- Empty State -->
             <div v-else class="text-center py-5 text-muted">
                 <i class="bi bi-clipboard fs-1 mb-3"></i>
                 <p>Select a student above to view participation analytics.</p>
@@ -466,193 +474,8 @@ const getGradeBadgeClass = (grade) => {
     </main>
 </template>
 
-
-
 <style scoped>
-/* ============================================ */
-/* CLASS OVERVIEW METRIC CARDS */
-/* Top row cards showing class statistics */
-/* ============================================ */
-.metric-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.metric-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Special styling for "Need Attention" card */
-.alert-danger-card {
-    border: 2px solid #dc3545;
-}
-
-.metric-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.metric-value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.metric-label {
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 5px;
-}
-
-/* ============================================ */
-/* STUDENT SELECTION SECTION */
-/* Search and dropdown container */
-/* ============================================ */
-.selection-container {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.selection-container h3 {
-    color: #333;
-    border-bottom: 3px solid #007bff;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
-
-/* ============================================ */
-/* SELECTED STUDENT DETAILS SECTION */
-/* Container for all student-specific information */
-/* ============================================ */
-.student-details {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.student-header {
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 20px;
-}
-
-.student-header h2 {
-    margin: 0;
-    color: #333;
-}
-
-/* ============================================ */
-/* GRADE BADGE STYLING */
-/* Color-coded badge for projected grade */
-/* ============================================ */
-.grade-badge {
-    padding: 15px 30px;
-    border-radius: 12px;
-    text-align: center;
-    min-width: 150px;
-}
-
-/* Green gradient for A grades */
-.grade-excellent {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-}
-
-/* Yellow gradient for B grades */
-.grade-good {
-    background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
-    color: #333;
-}
-
-/* Red gradient for C and below */
-.grade-needs-improvement {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    color: white;
-}
-
-.grade-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 5px;
-}
-
-.grade-value {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-/* ============================================ */
-/* STUDENT METRIC CARDS (Smaller version) */
-/* Four metrics below student header */
-/* ============================================ */
-.metric-card-sm {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    border: 2px solid #e9ecef;
-}
-
-.metric-icon-sm {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
-}
-
-.metric-value-sm {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.metric-label-sm {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 5px;
-}
-
-/* ============================================ */
-/* CHART CONTAINERS */
-/* Styling for Chart.js canvas containers */
-/* ============================================ */
-.chart-container {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #e9ecef;
-}
-
-.chart-container h4 {
-    color: #333;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-/* ============================================ */
-/* TABLE STYLING */
-/* Participation history table */
-/* ============================================ */
-.table {
-    margin-top: 15px;
-    background: white;
-}
-
-.table th {
-    background-color: #e9ecef;
-    font-weight: 600;
-    color: #495057;
-}
-
-.table-hover tbody tr:hover {
-    background-color: #f1f3f5;
+.suggestion-item {
+    transition: background-color 0.2s;
 }
 </style>
