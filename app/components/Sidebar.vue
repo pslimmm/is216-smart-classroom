@@ -7,16 +7,14 @@
 
         <!-- Sidebar -->
         <div class="sidebar" :class="isOpen ? 'sidebar-expanded' : ''">
+
+            <NuxtLink to="/" class="app-logo">
+                <!-- insert logo here -->
+                <h2>ClassParti</h2>
+            </NuxtLink>
             <nav>
                 <div class="nav-menu">
                     <!-- Main Navigation -->
-                    <button class="btn nav-item">
-                        <NuxtLink to="/" class="nav-link w-100 text-start">
-                            <i class="bi bi-house"></i>
-                            <span>Home</span>
-                        </NuxtLink>
-                    </button>
-
                     <button v-if="role" class="btn nav-item">
                         <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
                             <i class="bi bi-bar-chart-line"></i>
@@ -111,7 +109,7 @@ const closeSidebar = () => {
 .sidebar-wrapper button {
     width: 3rem;
     height: 3rem;
-    
+
 }
 
 .sidebar-expanded {
@@ -131,19 +129,6 @@ const closeSidebar = () => {
     transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-toggle-arrow {
-    width: 1rem;
-    height: 1rem;
-    border-right: 0.2rem solid black;
-    border-top: 0.2rem solid black;
-    transform: translateX(35%) rotate(45deg);
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sidebar-toggle-arrow-active {
-    transform: rotate(-135deg);
-}
-
 .nav-menu {
     display: flex;
     flex-direction: column;
@@ -151,8 +136,31 @@ const closeSidebar = () => {
     width: 100%;
 }
 
-.nav-menu:first-of-type {
-    margin-top: 4rem;
+.sidebar-expanded .app-logo {
+    opacity: 1;
+    visibility: visible;
+    width: 90%;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-logo {
+    width: 0;
+    visibility: none;
+    opacity: 0;
+    /* transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); */
+    margin-top: 1rem;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.app-logo h2 {
+    font-weight: bold;
+    margin: 0;
 }
 
 .sidebar-expanded nav {
@@ -209,6 +217,19 @@ const closeSidebar = () => {
     border: none;
     padding: 0.5rem;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-toggle-arrow {
+    width: 1rem;
+    height: 1rem;
+    border-right: 0.2rem solid black;
+    border-top: 0.2rem solid black;
+    transform: translateX(35%) rotate(45deg);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-toggle-arrow-active {
+    transform: rotate(-135deg);
 }
 
 .btn-expanded {

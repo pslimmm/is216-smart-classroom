@@ -1,6 +1,7 @@
 <!-- no longer used, will remove once everything is fixed -->
 <script setup>
-const { role, setRole, clearRole } = useRole();
+// const { role, setRole, clearRole } = useRole();
+const role = useAuthState();
 
 // Compute default path based on role
 const defaultPath = computed(() => {
@@ -12,10 +13,11 @@ const defaultPath = computed(() => {
     return '/'
 });
 
-// Logout function
-const logout = () => {
-    clearRole();
-}
+// // Logout function
+// const logout = () => {
+//     clearRole();
+// }
+
 
 </script>
 
@@ -28,11 +30,16 @@ p.nav-link {
 .navbar {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     height: 5rem;
+    background-color: white !important;
+    
+}
+.navbar a{
+    color: black !important;
 }
 </style>
 
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
         <div class="container-fluid">
             <NuxtLink :to="defaultPath" class="navbar-brand fw-bold">
                 Smart Classroom
@@ -44,7 +51,7 @@ p.nav-link {
             </button>
 
             <div class="collapse navbar-collapse" id="navbarComponent">
-                <ul class="navbar-nav">
+                <!-- <ul class="navbar-nav">
                     <li class="nav-item">
                         <NuxtLink to="/" class="nav-link">Home</NuxtLink>
                     </li>
@@ -77,7 +84,7 @@ p.nav-link {
                     <li class="nav-item" v-if="role">
                         <p @click="logout" class="nav-link">Log Out </p>
                     </li>
-                </ul>
+                </ul> -->
             </div>
         </div>
     </nav>
