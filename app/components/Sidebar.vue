@@ -1,19 +1,22 @@
 <template>
     <div class="sidebar-wrapper">
-        <!-- Toggle button -->
-        <button @click="toggleSidebar" class="toggle-btn" :class="isOpen ? 'btn-expanded' : ''">
-            <div class="sidebar-toggle-arrow" :class="isOpen ? 'sidebar-toggle-arrow-active' : ''"></div>
-        </button>
+
 
         <!-- Sidebar -->
-        <div class="sidebar" :class="isOpen ? 'sidebar-expanded' : ''">
+        <div class="sidebar" :class="isOpen ? 'sidebar-expanded transition-delay' : ''">
 
-            <NuxtLink to="/" class="app-logo">
-                <!-- insert logo here -->
-                <h2>ClassParti</h2>
-            </NuxtLink>
+            <div class="app-logo">
+
+            </div>
             <nav>
                 <div class="nav-menu">
+                    <!-- Toggle button -->
+                    <div class="nav-item toggle-btn-container">
+                        <button @click="toggleSidebar" class="toggle-btn">
+                            <div class="sidebar-toggle-arrow" :class="isOpen ? 'sidebar-toggle-arrow-active' : ''">
+                            </div>
+                        </button>
+                    </div>
                     <!-- Main Navigation -->
                     <button v-if="role" class="btn nav-item">
                         <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
@@ -67,8 +70,6 @@
             </nav>
         </div>
 
-        <!-- Overlay -->
-        <div v-if="isOpen" class="overlay" @click="closeSidebar"></div>
     </div>
 </template>
 
@@ -80,55 +81,44 @@ const toggleSidebar = () => {
     isOpen.value = !isOpen.value
 }
 
-const closeSidebar = () => {
-    isOpen.value = false
-}
-
 </script>
 
 <style scoped>
+/* sidebar styles */
 .sidebar {
     position: fixed;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     top: 0;
     left: 0;
-    height: 100vh;
+    height: calc(100vh - 5rem);
     width: 5rem;
+    margin-top: 5rem;
     background-color: white;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 1px solid lightgray;
+    box-shadow: 2px 0 3px rgba(0, 0, 0, 0.1);
+    transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 999;
-}
-
-.sidebar-wrapper {
-    position: relative;
 }
 
 .sidebar-wrapper button {
     width: 3rem;
     height: 3rem;
-
+    margin-left: 1rem;
 }
 
 .sidebar-expanded {
-    width: 250px;
+    width: 200px;
+    align-items: center;
 }
 
-.nav-item span {
-    visibility: hidden;
-    opacity: 0;
-    margin-left: 1rem;
-    color: #333;
+.sidebar-expanded button, 
+.sidebar-expanded .toggle-btn-container{
+    margin-left: 0;
 }
 
-.sidebar-expanded .nav-item span {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+/* nav links styles */
 .nav-menu {
     display: flex;
     flex-direction: column;
@@ -136,31 +126,21 @@ const closeSidebar = () => {
     width: 100%;
 }
 
-.sidebar-expanded .app-logo {
-    opacity: 1;
-    visibility: visible;
-    width: 90%;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+.nav-item, .toggle-btn{
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
 }
-
-.app-logo {
-    width: 0;
-    visibility: none;
+.nav-item span {
+    /* visibility: hidden; */
     opacity: 0;
-    /* transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); */
-    margin-top: 1rem;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: left;
+    margin-left: 1rem;
+    color: #333;
 }
 
-.app-logo h2 {
-    font-weight: bold;
-    margin: 0;
+.sidebar-expanded .nav-item span {
+    /* visibility: visible; */
+    opacity: 1;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-expanded nav {
@@ -176,7 +156,6 @@ const closeSidebar = () => {
     align-items: center;
     width: 100%;
     padding: 0.5rem;
-    border-radius: 0.25rem;
     transition: background-color 0.2s ease;
     white-space: nowrap;
 }
@@ -208,42 +187,42 @@ const closeSidebar = () => {
     font-size: 1.5rem;
 }
 
+.nav-item:first-child{
+    margin-top: 1rem;
+}
+
+.toggle-btn-container{
+    width: 3rem !important;
+    height: 3rem;
+    margin-left: 1rem;
+}
+
+
 .toggle-btn {
-    position: fixed;
-    left: 1rem;
-    top: 1rem;
+    margin: 0 !important;
+    position: relative;
     z-index: 1000;
     background: none;
     border: none;
     padding: 0.5rem;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-toggle-arrow {
+    position: absolute;
+    left: 0.65rem;
+    top: 1rem;
     width: 1rem;
     height: 1rem;
     border-right: 0.2rem solid black;
     border-top: 0.2rem solid black;
     transform: translateX(35%) rotate(45deg);
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-toggle-arrow-active {
     transform: rotate(-135deg);
 }
 
-.btn-expanded {
-    transform: translateX(200px);
-}
 
-/* overlay the content (makes the background darker) */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 998;
-}
 </style>

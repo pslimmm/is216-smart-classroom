@@ -1,10 +1,8 @@
 <template>
     <div class="mw-100" style="min-height: 100vh;" v-if="!['/forbidden', '/', '/auth'].includes(route.path)">
-        <Sidebar>
-        </Sidebar>
-
+        <Navbar />
+        <Sidebar />
         <main class="main-content">
-            <Navbar />
             <NuxtPage />
         </main>
     </div>
@@ -21,5 +19,8 @@ const route = useRoute();
 /* space for the sidebar */
 .main-content {
     padding-left: 5rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: 5rem;
 }
 </style>
