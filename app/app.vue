@@ -4,6 +4,7 @@
         </Sidebar>
 
         <main class="main-content">
+            <Navbar />
             <NuxtPage />
         </main>
     </div>
@@ -17,9 +18,8 @@ const route = useRoute();
 <style></style>
 
 <style scoped>
+/* space for the sidebar */
 .main-content {
-    /* padding: 1rem; */
-    padding-left: 4rem;
-    /* Space for the toggle button */
+    padding-left: 5rem;
 }
 </style>
