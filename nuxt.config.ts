@@ -23,5 +23,17 @@ export default defineNuxtConfig({
             }
             setMiddleware(pages)
         },
+    },
+    nitro: {
+        routeRules: {
+            '/api/**': {
+                cors: true,
+                headers: {
+                    'Access-Control-Allow-Origin': 'https://localhost:3000',
+                    'Access-Control-Allow-Methods': 'GET,POST',
+                    'Access-Control-Allow-Headers': 'Content-Type,Authorization'
+                }
+            }
+        }
     }
 })

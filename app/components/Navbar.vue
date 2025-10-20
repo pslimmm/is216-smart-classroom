@@ -3,16 +3,6 @@
 // const { role, setRole, clearRole } = useRole();
 const role = useAuthState();
 
-// Compute default path based on role
-const defaultPath = computed(() => {
-    if (!role.value) return '/';
-    if (role.value == 'prof') return '/prof';
-    if (role.value == 'student') return '/student';
-    if (role.value == 'ta') return '/ta';
-
-    return '/'
-});
-
 // // Logout function
 // const logout = () => {
 //     clearRole();
@@ -31,19 +21,39 @@ p.nav-link {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     height: 5rem;
     background-color: white !important;
-    
+    z-index: 998;   
 }
 .navbar a{
     color: black !important;
 }
+
+.app-logo {
+    display: flex;
+    align-items: center;
+}
+
+.app-logo{
+    width: fit-content;
+    /* transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); */
+    
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+.app-logo h2 {
+    font-weight: bold;
+    margin: 0;
+}
+
 </style>
 
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <NuxtLink :to="defaultPath" class="navbar-brand fw-bold">
-                Smart Classroom
-            </NuxtLink>
+                <NuxtLink to="/" class="app-logo">
+                    <!-- insert logo here -->
+                    <h2>ClassParti</h2>
+                </NuxtLink>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarComponent"
                 aria-controls="navbarComponent" aria-expanded="false" aria-label="Toggle navigation">
