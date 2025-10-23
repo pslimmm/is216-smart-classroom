@@ -1,6 +1,12 @@
 ## Developer Log
 * Follow the format strictly for easy navigation of progress
 
+### 23 October
+Javier
+- added search bar to TA submit, prof Review, Approve & Reject pages
+- added a course page
+- changed flow such that landing page -> login -> courses -> individualDashboard
+
 ### 14 October
 Peter
 - added authentication using supabase auth
