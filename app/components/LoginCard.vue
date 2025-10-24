@@ -45,7 +45,7 @@ const handleSubmit = async () => {
     if (!response.ok) {
         showErrorBox(response.error);
     } else {
-        setAuthState(response.session, response.role);
+        setAuthState(response.session, response.role, response.user_id);
         navigateTo('/' + response.role);
     }
 

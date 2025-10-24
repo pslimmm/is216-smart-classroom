@@ -18,15 +18,16 @@ export default defineEventHandler(async (event) => {
     } else {
         // get role of the logged in user
         const role = await supabaseClient
-        .from('profile')
-        .select('role')
-        .eq('user_id', data.user.id)
-        .single();
+            .from('profile')
+            .select('role')
+            .eq('user_id', data.user.id)
+            .single();
 
         return {
             ok: true,
             session: data.session,
-            role: role.data.role
+            role: role.data.role,
+            user_id: data.user.id
         }
     }
 });
