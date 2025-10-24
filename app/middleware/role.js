@@ -5,8 +5,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const commonRoutes = ['/forbidden', '/'];
     const noRoleRoutes = ['/auth', ...commonRoutes];
     const loggedInRoutes = ['/profile', '/dashboard', '/courses', ...commonRoutes];
-    const studentRoutes = ['/student', '/marketplace', ...loggedInRoutes];
-    const taRoutes = ['/ta', '/classreport', loggedInRoutes];
+    const studentRoutes = ['/student', '/marketplace', '/notes', ...loggedInRoutes];
+    const taRoutes = ['/ta', '/classreport', ...loggedInRoutes];
     const profRoutes = ['/prof', '/marketplace', '/classreport', ...loggedInRoutes];
 
     const allowedRoutes = {
