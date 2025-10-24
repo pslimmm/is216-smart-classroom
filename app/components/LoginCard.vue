@@ -46,7 +46,7 @@ const handleSubmit = async () => {
         showErrorBox(response.error);
     } else {
         setAuthState(response.session, response.role);
-        navigateTo('/' + response.role);
+        navigateTo('/courses');
     }
 
 }
