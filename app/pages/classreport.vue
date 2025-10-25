@@ -361,7 +361,7 @@ onBeforeUnmount(() => {
                                 @blur="setTimeout(() => showSuggestions = false, 200)"
                                 type="text" 
                                 class="form-control"
-                                placeholder="Search by name (e.g., 'Al' for Alice, Albert, Alana)" 
+                                placeholder="Search by student name..." 
                             />
                             <div 
                                 v-if="showSuggestions && searchSuggestions.length > 0" 
