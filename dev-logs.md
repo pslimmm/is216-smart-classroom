@@ -1,6 +1,30 @@
 ## Developer Log
 * Follow the format strictly for easy navigation of progress
 
+### 25 October
+
+Yichen
+- updated Pages:
+    notes.vue → record lectures and view transcripts
+    classreport.vue → view student class participation reports
+- created Components:
+    NoteCard.vue → display individual transcript cards per week
+    TranscriptSlidePanel.vue → full-screen transcript viewer with AI summary
+    DeleteConfirmModal.vue → confirmation modal for deleting transcripts
+- created Server API endpoints:
+    server/api/upload-recording.post.js → handle audio upload to Supabase Storage
+    server/api/process-recording.post.js → transcribe audio and generate AI summaries
+    server/api/rename-recording.post.js → update recording titles in database
+    server/api/test-db-failure.post.js → test database insert failure scenario
+    server/api/test-storage-failure.post.js → test storage upload failure scenario
+    server/api/test-abandoned-upload.post.js → test abandoned upload cleanup trigger
+    server/api/test-long-transcript.post.js → test long transcript processing
+    server/api/test-failed-transcript.post.js → test failed transcript display
+- updated nuxt.config.ts with runtimeConfig for API keys (Groq API, Supabase Service Role)
+- updated roles.js to authorise access to /notes within production stage
+- documented sql queries used for failure testing under supabase-migrations folder
+
+
 ### 23 October
 Javier
 - added search bar to TA submit, prof Review, Approve & Reject pages

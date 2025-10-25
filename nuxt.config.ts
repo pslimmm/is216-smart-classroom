@@ -5,6 +5,20 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     ssr: false,
     css: ['~/assets/css/main.css'],
+
+    //241025 added section start
+    runtimeConfig: {
+
+        groqApiKey: process.env.GROQ_API_KEY,
+        supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+
+        public: {
+            supabaseUrl: process.env.SUPABASE_URL,
+            supabaseKey: process.env.SUPABASE_KEY
+        }
+    },
+    //241025 added section end
+
     app: {
         head: {
             link: [{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css' }],
