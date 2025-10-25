@@ -25,6 +25,11 @@ Yichen
 - documented sql queries used for failure testing under supabase-migrations folder
 
 
+### 23 October
+Javier
+- added search bar to TA submit, prof Review, Approve & Reject pages
+- added a course page
+- changed flow such that landing page -> login -> courses -> individualDashboard
 
 ### 14 October
 Peter
