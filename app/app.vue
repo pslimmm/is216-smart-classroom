@@ -3,7 +3,6 @@
         <Navbar />
         <Sidebar />
         <main class="main-content">
-            <Loader />
             <NuxtPage />
         </main>
     </div>
