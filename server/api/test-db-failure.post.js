@@ -1,19 +1,13 @@
-import { createClient } from '@supabase/supabase-js'
-
-// TEST ENDPOINT: Simulate database insert failure
 export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig()
+    // TEST ENDPOINT: Simulate database insert failure
+
 
     try {
-        const supabase = createClient(
-            config.public.supabaseUrl,
-            config.supabaseServiceRoleKey
-        )
 
         // Simulate DB error by trying to insert with invalid user_id
         const recordingId = crypto.randomUUID()
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('recordings')
             .insert({
                 id: recordingId,

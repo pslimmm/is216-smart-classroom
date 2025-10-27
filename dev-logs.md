@@ -1,6 +1,11 @@
 ## Developer Log
 * Follow the format strictly for easy navigation of progress
 
+### 28 October
+Peter
+- implemented CRUD in class report and student dashboard
+- other pages WIP
+
 ### 25 October
 
 Yichen

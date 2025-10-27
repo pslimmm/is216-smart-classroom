@@ -1,7 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
-
 export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig()
     const formData = await readMultipartFormData(event)
 
     if (!formData) {
@@ -36,12 +33,6 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        // Initialize Supabase client with SERVICE ROLE KEY (bypasses RLS)
-        const supabase = createClient(
-            config.public.supabaseUrl,
-            config.supabaseServiceRoleKey
-        )
-
         // Generate unique recording ID
         const recordingId = crypto.randomUUID()
 
@@ -58,7 +49,7 @@ export default defineEventHandler(async (event) => {
 
         // STEP 1: Create database record FIRST with status 'uploading'
         // This ensures we track all upload attempts, even if storage fails
-        const { data: dbData, error: dbError } = await supabase
+        const { data: dbData, error: dbError } = await supabaseClient
             .from('recordings')
             .insert({
                 id: recordingId,
@@ -83,7 +74,7 @@ export default defineEventHandler(async (event) => {
         console.log('Database record created (uploading):', recordingId)
 
         // STEP 2: Upload audio to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { data: uploadData, error: uploadError } = await supabaseClient.storage
             .from('audio-recordings')
             .upload(storagePath, audioFile.data, {
                 contentType: audioFile.type || 'audio/webm',
@@ -94,7 +85,7 @@ export default defineEventHandler(async (event) => {
             console.error('Storage upload error:', uploadError)
 
             // Mark record as failed in database (don't delete - user can retry)
-            await supabase
+            await supabaseClient
                 .from('recordings')
                 .update({
                     status: 'failed',
@@ -108,7 +99,7 @@ export default defineEventHandler(async (event) => {
         console.log('Audio uploaded to storage:', uploadData.path)
 
         // STEP 3: Update status to 'pending' (ready for processing)
-        const { error: updateError } = await supabase
+        const { error: updateError } = await supabaseClient
             .from('recordings')
             .update({ status: 'pending' })
             .eq('id', recordingId)

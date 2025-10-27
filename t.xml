@@ -1,0 +1,854 @@
+<prompt>
+<problemcontext>
+<context>student_id can be obtained from const { userID } = useAuthState(); const student_id = userID.value;</context>
+<context>const course_id = route.params.course_id;</context>
+</problemcontext>
+
+<instructions>
+<instruction>remove all redundant code</instruction>
+<instruction>use the given api endpoints to fill in the information in the page</instruction>
+<instruction>calculate x week progress by filtering the data from /api/course-student for each week (1 to 14)</instruction>
+<instruction>show total coins by using data fetched from /api/course-student </instruction>
+<instruction>show total participation by getting length of data fetched from /api/course-student</instruction>
+<instruction>show "My Avg Rating" by summing rating from /api/course-student, then calculating it by using this formula (ratingSum / 3 * currentWeek) </instruction>
+<instruction>use the data from "My Avg Rating" to determine projected grade</instruction>
+<instruction>use the week selector, calculated from starting_date in /api/course-info which fetches data from schema 'course'. The current week means the weeks that have passed since course.starting_date</instruction>
+<instruction>class average should show class average of selected week. this can be obtained by fetching from /api/get-course-avg using body ={ course_id: course_id, week: currentWeek}</instruction>
+<instruction>charts should update accordingly to currentweek and show all data from week 1 to currentweek</instruction>
+<instruction>charts to show tooltip of the exact value of my avg rating vs class avg rating</instruction>
+<instruction>charts to use data from /api/get-course-avg for each week instead of data from old api code (participationData</instruction>
+<instruction>participation history to show ALL student's participation history, remove limits</instruction>
+<instruction>ignore code with status == 'aproved' and remove them</instruction>
+<instruction>remove redundant code</instruction>
+</instructions>
+<codeToChange format="vue">
+<script setup>
+import Chart from 'chart.js/auto';
+
+definePageMeta({
+    middleware: 'role'
+});
+
+const route = useRoute();
+const { userID } = useAuthState();
+const course_id = route.params.course_id;
+const student_id = userID.value;
+
+// Reactive data
+const courseData = ref(null);
+const participationData = ref({
+    weeks: [],
+    myAvgRating: [],
+    classAvgRating: [],
+    myWeeklyCount: []
+});
+const recentParticipations = ref([]);
+const coins = ref(0);
+const currentWeek = ref(1);
+
+// Chart references
+const qualityChart = ref(null);
+const countChart = ref(null);
+
+// Computed properties
+const totalParticipations = computed(() => {
+    return participationData.value.myWeeklyCount.reduce((sum, count) => sum + count, 0);
+});
+
+const myOverallAvgRating = computed(() => {
+    const ratings = participationData.value.myAvgRating.filter(r => r > 0);
+    return ratings.length > 0 ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length : 0;
+});
+
+const classOverallAvgRating = computed(() => {
+    const ratings = participationData.value.classAvgRating.filter(r => r > 0);
+    return ratings.length > 0 ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length : 0;
+});
+
+const currentWeekParticipations = computed(() => {
+    const weekIndex = currentWeek.value - 1;
+    return participationData.value.myWeeklyCount[weekIndex] || 0;
+});
+
+const currentWeekProgressPercentage = computed(() => {
+    const progress = Math.min((currentWeekParticipations.value / 3) * 100, 100);
+    return Math.round(progress);
+});
+
+const gradeProjection = computed(() => {
+    // Calculate overall rating from all approved participations
+    const studentTransactions = recentParticipations.value.filter(p => p.status === 'approved');
+    if (studentTransactions.length === 0) return "N/A";
+    
+    const totalRating = studentTransactions.reduce((sum, transaction) => sum + transaction.rating, 0);
+    const avgRating = totalRating / studentTransactions.length;
+    
+    const avgParticipationsPerWeek = totalParticipations.value / Math.max(currentWeek.value, 1);
+    
+    if (avgParticipationsPerWeek >= 3 && avgRating >= 4.0) return "A+";
+    if (avgParticipationsPerWeek >= 3 && avgRating >= 3.5) return "A";
+    if (avgParticipationsPerWeek >= 2.5) return "B+";
+    if (avgParticipationsPerWeek >= 2) return "B";
+    return "C or below";
+});
+
+// Fetch data from API
+async function fetchCourseData() {
+    try {
+        const response = await $fetch('/api/coursestudent', {
+            method: 'POST',
+            body: {
+                course_id: course_id,
+                student_id: student_id
+            }
+        });
+        if (response.ok) {
+            courseData.value = response.data.studentCourse;
+            // Process participation transactions - fix status check to uppercase
+            const approvedTransactions = response.data.participationTransactions.filter(
+                transaction => transaction.status === 'approved'
+            );
+
+            // Calculate current week based on course start date
+            calculateCurrentWeek(courseData.value.course.starting_date);
+
+            // Process data for charts and statistics
+            processParticipationData(approvedTransactions);
+            processRecentParticipations(approvedTransactions);
+            calculateCoins(approvedTransactions);
+        }
+    } catch (error) {
+        console.error('Error fetching course data:', error);
+    }
+}
+
+function calculateCurrentWeek(startingDate) {
+    const startDate = new Date(startingDate);
+    const today = new Date();
+    const diffTime = today - startDate;
+    const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)) + 1;
+    currentWeek.value = Math.max(1, Math.min(diffWeeks, 13)); // Clamp between 1-13
+}
+
+function processParticipationData(transactions) {
+    const weeks = Array.from({ length: currentWeek.value }, (_, i) => i + 1);
+    const myRatings = Array(currentWeek.value).fill(0);
+    const myCounts = Array(currentWeek.value).fill(0);
+    const classRatings = Array(currentWeek.value).fill(0);
+    const classCounts = Array(currentWeek.value).fill(0);
+
+    // Get unique student count for class average calculation
+    const uniqueStudents = new Set();
+    transactions.forEach(transaction => {
+        uniqueStudents.add(transaction.student_id);
+    });
+    const studentCount = uniqueStudents.size;
+
+    // Group transactions by week
+    transactions.forEach(transaction => {
+        const week = transaction.week;
+        if (week >= 1 && week <= currentWeek.value) {
+            // Student's data
+            if (transaction.student_id === student_id) {
+                myRatings[week - 1] += transaction.rating;
+                myCounts[week - 1]++;
+            }
+            
+            // Class data (all students)
+            classRatings[week - 1] += transaction.rating;
+            classCounts[week - 1]++;
+        }
+    });
+
+    // Calculate averages - don't round, keep as is
+    const myAvgRating = myRatings.map((total, index) => 
+        myCounts[index] > 0 ? total / myCounts[index] : 0
+    );
+    
+    // Fix class average calculation: (sum of all ratings) / (3 * student count)
+    const classAvgRating = classRatings.map((total, index) => {
+        const expectedParticipations = 3 * studentCount;
+        return expectedParticipations > 0 ? total / expectedParticipations : 0;
+    });
+
+    participationData.value = {
+        weeks,
+        myAvgRating,
+        classAvgRating,
+        myWeeklyCount: myCounts
+    };
+}
+
+function processRecentParticipations(transactions) {
+    recentParticipations.value = transactions
+        .filter(transaction => transaction.student_id === student_id && transaction.status === 'APPROVED')
+        .map(transaction => ({
+            id: transaction.id,
+            date: new Date(transaction.created_at).toISOString().split('T')[0],
+            week: transaction.week,
+            contribution: transaction.participation_note || 'No description provided',
+            rating: transaction.rating,
+            coinsEarned: Math.round(transaction.rating * 3), // Assuming 3 coins per rating point
+            status: transaction.status
+        }))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function calculateCoins(transactions) {
+    const studentTransactions = transactions.filter(t => 
+        t.student_id === student_id && t.status === 'APPROVED'
+    );
+    coins.value = studentTransactions.reduce((total, transaction) => 
+        total + Math.round(transaction.rating * 3), 0
+    );
+}
+
+// Chart functions
+const destroyCharts = () => {
+    if (qualityChart.value) {
+        qualityChart.value.destroy();
+        qualityChart.value = null;
+    }
+    if (countChart.value) {
+        countChart.value.destroy();
+        countChart.value = null;
+    }
+};
+
+const createQualityChart = () => {
+    const ctx = document.getElementById('qualityChart');
+    if (!ctx) {
+        console.warn('Quality chart canvas not found');
+        return;
+    }
+
+    // Check if canvas context is available
+    if (!ctx.getContext) {
+        console.warn('Canvas context not available');
+        return;
+    }
+
+    // Destroy existing chart first
+    if (qualityChart.value) {
+        try {
+            qualityChart.value.destroy();
+        } catch (e) {
+            console.warn('Error destroying quality chart:', e);
+        }
+    }
+
+    try {
+        qualityChart.value = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: participationData.value.weeks,
+                datasets: [
+                    {
+                        label: 'My Avg Rating',
+                        data: participationData.value.myAvgRating,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Class Avg Rating',
+                        data: participationData.value.classAvgRating,
+                        backgroundColor: 'rgba(255, 159, 64, 0.7)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 5,
+                        ticks: { stepSize: 0.5 },
+                        title: { display: true, text: 'Average Rating (1-5)' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Week Number' }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y.toFixed(2);
+                                }
+                                return label;
+                            }
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            generateLabels: function(chart) {
+                                return [
+                                    {
+                                        text: 'My Avg Rating',
+                                        fillStyle: 'rgba(54, 162, 235, 0.7)',
+                                        strokeStyle: 'rgba(54, 162, 235, 1)',
+                                        lineWidth: 2,
+                                        hidden: false
+                                    },
+                                    {
+                                        text: 'Class Avg Rating',
+                                        fillStyle: 'rgba(255, 159, 64, 0.7)',
+                                        strokeStyle: 'rgba(255, 159, 64, 1)',
+                                        lineWidth: 2,
+                                        hidden: false
+                                    }
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error creating quality chart:', error);
+    }
+};
+
+const createCountChart = () => {
+    const ctx = document.getElementById('countChart');
+    if (!ctx) {
+        console.warn('Count chart canvas not found');
+        return;
+    }
+
+    // Check if canvas context is available
+    if (!ctx.getContext) {
+        console.warn('Canvas context not available');
+        return;
+    }
+
+    // Destroy existing chart first
+    if (countChart.value) {
+        try {
+            countChart.value.destroy();
+        } catch (e) {
+            console.warn('Error destroying count chart:', e);
+        }
+    }
+
+    try {
+        const counts = participationData.value.myWeeklyCount;
+        const colors = counts.map(count => {
+            if (count >= 3) return 'rgba(40, 167, 69, 0.7)';  // Green
+            if (count >= 2) return 'rgba(255, 193, 7, 0.7)';  // Yellow
+            if (count >= 1) return 'rgba(253, 126, 20, 0.7)'; // Orange
+            return 'rgba(220, 53, 69, 0.7)'; // Red
+        });
+
+        countChart.value = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: participationData.value.weeks,
+                datasets: [{
+                    label: 'My Participation Count',
+                    data: counts,
+                    backgroundColor: colors,
+                    borderColor: colors.map(c => c.replace('0.7', '1')),
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 },
+                        title: { display: true, text: 'No. of Participations' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Week Number' }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y;
+                                }
+                                return label;
+                            }
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            generateLabels: function(chart) {
+                                return [
+                                    {
+                                        text: '3+ Participations (Excellent)',
+                                        fillStyle: 'rgba(40, 167, 69, 0.7)',
+                                        strokeStyle: 'rgba(40, 167, 69, 1)',
+                                        lineWidth: 2
+                                    },
+                                    {
+                                        text: '2 Participations (Good)',
+                                        fillStyle: 'rgba(255, 193, 7, 0.7)',
+                                        strokeStyle: 'rgba(255, 193, 7, 1)',
+                                        lineWidth: 2
+                                    },
+                                    {
+                                        text: '1 Participation (Needs Improvement)',
+                                        fillStyle: 'rgba(253, 126, 20, 0.7)',
+                                        strokeStyle: 'rgba(253, 126, 20, 1)',
+                                        lineWidth: 2
+                                    },
+                                    {
+                                        text: '0 Participations (At Risk)',
+                                        fillStyle: 'rgba(220, 53, 69, 0.7)',
+                                        strokeStyle: 'rgba(220, 53, 69, 1)',
+                                        lineWidth: 2
+                                    }
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error creating count chart:', error);
+    }
+};
+
+// Initialize charts after data is loaded
+const initializeCharts = () => {
+    destroyCharts();
+    nextTick(() => {
+        createQualityChart();
+        createCountChart();
+    });
+};
+
+onMounted(async () => {
+    await fetchCourseData();
+    // Add slight delay to ensure DOM is fully rendered
+    setTimeout(() => {
+        initializeCharts();
+    }, 100);
+});
+
+watch(currentWeek, () => {
+    initializeCharts();
+});
+
+onBeforeUnmount(() => {
+    destroyCharts();
+});
+</script>
+
+<template>
+    <main class="container py-4 my-4">
+        <div class="container-fluid">
+            <h1 class="mb-4 display-1 fw-bold">My Participation Dashboard</h1>
+
+            <!-- Course Information -->
+            <div class="card shadow-sm mb-4" v-if="courseData">
+                <div class="card-body">
+                    <h4 class="card-title">{{ courseData.course.course_name }}</h4>
+                    <p class="card-text mb-1">
+                        <strong>Course Code:</strong> {{ courseData.course.course_code }} | 
+                        <strong>Section:</strong> {{ courseData.course.course_section }}
+                    </p>
+                    <p class="card-text mb-1">
+                        <strong>Term:</strong> {{ courseData.course.course_term }} | 
+                        <strong>Time:</strong> {{ courseData.course.course_time }}
+                    </p>
+                    <p class="card-text mb-0">
+                        <strong>Location:</strong> {{ courseData.course.course_location }} | 
+                        <strong>Started:</strong> {{ new Date(courseData.course.starting_date).toLocaleDateString() }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Progress Bar Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">This Week's Progress</h5>
+                    <div class="progress" style="height: 30px;">
+                        <div 
+                            class="progress-bar" 
+                            :class="{
+                                'bg-success': currentWeekProgressPercentage >= 100,
+                                'bg-warning': currentWeekProgressPercentage >= 66 && currentWeekProgressPercentage < 100,
+                                'bg-danger': currentWeekProgressPercentage < 66
+                            }"
+                            :style="{ width: currentWeekProgressPercentage + '%' }"
+                        >
+                            <span class="fw-bold fs-6">{{ currentWeekParticipations }}/3</span>
+                        </div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <h3 class="fw-bold text-primary">{{ currentWeekProgressPercentage }}%</h3>
+                        <small class="text-muted">{{ currentWeekParticipations }}/3 participation done this week</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-coin text-warning fs-1 mb-2"></i>
+                            <h4 class="fw-bold">{{ coins }}</h4>
+                            <small class="text-muted">Total Coins</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-card-list text-primary fs-1 mb-2"></i>
+                            <h4 class="fw-bold">{{ totalParticipations }}</h4>
+                            <small class="text-muted">Total Participations</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-star-fill text-info fs-1 mb-2"></i>
+                            <h4 class="fw-bold">{{ myOverallAvgRating.toFixed(2) }}</h4>
+                            <small class="text-muted">My Avg Rating</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-trophy-fill text-success fs-1 mb-2"></i>
+                            <h4 class="fw-bold">{{ gradeProjection }}</h4>
+                            <small class="text-muted">Projected Grade</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h6 class="text-muted mb-2">Current Week</h6>
+                            <div class="d-flex align-items-center gap-3">
+                                <label for="weekSelect" class="form-label mb-0">Week:</label>
+                                <select 
+                                    id="weekSelect" 
+                                    v-model="currentWeek" 
+                                    class="form-select form-select-sm"
+                                    style="width: auto;"
+                                >
+                                    <option v-for="week in participationData.weeks" :key="week" :value="week">{{ week }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h6 class="text-muted mb-2">Class Average</h6>
+                            <h4 class="fw-bold">{{ classOverallAvgRating.toFixed(2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="fw-semibold mb-3">Quality Rating: Me vs Class</h5>
+                            <canvas id="qualityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="fw-semibold mb-3">Weekly Participation Count</h5>
+                            <canvas id="countChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3">Participation History (Latest 3)</h5>
+                    <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Week</th>
+                                    <th>Contribution</th>
+                                    <th>Rating</th>
+                                    <th>Coins Earned</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(p, i) in recentParticipations.slice(0, 3)" :key="p.id">
+                                    <td>{{ p.date }}</td>
+                                    <td>Week {{ p.week }}</td>
+                                    <td>{{ p.contribution }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ p.rating.toFixed(2) }} ⭐</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="bi bi-coin"></i> {{ p.coinsEarned }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr v-if="recentParticipations.length === 0">
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        No participation records found
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</template>
+
+<style scoped>
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.progress {
+    border-radius: 10px;
+}
+
+.progress-bar {
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.5s ease-in-out;
+}
+
+.table-responsive {
+    border-radius: 0.375rem;
+}
+
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+</style>
+</codeToChange>
+<endpoint name="/api/get-course-avg" method="post" accepts="body with course_id and week (selected week) OR course_id and totalWeeks total weeks until now" returns="single number corresponding to avg class partiicpation rating for that specific week or for all weeks for the specific course">
+export default defineEventHandler(async (event) => {
+    const responseBody = await readBody(event);
+
+    if (!responseBody.hasOwnProperty("course_id")) {
+        return {
+            ok: false,
+            error: { statusMessage: "Unauthorized Request", statusCode: 403 }
+        };
+    }
+
+    try {
+        const result1 = await supabaseClient
+            .from('student_course')
+            .select('*', { count: 'exact' })
+            .eq('course_id', responseBody.course_id)
+
+        const studentCount = result1.count;
+
+        let result2;
+        let courseAvg;
+        if (responseBody.hasOwnProperty('week')) {
+            result2 = await supabaseClient
+                .from('course_class_participation_transactions')
+                .select('rating.sum()')
+                .eq('course_id', responseBody.course_id)
+                .eq('week', responseBody.week);
+
+            courseAvg = result2.data.sum / (studentCount * 3)
+        } else if (responseBody.hasOwnProperty('totalWeeks')) {
+            result2 = await supabaseClient
+                .from('course_class_participation_transactions')
+                .select('rating.sum()')
+                .eq('course_id', responseBody.course_id)
+
+            courseAvg = result2.data.sum / (studentCount * 3 * responseBody.totalWeeks)
+        }
+
+        if (result2.error) {
+            throw new Error(result2.error.message);
+        }
+
+        return {
+            ok: true,
+            courseAvg: courseAvg
+        }
+
+    } catch (e) {
+        return {
+            ok: false,
+            error: { statusMessage: "Error: " + e.message, statusCode: 420 }
+        };
+    }
+});
+</endpoint>
+<endpoint name="/api/course-student" method="post" accepts="body containing properties course_id and student_id" returns="body participationTransactions (containing transaction information in the schema 'course_class_participation_transactions')">
+export default defineEventHandler(async (event) => {
+    const responseBody = await readBody(event);
+
+    if (!responseBody.hasOwnProperty("course_id") || !responseBody.hasOwnProperty("student_id")) {
+        return {
+            ok: false,
+            error: { statusMessage: "Unauthorized Request", statusCode: 403 }
+        };
+    }
+
+    try {
+
+        const result = await supabaseClient
+            .from('course_class_participation_transactions')
+            .select(`
+                *,
+            `)
+            .eq('course_id', responseBody.course_id)
+            .eq('student_id', responseBody.student_id)
+            .eq('status', 'approved')
+            .order('week', { ascending: true })
+
+        if (result.error) {
+            throw new Error(result2.error.message);
+        }
+
+        return {
+            ok: true,
+            data: result.data
+        }
+
+    } catch (e) {
+        return {
+            ok: false,
+            error: { statusMessage: "Error: " + e.message, statusCode: 420 }
+        };
+    }
+});
+</endpoint>
+<endpoint name="/api/course-info" method="post" accepts="1 property course_id" returns="body containing courseData (containing course information in the schema 'course' below)">
+export default defineEventHandler(async (event) => {
+
+    const responseBody = await readBody(event);
+
+    if (!responseBody.hasOwnProperty("course_id")) {
+        return {
+            ok: false,
+            error: { statusMessage: "Unauthorized Request", statusCode: 403 }
+        };
+    }
+
+    try {
+
+        const result = await supabaseClient
+            .from('course')
+            .select('*')
+            .eq('id', responseBody.course_id)
+            .maybeSingle();
+
+        if (result.error) {
+            throw new Error(result.error.message);
+        }
+        return {
+            ok: true,
+            courseData: result.data
+        }
+
+    } catch (e) {
+        return {
+            ok: false,
+            error: { statusMessage: "Error: " + e.message, statusCode: 420 }
+        };
+    }
+
+});
+</endpoint>
+
+<schema format="postgresql" name="course">
+create table public.course (
+  id bigint generated by default as identity not null,
+  course_code character varying not null,
+  course_section bigint not null,
+  course_term character varying not null,
+  course_name character varying not null,
+  course_time character varying not null,
+  course_location character varying not null,
+  prof_id uuid not null default gen_random_uuid (),
+  status public.course status not null default 'ongoing'::"course status",
+  starting_date character varying null,
+  constraint course_pkey primary key (
+    id,
+    course_code,
+    course_section,
+    course_term,
+    prof_id
+  ),
+  constraint course_id_key unique (id),
+  constraint course_prof_id_fkey1 foreign KEY (prof_id) references profile (user_id) on update CASCADE on delete set null
+) TABLESPACE pg_default;
+</schema>
+
+<schema format="postgresql" name="course_class_participation_transactions">
+create table public.course_class_participation_transactions (
+  id bigint generated by default as identity not null,
+  course_id bigint not null,
+  student_id uuid not null default gen_random_uuid (),
+  ta_id uuid not null default gen_random_uuid (),
+  week bigint not null,
+  description character varying not null,
+  rating bigint not null,
+  coins_awarded bigint null,
+  status character varying not null,
+  constraint course_class_participation_transactions_pkey primary key (id, course_id, student_id, week),
+  constraint course_class_participation_transactions_course_id_fkey foreign KEY (course_id) references course (id) on update CASCADE on delete set null,
+  constraint course_class_participation_transactions_student_id_fkey1 foreign KEY (student_id) references profile (user_id),
+  constraint course_class_participation_transactions_ta_id_fkey foreign KEY (ta_id) references profile (user_id) on update CASCADE on delete set null
+) TABLESPACE pg_default;
+</schema>
+</prompt>

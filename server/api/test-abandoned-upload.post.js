@@ -1,8 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
-
-// TEST ENDPOINT: Simulate abandoned upload (stuck in 'uploading' status)
 export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig()
+    
+// TEST ENDPOINT: Simulate abandoned upload (stuck in 'uploading' status)
     const body = await readBody(event)
     const { week, hoursAgo } = body
 
@@ -14,13 +12,10 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        const supabase = createClient(
-            config.public.supabaseUrl,
-            config.supabaseServiceRoleKey
-        )
+
 
         // Get a real user_id
-        const { data: profileData } = await supabase
+        const { data: profileData } = await supabaseClient
             .from('profile')
             .select('user_id')
             .eq('role', 'prof')
@@ -40,7 +35,7 @@ export default defineEventHandler(async (event) => {
         pastTime.setHours(pastTime.getHours() - hours)
 
         // Insert record with old timestamp and 'uploading' status
-        const { error: dbError } = await supabase
+        const { error: dbError } = await supabaseClient
             .from('recordings')
             .insert({
                 id: recordingId,
