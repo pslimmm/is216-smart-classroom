@@ -18,11 +18,13 @@
                     <!-- Toggle button (For mobile only; hidden on desktop via CSS)-->
                     <div class="nav-item toggle-btn-container">
                         <button @click="toggleSidebar" class="toggle-btn">
-                            <!-- <div class="sidebar-toggle-arrow" :class="isOpen ? 'sidebar-toggle-arrow-active' : ''">
-                            </div> -->
-                            <div
-                                class="sidebar-toggle-arrow"
-                                :class="{ 'sidebar-toggle-arrow-active': isOpen }"></div>
+                            <!-- change sidebar-toggle-arrow to bootstrap icon -->
+                            <i
+                                :class="[
+                                    'sidebar-toggle-icon',
+                                    isOpen ? 'bi-x-lg' : 'bi-list'
+                                ]">
+                            </i>
                         </button>
                     </div>
                     <!-- Main Navigation -->
@@ -111,11 +113,11 @@ const toggleSidebar = () => {
     /* expand from floating button to full sidebar */
     transition:
         width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-        height 0.2 cubic-bezier(0.4,0,0.2,1),
-        top 0.2 cubic-bezier(0.4,0,0.2,1),
-        left 0.2 cubic-bezier(0.4,0,0.2,1),
-        border-radius 0.2 cubic-bezier(0.4,0,0.2,1),
-        box-shadow 0.2 cubic-bezier(0.4,0,0.2,1);
+        height 0.2s cubic-bezier(0.4,0,0.2,1),
+        top 0.2s cubic-bezier(0.4,0,0.2,1),
+        left 0.2s cubic-bezier(0.4,0,0.2,1),
+        border-radius 0.2s cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
 }
 
 /* nav links styles */
@@ -123,6 +125,9 @@ const toggleSidebar = () => {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    /* background-color: red; */
 }
 
 .nav-item {
@@ -186,14 +191,19 @@ const toggleSidebar = () => {
 }
 
 .toggle-btn-container {
-    width: 3rem;
-    height: 3rem;
-
-    /* added new */
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 0.5rem;
+    /* background-color: blue; */
+}
+
+/* this is to make toggle btn center relative to sidebar
+    when it is collapsed */
+.sidebar:not(.sidebar-open) .toggle-btn-container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 .toggle-btn {
@@ -207,18 +217,14 @@ const toggleSidebar = () => {
     cursor: pointer; /**added new */
 }
 
-.sidebar-toggle-arrow {
-    position: relative;
-    width: 1rem;
-    height: 1rem;
-    border-right: 0.2rem solid black;
-    border-top: 0.2rem solid black;
-    transform: rotate(45deg);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sidebar-toggle-arrow-active {
-    transform: rotate(-135deg);
+/* replaced .sidebar-toggle-arrow and .sidebar-toggle-arrow-active
+    with .sidebar-toggle-icon */
+.sidebar-toggle-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* overlay (mobile only, when sidebar-open)
@@ -290,9 +296,10 @@ const toggleSidebar = () => {
     margin-bottom: 0.5rem;
 }
 
+/* this is for dashboard, courses, marketplace, review cp, logout button etc */
 .sidebar-open .main-nav-item,
 .sidebar-open .logout-wrapper .nav-item {
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
