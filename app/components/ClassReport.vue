@@ -640,7 +640,7 @@ onBeforeUnmount(() => {
         <div class="container-fluid">
             <h1 class="mb-4 display-1 fw-bold">Class Participation Report</h1>
             <div class="row d-flex">
-                <div :class="(role == 'prof' ? 'col-md-6' : 'col')">
+                <div :class="(role == 'prof' ? 'col-md-6' : 'col-12')">
                     <div class="card shadow-sm mb-4" v-if="courseData">
                         <div class="card-body">
                             <h4 class="card-title">{{ courseData.course_name }}</h4>
