@@ -341,6 +341,31 @@ const toggleSidebar = () => {
     margin-bottom: 0.5rem;
 }
 
+/* added Icon and styled ClassParti */
+.app-logo-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.75rem; /* suitable for mobile size */
+    font-weight: 600;
+    margin: 0;
+    color: black;
+}
+
+.hand-icon {
+    /* font-size: 2rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; */
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+}
+
 /* === desktop overrides === */
 @media (min-width: 768px) {
     /* force sidebar to always be open */
@@ -420,30 +445,5 @@ const toggleSidebar = () => {
     .overlay {
         display: none !important;
     }
-}
-
-/* added Icon and styled ClassParti */
-.app-logo-text {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.75rem; /* suitable for mobile size */
-    font-weight: 600;
-    margin: 0;
-    color: black;
-}
-
-.hand-icon {
-    /* font-size: 2rem;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center; */
-    width: 2rem;
-    height: 2rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    object-fit: contain;
 }
 </style>
