@@ -8,16 +8,24 @@ export default defineEventHandler(async (event) => {
         };
     }
     try {
-        const result = await supabaseClient
-            .from('course_class_participation_transactions')
-            .select(`
-                *y
-            `)
-            .eq('course_id', responseBody.course_id)
-            .eq('student_id', responseBody.student_id)
-            .eq('status', responseBody.status)
-            .order('week', { ascending: true })
+        let result;
+        if (responseBody.hasOwnProperty('status')) {
+            result = await supabaseClient
+                .from('course_class_participation_transactions')
+                .select('*')
+                .eq('course_id', responseBody.course_id)
+                .eq('student_id', responseBody.student_id)
+                .eq('status', responseBody.status)
+                .order('week', { ascending: true })
+        } else {
+            result = await supabaseClient
+                .from('course_class_participation_transactions')
+                .select('*')
+                .eq('course_id', responseBody.course_id)
+                .eq('student_id', responseBody.student_id)
+                .order('week', { ascending: true })
 
+        }
 
         if (result.error) {
             throw new Error(result.error.message);
@@ -28,7 +36,7 @@ export default defineEventHandler(async (event) => {
             .eq('course_id', responseBody.course_id)
             .eq('student_id', responseBody.student_id)
             .single()
-        
+
         if (result2.error) {
             throw new Error(result2.error.message);
         }

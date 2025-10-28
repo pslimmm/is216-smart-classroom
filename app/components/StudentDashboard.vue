@@ -9,6 +9,7 @@ const student_id = userID.value;
 // Reactive data
 const courseInfo = ref(null);
 const participationTransactions = ref([]);
+const allParticipationTransactions = ref([]);
 const classAvgData = ref({});
 const currentWeek = ref(1);
 const totalCoins = ref(0);
@@ -38,12 +39,12 @@ try {
         method: 'POST',
         body: {
             course_id,
-            student_id,
-            status: 'approved'
+            student_id
         }
     });
     if (response.ok) {
-        participationTransactions.value = response.data;
+        participationTransactions.value = response.data.filter((p) => p.status == 'approved');
+        allParticipationTransactions.value = response.data;
         totalCoins.value = response.coin_balance
     }
 } catch (error) {
@@ -141,13 +142,15 @@ const currentWeekProgressPercentage = computed(() => {
 });
 
 const participationHistory = computed(() => {
-    return participationTransactions.value
+    return allParticipationTransactions.value
         .map(transaction => ({
             id: transaction.id,
             week: transaction.week,
             contribution: transaction.description || 'No description provided',
             rating: transaction.rating,
-            coinsEarned: transaction.coins_awarded
+            coinsEarned: transaction.coins_awarded,
+            remarks: transaction.prof_remarks,
+            status: transaction.status
         }))
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 });
@@ -380,9 +383,9 @@ onBeforeUnmount(() => {
                 </div>
             </div>
 
-            <div class="row g-3 mb-4">
+            <div class="row mb-4 d-flex">
                 <div class="col-md-6">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h6 class="text-muted mb-2">Current Week</h6>
                             <div class="d-flex align-items-center gap-3">
@@ -398,7 +401,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div class="col-md-6">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h6 class="text-muted mb-2">Class Average (Week {{ selectedWeek }})</h6>
                             <h4 class="fw-bold">{{ (classAvgData[selectedWeek] || 0).toFixed(2) }}</h4>
@@ -430,14 +433,16 @@ onBeforeUnmount(() => {
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="fw-semibold mb-3">Participation History</h5>
-                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-light">
+                    <div class="table-responsive border rounded" >
+                        <table class="table table-bordered table-hover align-middle mb-0">
+                            <thead class="table-secondary sticky-top">
                                 <tr>
                                     <th>Week</th>
                                     <th>Contribution</th>
                                     <th>Rating</th>
                                     <th>Coins Earned</th>
+                                    <th>Status</th>
+                                    <th>Additional Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -445,13 +450,15 @@ onBeforeUnmount(() => {
                                     <td>Week {{ p.week }}</td>
                                     <td>{{ p.contribution }}</td>
                                     <td>
-                                        <span class="badge bg-info">{{ p.rating.toFixed(2) }} ⭐</span>
+                                        <span class="badge bg-info">{{ p.rating.toFixed(0) }} ⭐</span>
                                     </td>
                                     <td>
                                         <span class="badge bg-warning text-dark">
                                             <i class="bi bi-coin"></i> {{ p.coinsEarned }}
                                         </span>
                                     </td>
+                                    <td :class="p.status == 'rejected' ? 'bg-danger' : (p.status == 'pending' ? 'bg-warning' : 'bg-success')" class="text-light">{{ p.status }}</td>
+                                    <td>{{ p.remarks }}</td>
                                 </tr>
                                 <tr v-if="participationHistory.length === 0">
                                     <td colspan="5" class="text-center text-muted py-4">
@@ -488,8 +495,10 @@ onBeforeUnmount(() => {
     transition: width 0.5s ease-in-out;
 }
 
+
 .table-responsive {
-    border-radius: 0.375rem;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .table thead {
