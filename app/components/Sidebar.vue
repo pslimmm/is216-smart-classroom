@@ -3,43 +3,52 @@
 
 
         <!-- Sidebar -->
-        <div class="sidebar" :class="isOpen ? 'sidebar-expanded transition-delay' : ''">
+        <!-- <div class="sidebar" :class="isOpen ? 'sidebar-expanded transition-delay' : ''"> -->
+        <!-- <div class="sidebar sidebar-expanded transition-delay"> -->
+        <div
+            class="sidebar transition-delay"
+            :class="{'sidebar-open': isOpen}">
 
             <div class="app-logo">
-
+                Test
             </div>
+
             <nav>
                 <div class="nav-menu">
-                    <!-- Toggle button -->
+                    <!-- Toggle button (For mobile only; hidden on desktop via CSS)-->
                     <div class="nav-item toggle-btn-container">
                         <button @click="toggleSidebar" class="toggle-btn">
-                            <div class="sidebar-toggle-arrow" :class="isOpen ? 'sidebar-toggle-arrow-active' : ''">
-                            </div>
+                            <!-- <div class="sidebar-toggle-arrow" :class="isOpen ? 'sidebar-toggle-arrow-active' : ''">
+                            </div> -->
+                            <div
+                                class="sidebar-toggle-arrow"
+                                :class="{ 'sidebar-toggle-arrow-active': isOpen }"></div>
                         </button>
                     </div>
                     <!-- Main Navigation -->
-                    <button v-if="role" class="btn nav-item">
+                     <!-- added main-nav-item -->
+                    <button v-if="role" class="btn nav-item main-nav-item">
                         <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
                             <i class="bi bi-bar-chart-line"></i>
                             <span>Dashboard</span>
                         </NuxtLink>
                     </button>
 
-                    <button v-if="role" class="btn nav-item">
+                    <button v-if="role" class="btn nav-item main-nav-item">
                         <NuxtLink to="/courses" class="nav-link w-100 text-start">
                             <i class="bi bi-journals"></i>
                             <span>Courses</span>
                         </NuxtLink>
                     </button>
 
-                    <button v-if="['prof', 'student'].includes(role)" class="btn nav-item">
+                    <button v-if="['prof', 'student'].includes(role)" class="btn nav-item main-nav-item">
                         <NuxtLink to="/marketplace" class="nav-link w-100 text-start">
                             <i class="bi bi-bag"></i>
                             <span>Marketplace</span>
                         </NuxtLink>
                     </button>
 
-                    <button v-if="role === 'prof'" class="btn nav-item">
+                    <button v-if="role === 'prof'" class="btn nav-item main-nav-item">
                         <NuxtLink to="/prof/review" class="nav-link w-100 text-start" active-class="active">
                             <i class="bi bi-card-checklist"></i>
                             <span>Review CP</span>
@@ -48,19 +57,26 @@
 
                 </div>
                 <div class="mt-auto logout-wrapper">
-                    <button v-if="role" class="btn nav-item" @click="clearAuthState">
+                    <button v-if="role" class="btn nav-item main-nav-item" @click="clearAuthState">
                         <i class="bi bi-box-arrow-left"></i>
                         <span class="nav-link">Log Out</span>
                     </button>
                 </div>
             </nav>
         </div>
-        <div v-if="isOpen" class="overlay" @click="isOpen = !isOpen"></div>
+
+        <!-- Dark overlay for mobile when sidebar is expanded -->
+        <!-- <div v-if="isOpen" class="overlay" @click="isOpen = !isOpen"></div> -->
+        <div
+            v-if="isOpen"
+            class="overlay"
+            @click="toggleSidebar"
+        ></div>
     </div>
 </template>
 
 <script setup>
-const isOpen = ref(false)
+const isOpen = ref(false) // collapse by default on mobile
 const { role, clearAuthState } = useAuthState();
 
 const toggleSidebar = () => {
@@ -71,96 +87,52 @@ const toggleSidebar = () => {
 
 <style scoped>
 /* sidebar styles */
+/* mobile-first where it is collapsed
+    or basically a floating button in top-left */
 .sidebar {
     position: fixed;
+    top: 1rem;
+    left: 1rem;
+
+    width: 3.5rem;
+    height: 3.5rem;
+
     display: flex;
     flex-direction: column;
-    align-items: left;
-    top: 0;
-    left: 0;
-    height: calc(100vh - 5rem);
-    width: 5rem;
-    margin-top: 5rem;
+    align-items: center;
+    justify-content: center;
+
     background-color: white;
     box-shadow: 2px 0 3px rgba(0, 0, 0, 0.1);
-    transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0.5rem;
+
     z-index: 998;
-}
 
-.sidebar-wrapper button {
-    width: 3rem;
-    height: 3rem;
-    margin-left: 1rem;
-}
-
-.sidebar-expanded {
-    width: 200px;
-    align-items: center;
-}
-
-.sidebar-expanded button,
-.sidebar-expanded .toggle-btn-container {
-    margin-left: 0;
+    /* expand from floating button to full sidebar */
+    transition:
+        width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        height 0.2 cubic-bezier(0.4,0,0.2,1),
+        top 0.2 cubic-bezier(0.4,0,0.2,1),
+        left 0.2 cubic-bezier(0.4,0,0.2,1),
+        border-radius 0.2 cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.2 cubic-bezier(0.4,0,0.2,1);
 }
 
 /* nav links styles */
 .nav-menu {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     width: 100%;
 }
 
-.nav-item,
-.toggle-btn {
-    border-radius: 0.25rem;
-    margin-bottom: 0.5rem;
-}
-
-.nav-item span {
-    /* visibility: hidden; */
-    opacity: 0;
-    margin-left: 1rem;
-    color: #333;
-}
-
-.sidebar-expanded .nav-item span {
-    /* visibility: visible; */
-    opacity: 1;
-    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sidebar-expanded nav {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    height: 100vh;
-    max-height: 100vh;
-}
-
-.sidebar-expanded .nav-item {
+.nav-item {
+    /**split from .toggle-btn AND added new below */
     display: flex;
     align-items: center;
     width: 100%;
     transition: background-color 0.2s ease;
     white-space: nowrap;
-}
 
-.logout-wrapper {
-    visibility: hidden;
-    margin-bottom: 1rem;
-}
-
-.sidebar-expanded .logout-wrapper {
-    visibility: visible;
-}
-
-.nav-link {
-    font-size: 1.25rem;
-    line-height: 1.25rem;
-    height: 1.25rem;
-    text-decoration: none;
-    color: #333;
 }
 
 .nav-item:hover {
@@ -177,12 +149,52 @@ const toggleSidebar = () => {
     margin-top: 1rem;
 }
 
-.toggle-btn-container {
-    width: 3rem !important;
-    height: 3rem;
-    margin-left: 1rem;
+.nav-link {
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    height: 1.25rem;
+    text-decoration: none;
+    color: #333;
 }
 
+.nav-item span {
+    opacity: 0;
+    margin-left: 1rem;
+    color: #333;
+
+    /**added new */
+    pointer-events: none;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* logout hidden in collapsed mobile mode */
+.logout-wrapper {
+    display: none;
+    margin-bottom: 1rem;
+}
+
+/* --- mobile collapsed ---
+    when collapsed on mobile, it will
+    - hide app logo
+    - hide all main nav items (icons and text)*/
+.app-logo {
+    display: none;
+}
+
+.main-nav-item {
+    display: none;
+}
+
+.toggle-btn-container {
+    width: 3rem;
+    height: 3rem;
+
+    /* added new */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+}
 
 .toggle-btn {
     margin: 0 !important;
@@ -192,17 +204,16 @@ const toggleSidebar = () => {
     border: none;
     padding: 0.5rem;
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer; /**added new */
 }
 
 .sidebar-toggle-arrow {
-    position: absolute;
-    left: 0.65rem;
-    top: 1rem;
+    position: relative;
     width: 1rem;
     height: 1rem;
     border-right: 0.2rem solid black;
     border-top: 0.2rem solid black;
-    transform: translateX(35%) rotate(45deg);
+    transform: rotate(45deg);
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -210,8 +221,10 @@ const toggleSidebar = () => {
     transform: rotate(-135deg);
 }
 
+/* overlay (mobile only, when sidebar-open)
+    darkens the rest of the page */
 .overlay {
-    position: fixed; 
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -219,4 +232,130 @@ const toggleSidebar = () => {
     z-index: 998;
     margin-left: 200px;
 }
+
+/* === Mobile expanded state ===
+    we add this class when isOpen === true */
+.sidebar-open {
+    top: 0;
+    left: 0;
+    width: 180px;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: 2px 0 3px rgba(0,0,0,0.1);
+
+    /* flex it back to full column layout */
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 1rem;
+}
+
+.sidebar-open .app-logo {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.sidebar-open .main-nav-item {
+    display: flex;
+}
+
+/* when open on mobile: show text + logout */
+.sidebar-open .nav-item span {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar-open .logout-wrapper {
+    display: block;
+}
+
+.sidebar-open nav {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 100vh;
+    max-height: 100vh;
+}
+
+.sidebar-open .nav-menu {
+    width: 100%;
+}
+
+.sidebar-open .toggle-btn-container {
+    /* fix spacing when expanded */
+    width: 3rem;
+    height: 3rem;
+    align-self: flex-start;
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-open .main-nav-item,
+.sidebar-open .logout-wrapper .nav-item {
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* === desktop overrides === */
+@media (min-width: 768px) {
+    /* force sidebar to always be open */
+    .sidebar {
+        top: 0;
+        left: 0;
+        width: 180px;
+        height: 100vh;
+        border-radius: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        padding-top: 1rem;
+        box-shadow: 2px 0 3px rgba(0,0,0,0.1);
+    }
+
+    .app-logo {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .main-nav-item {
+        display: flex;
+    }
+
+    /* always show labels on desktop */
+    .nav-item span {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .logout-wrapper {
+        display: block;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        height: 100vh;
+        max-height: 100vh;
+    }
+
+    .nav-menu {
+        width: 100%;
+    }
+
+    /* hide the mobile toggle button on desktop */
+    .toggle-btn-container {
+        display: none;
+    }
+
+    /* dont show overlay on desktop even if isOpen === true */
+    .overlay {
+        display: none !important;
+    }
+}
+
 </style>

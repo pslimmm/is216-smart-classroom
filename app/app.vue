@@ -1,6 +1,6 @@
 <template>
     <div class="mw-100" v-if="!['/forbidden', '/', '/auth'].includes(route.path)">
-        <Navbar />
+        <!-- <Navbar /> -->
         <Sidebar />
         <main class="main-content">
             <NuxtPage />
