@@ -64,8 +64,35 @@
                             <span>Review CP</span>
                         </NuxtLink>
                     </button>
-
                 </div>
+
+                <!-- user summary block taken from navbar -->
+                <div class="sidebar-user-block main-nav-item">
+                    <!-- coins pill (only for students in a specific course) -->
+                    <div
+                        v-if="role === 'student' && route.params.course_id"
+                        class="sidebar-coin"
+                        role="button"
+                        title="Marketplace"
+                        @click="navigateTo('/courses/' + course_id + '/marketplace')"
+                    >
+                        <i class="bi bi-coin me-2"></i>
+                        <div>{{ coins }}</div>
+                    </div>
+
+                    <!-- name + role -->
+                    <div class="sidebar-user-text">
+                        <strong class="sidebar-user-name">{{ data.full_name }}</strong>
+                        <p class="sidebar-user-role">
+                            {{ role === 'prof' ? 'Instructor' : role.charAt(0).toUpperCase() + role.slice(1) }}
+                        </p>
+                    </div>
+
+                    <!-- avatar icon -->
+                    <i class="bi bi-person-circle sidebar-user-avatar"></i>
+                </div>
+                <!-- end of user summary block -->
+
                 <div class="mt-auto logout-wrapper">
                     <button v-if="role" class="btn nav-item main-nav-item" @click="clearAuthState">
                         <i class="bi bi-box-arrow-left"></i>
@@ -86,8 +113,36 @@
 </template>
 
 <script setup>
+//assume cause never import thats why not working
+import { ref, computed, watch } from 'vue'
+
 const isOpen = ref(false) // collapse by default on mobile
-const { role, clearAuthState } = useAuthState();
+const { role, userID, clearAuthState } = useAuthState();
+
+// taken from navbar
+const route = useRoute();
+const course_id = computed(() => route.params.course_id);
+const coins = ref(0);
+
+const { data } = await $fetch('/api/user-info', {
+    method: 'POST',
+    body: {
+        user_id: userID.value
+    }
+})
+
+watch(course_id, async (newCourseId) => {
+    if (role.value == 'student' && newCourseId) {
+        const { coin_balance } = await $fetch('/api/course-student', {
+            method: 'POST',
+            body: {
+                course_id: newCourseId,
+                student_id: userID.value
+            }
+        })
+        coins.value = coin_balance;
+    }
+}, { immediate: true }); // immediate: true runs the watcher immediately
 
 const toggleSidebar = () => {
     isOpen.value = !isOpen.value
@@ -448,4 +503,63 @@ const toggleSidebar = () => {
         display: none !important;
     }
 }
+
+/* for the user summary taken from navbar and xfered here */
+/* user div above logout */
+.sidebar-user-block {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    padding: 1rem 1rem 0 1rem;
+    color: #333;
+}
+
+/* in desktop and in mobile when sidebar-open, remember main-nav-item is display:flex
+    so that means right sidebar-user-block will show regardless
+    and then for mobile, it is hidden because when collapsed, the display:none
+    remember! */
+.sidebar-coin {
+    border: 1px solid black;
+    padding: 0.5rem 0.75rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.sidebar-coin i {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.sidebar-user-text {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+}
+
+.sidebar-user-name {
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    margin: 0;
+    color: #000;
+}
+
+.sidebar-user-role {
+    font-size: 0.875rem;
+    line-height: 1rem;
+    color: #6c757d; /* chose this color as it matches text-muted (bootstrap class) */
+    margin: 0;
+}
+
+.sidebar-user-avatar {
+    font-size: 2.5rem;
+    line-height: 1;
+    color: #000;
+}
+
 </style>
