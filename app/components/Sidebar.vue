@@ -5,30 +5,38 @@
         <!-- Sidebar -->
         <!-- <div class="sidebar" :class="isOpen ? 'sidebar-expanded transition-delay' : ''"> -->
         <!-- <div class="sidebar sidebar-expanded transition-delay"> -->
-        <div
-            class="sidebar transition-delay"
+        <div class="sidebar transition-delay"
             :class="{'sidebar-open': isOpen}">
 
-            <div class="app-logo">
-                Test
+            <div class="sidebar-header">
+                <NuxtLink to="/" class="app-logo">
+                    <h2 class="app-logo-text">
+                        <!-- <i class="bi bi-hand-index-thumb-fill hand-icon"></i> -->
+                        <img src="/3189462.png"
+                            alt="ClassParti logo"
+                            class="hand-icon"/>
+                        <span>ClassParti</span>
+                    </h2>
+                </NuxtLink>
+
+                <!-- Toggle button (For mobile only; hidden on desktop via CSS)-->
+                <div class="toggle-btn-container">
+                    <button @click="toggleSidebar" class="toggle-btn">
+                        <!-- change sidebar-toggle-arrow to bootstrap icon -->
+                        <i
+                            :class="[
+                                'sidebar-toggle-icon',
+                                isOpen ? 'bi-x-lg' : 'bi-list'
+                            ]">
+                        </i>
+                    </button>
+                </div>
             </div>
 
             <nav>
                 <div class="nav-menu">
-                    <!-- Toggle button (For mobile only; hidden on desktop via CSS)-->
-                    <div class="nav-item toggle-btn-container">
-                        <button @click="toggleSidebar" class="toggle-btn">
-                            <!-- change sidebar-toggle-arrow to bootstrap icon -->
-                            <i
-                                :class="[
-                                    'sidebar-toggle-icon',
-                                    isOpen ? 'bi-x-lg' : 'bi-list'
-                                ]">
-                            </i>
-                        </button>
-                    </div>
                     <!-- Main Navigation -->
-                     <!-- added main-nav-item -->
+                    <!-- added main-nav-item -->
                     <button v-if="role" class="btn nav-item main-nav-item">
                         <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
                             <i class="bi bi-bar-chart-line"></i>
@@ -108,7 +116,7 @@ const toggleSidebar = () => {
     box-shadow: 2px 0 3px rgba(0, 0, 0, 0.1);
     border-radius: 0.5rem;
 
-    z-index: 998;
+    z-index: 999;
 
     /* expand from floating button to full sidebar */
     transition:
@@ -120,12 +128,20 @@ const toggleSidebar = () => {
         box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
 }
 
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin-bottom: 0;
+}
+
 /* nav links styles */
 .nav-menu {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
     border-radius: 0.5rem;
     /* background-color: red; */
 }
@@ -156,8 +172,8 @@ const toggleSidebar = () => {
 
 .nav-link {
     font-size: 1.25rem;
-    line-height: 1.25rem;
-    height: 1.25rem;
+    line-height: 1.5rem;
+    height: auto;
     text-decoration: none;
     color: #333;
 }
@@ -184,6 +200,17 @@ const toggleSidebar = () => {
     - hide all main nav items (icons and text)*/
 .app-logo {
     display: none;
+    text-decoration: none;
+    color: inherit;
+    /* background-color: purple; */
+}
+
+.app-logo:visited,
+.app-logo:active,
+.app-logo:hover,
+.app-logo:focus {
+    text-decoration: none;
+    color: inherit;
 }
 
 .main-nav-item {
@@ -204,6 +231,10 @@ const toggleSidebar = () => {
     width: 100%;
     height: 100%;
     margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .toggle-btn {
@@ -225,6 +256,7 @@ const toggleSidebar = () => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    /* background-color: red; */
 }
 
 /* overlay (mobile only, when sidebar-open)
@@ -236,7 +268,7 @@ const toggleSidebar = () => {
     width: 100vw;
     height: 100vh;
     z-index: 998;
-    margin-left: 200px;
+    background: rgba(0, 0, 0, 0.4)
 }
 
 /* === Mobile expanded state ===
@@ -250,15 +282,25 @@ const toggleSidebar = () => {
     box-shadow: 2px 0 3px rgba(0,0,0,0.1);
 
     /* flex it back to full column layout */
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: flex-start;
     padding-top: 1rem;
+}
+
+.sidebar-open .sidebar-header {
+    justify-content: space-between;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    height: auto;
 }
 
 .sidebar-open .app-logo {
     display: block;
     font-weight: 600;
-    margin-bottom: 1rem;
+    text-decoration: none;
+    color: inherit;
 }
 
 .sidebar-open .main-nav-item {
@@ -278,22 +320,18 @@ const toggleSidebar = () => {
 .sidebar-open nav {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    padding: 0 1rem;
     height: 100vh;
     max-height: 100vh;
 }
 
-.sidebar-open .nav-menu {
-    width: 100%;
-}
-
 .sidebar-open .toggle-btn-container {
-    /* fix spacing when expanded */
     width: 3rem;
     height: 3rem;
-    align-self: flex-start;
-    margin-left: 0;
-    margin-bottom: 0.5rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* this is for dashboard, courses, marketplace, review cp, logout button etc */
@@ -309,27 +347,50 @@ const toggleSidebar = () => {
     .sidebar {
         top: 0;
         left: 0;
-        width: 180px;
+        width: 22.5rem;
         height: 100vh;
         border-radius: 0;
 
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
         justify-content: flex-start;
 
         padding-top: 1rem;
         box-shadow: 2px 0 3px rgba(0,0,0,0.1);
     }
 
+    .sidebar-header {
+        justify-content: flex-start;
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+        height: auto;
+    }
+
+    .sidebar-open .toggle-btn-container,
+    .toggle-btn-container {
+        display: none;
+    }
+
     .app-logo {
         display: block;
         font-weight: 600;
-        margin-bottom: 1rem;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .app-logo-text {
+        font-size: 2.5rem;
     }
 
     .main-nav-item {
         display: flex;
+    }
+
+    .nav-link {
+        font-size: 2rem;
+        line-height: 2rem;
+        height: auto;
     }
 
     /* always show labels on desktop */
@@ -345,18 +406,14 @@ const toggleSidebar = () => {
     nav {
         display: flex;
         flex-direction: column;
-        width: 90%;
+        padding: 0 1rem;
         height: 100vh;
         max-height: 100vh;
     }
 
-    .nav-menu {
-        width: 100%;
-    }
-
     /* hide the mobile toggle button on desktop */
     .toggle-btn-container {
-        display: none;
+        display: none !important;
     }
 
     /* dont show overlay on desktop even if isOpen === true */
@@ -365,4 +422,28 @@ const toggleSidebar = () => {
     }
 }
 
+/* added Icon and styled ClassParti */
+.app-logo-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.75rem; /* suitable for mobile size */
+    font-weight: 600;
+    margin: 0;
+    color: black;
+}
+
+.hand-icon {
+    /* font-size: 2rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; */
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+}
 </style>
