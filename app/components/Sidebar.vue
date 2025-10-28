@@ -10,13 +10,13 @@
 
             <div class="sidebar-header">
                 <NuxtLink to="/" class="app-logo">
-                    <h2 class="app-logo-text">
+                    <div class="app-logo-text">
                         <!-- <i class="bi bi-hand-index-thumb-fill hand-icon"></i> -->
                         <img src="/3189462.png"
                             alt="ClassParti logo"
                             class="hand-icon"/>
                         <span>ClassParti</span>
-                    </h2>
+                    </div>
                 </NuxtLink>
 
                 <!-- Toggle button (For mobile only; hidden on desktop via CSS)-->
@@ -347,6 +347,7 @@ const toggleSidebar = () => {
     align-items: center;
     gap: 0.5rem;
     font-size: 1.75rem; /* suitable for mobile size */
+    line-height: 1.75rem; /* keep text tight with icon */
     font-weight: 600;
     margin: 0;
     color: black;
@@ -405,7 +406,8 @@ const toggleSidebar = () => {
     }
 
     .app-logo-text {
-        font-size: 2.5rem;
+        font-size: 2.5rem; /* change this to control desktop size remember */
+        line-height: 2.5rem; /* matches line height so scales nicely */
     }
 
     .main-nav-item {
