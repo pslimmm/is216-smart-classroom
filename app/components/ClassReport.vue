@@ -596,10 +596,11 @@ onBeforeUnmount(() => {
 
 <template>
     <main class="container py-4 my-4">
-        <div class="container-fluid">
-            <h1 class="mb-4 display-1 fw-bold">Class Participation Report</h1>
+        <!-- <div class="container-fluid"> -->
+            <!-- <h1 class="mb-4 display-1 fw-bold">Class Participation Report</h1> -->
+            <h1 class="mb-4 display-5 display-md-3 fw-bold">Class Participation Report</h1>
             <div class="card shadow-sm mb-4" v-if="courseData">
-                <div class="card-body">
+                <!-- <div class="card-body">
                     <h4 class="card-title">{{ courseData.course_name }}</h4>
                     <p class="card-text mb-1">
                         <strong>Course Code:</strong> {{ courseData.course_code }} |
@@ -613,7 +614,25 @@ onBeforeUnmount(() => {
                         <strong>Location:</strong> {{ courseData.course_location }} |
                         <strong>Started:</strong> {{ new Date(courseData.starting_date).toLocaleDateString() }}
                     </p>
+                </div> -->
+
+                <!-- new design -->
+                <div class="card-body">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                        <div>
+                            <h4 class="card-title mb-1">{{ courseData.course_name }}</h4>
+                            <div class="small text-muted">
+                            {{ courseData.course_code }} • G{{ courseData.course_section }} • {{ courseData.course_term }}
+                            </div>
+                        </div>
+                        <div class="small text-muted">
+                            <i class="bi bi-clock me-1"></i>{{ courseData.course_time }} |
+                            <i class="bi bi-geo-alt me-1"></i>{{ courseData.course_location }} |
+                            <i class="bi bi-calendar-date me-1"></i>{{ new Date(courseData.starting_date).toLocaleDateString() }}
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
             <div class="row d-flex">
@@ -733,12 +752,13 @@ onBeforeUnmount(() => {
                     </div>
                 </div>
 
-                <div class="row g-3 mb-4">
-                    <div class="col-md-3" v-for="stat in studentStats" :key="stat.label">
-                        <div class="bg-light p-3 rounded-3 text-center border">
+                <!-- <div class="row g-3 mb-4"> -->
+                <div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
+                    <div class="col" v-for="stat in studentStats" :key="stat.label">
+                        <div class="bg-light p-3 rounded-3 text-center border h-100">
                             <i :class="['bi fs-4 mb-2', stat.icon]"></i>
-                            <h5 class="fw-bold">{{ stat.value }}</h5>
-                            <small class="text-muted">{{ stat.label }}</small>
+                            <h5 class="fw-bold fs-5">{{ stat.value }}</h5>
+                            <small class="text-muted small">{{ stat.label }}</small>
                         </div>
                     </div>
                 </div>
@@ -751,9 +771,10 @@ onBeforeUnmount(() => {
 
                 <div class="row">
                     <div class="col-md-6 mb-4">
-                        <div class="bg-body-secondary p-4 rounded-3 border">
+                        <div class="bg-body-secondary p-3 p-md-4 rounded-3 border">
                             <h5 class="mb-3">Quality Rating Comparison</h5>
-                            <div style="height: 300px;">
+                            <!-- changed from height 300px to ratio -->
+                            <div class="ratio ratio-16x9">
                                 <canvas :id="'qualityChart-' + selectedStudent.id"></canvas>
                             </div>
                             <div class="mt-2 text-muted small">
@@ -763,9 +784,10 @@ onBeforeUnmount(() => {
                         </div>
                     </div>
                     <div class="col-md-6 mb-4">
-                        <div class="bg-body-secondary p-4 rounded-3 border">
+                        <div class="bg-body-secondary p-3 p-md-4 rounded-3 border">
                             <h5 class="mb-3">Weekly Participation Count</h5>
-                            <div style="height: 300px;">
+                            <!-- samex here -->
+                            <div class="ratio ratio-16x9">
                                 <canvas :id="'countChart-' + selectedStudent.id"></canvas>
                             </div>
                             <div class="mt-2 text-muted small">
@@ -835,7 +857,7 @@ onBeforeUnmount(() => {
                     </tbody>
                 </table>
             </div>
-        </div>
+        <!-- </div> -->
     </main>
 </template>
 
