@@ -12,7 +12,7 @@
                 <NuxtLink to="/" class="app-logo">
                     <div class="app-logo-text">
                         <!-- <i class="bi bi-hand-index-thumb-fill hand-icon"></i> -->
-                        <img src="/3189462.png"
+                        <img src="/hand.png"
                             alt="ClassParti logo"
                             class="hand-icon"/>
                         <span>ClassParti</span>

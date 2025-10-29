@@ -31,7 +31,7 @@ const route = useRoute();
 /* this applies to desktop screens */
 @media (min-width:768px) {
     .main-content {
-        padding-left: 180px;
+        padding-left: 22.5rem;
         height: 100vh;
         margin-top: 0;
     }
