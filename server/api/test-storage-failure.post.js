@@ -1,5 +1,8 @@
+import { createClient } from '@supabase/supabase-js'
+
+// TEST ENDPOINT: Simulate storage upload failure
 export default defineEventHandler(async (event) => {
-    // TEST ENDPOINT: Simulate storage upload failure
+    const config = useRuntimeConfig()
     const body = await readBody(event)
     const { week } = body
 
@@ -11,9 +14,13 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
+        const supabase = createClient(
+            config.public.supabaseUrl,
+            config.supabaseServiceRoleKey
+        )
 
         // Get a real user_id
-        const { data: profileData } = await supabaseClient
+        const { data: profileData } = await supabase
             .from('profile')
             .select('user_id')
             .eq('role', 'prof')
@@ -28,7 +35,7 @@ export default defineEventHandler(async (event) => {
         const recordingId = crypto.randomUUID()
 
         // STEP 1: Insert to database with 'uploading' status
-        const { error: dbError } = await supabaseClient
+        const { error: dbError } = await supabase
             .from('recordings')
             .insert({
                 id: recordingId,
@@ -51,7 +58,7 @@ export default defineEventHandler(async (event) => {
         // Instead, mark as failed immediately
         const fakeStorageError = 'Storage quota exceeded'
 
-        await supabaseClient
+        await supabase
             .from('recordings')
             .update({
                 status: 'failed',

@@ -18,7 +18,7 @@
                         </button>
                     </div>
                     <!-- Main Navigation -->
-                    <button v-if="role && role !== 'student'" class="btn nav-item">
+                    <button v-if="role" class="btn nav-item">
                         <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
                             <i class="bi bi-bar-chart-line"></i>
                             <span>Dashboard</span>
@@ -46,6 +46,20 @@
                         </NuxtLink>
                     </button>
 
+                    <button v-if="role === 'ta'" class="btn nav-item">
+                        <NuxtLink to="/ta/submit" class="nav-link w-100 text-start" active-class="active">
+                            <i class="bi bi-card-checklist"></i>
+                            <span>Submit CP</span>
+                        </NuxtLink>
+                    </button>
+
+                    <!-- Right-aligned items -->
+                    <button v-if="['prof', 'ta'].includes(role)" class="btn nav-item">
+                        <NuxtLink to="/classreport" class="nav-link w-100 text-start">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span>Reports</span>
+                        </NuxtLink>
+                    </button>
                 </div>
                 <div class="mt-auto logout-wrapper">
                     <button v-if="role" class="btn nav-item" @click="clearAuthState">
@@ -55,7 +69,7 @@
                 </div>
             </nav>
         </div>
-        <div v-if="isOpen" class="overlay" @click="isOpen = !isOpen"></div>
+
     </div>
 </template>
 
@@ -82,9 +96,10 @@ const toggleSidebar = () => {
     width: 5rem;
     margin-top: 5rem;
     background-color: white;
+    border-top: 1px solid lightgray;
     box-shadow: 2px 0 3px rgba(0, 0, 0, 0.1);
     transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 998;
+    z-index: 999;
 }
 
 .sidebar-wrapper button {
@@ -98,8 +113,8 @@ const toggleSidebar = () => {
     align-items: center;
 }
 
-.sidebar-expanded button,
-.sidebar-expanded .toggle-btn-container {
+.sidebar-expanded button, 
+.sidebar-expanded .toggle-btn-container{
     margin-left: 0;
 }
 
@@ -111,12 +126,10 @@ const toggleSidebar = () => {
     width: 100%;
 }
 
-.nav-item,
-.toggle-btn {
+.nav-item, .toggle-btn{
     border-radius: 0.25rem;
     margin-bottom: 0.5rem;
 }
-
 .nav-item span {
     /* visibility: hidden; */
     opacity: 0;
@@ -142,6 +155,7 @@ const toggleSidebar = () => {
     display: flex;
     align-items: center;
     width: 100%;
+    padding: 0.5rem;
     transition: background-color 0.2s ease;
     white-space: nowrap;
 }
@@ -173,11 +187,11 @@ const toggleSidebar = () => {
     font-size: 1.5rem;
 }
 
-.nav-item:first-child {
+.nav-item:first-child{
     margin-top: 1rem;
 }
 
-.toggle-btn-container {
+.toggle-btn-container{
     width: 3rem !important;
     height: 3rem;
     margin-left: 1rem;
@@ -210,13 +224,5 @@ const toggleSidebar = () => {
     transform: rotate(-135deg);
 }
 
-.overlay {
-    position: fixed; 
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 998;
-    margin-left: 200px;
-}
+
 </style>

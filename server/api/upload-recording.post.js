@@ -1,4 +1,7 @@
+import { createClient } from '@supabase/supabase-js'
+
 export default defineEventHandler(async (event) => {
+    const config = useRuntimeConfig()
     const formData = await readMultipartFormData(event)
 
     if (!formData) {
@@ -15,13 +18,12 @@ export default defineEventHandler(async (event) => {
     const week = formData.find(item => item.name === 'week')?.data.toString()
     const durationSeconds = formData.find(item => item.name === 'duration')?.data.toString()
     const title = formData.find(item => item.name === 'title')?.data.toString()
-    const courseId = formData.find(item => item.name === 'courseId')?.data.toString()
 
     // Validate required fields
-    if (!audioFile || !userId || !userRole || !week || !title || !courseId) {
+    if (!audioFile || !userId || !userRole || !week || !title) {
         throw createError({
             statusCode: 400,
-            message: 'Missing required fields: file, userId, userRole, week, title, or courseId'
+            message: 'Missing required fields: file, userId, userRole, week, or title'
         })
     }
 
@@ -34,6 +36,12 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
+        // Initialize Supabase client with SERVICE ROLE KEY (bypasses RLS)
+        const supabase = createClient(
+            config.public.supabaseUrl,
+            config.supabaseServiceRoleKey
+        )
+
         // Generate unique recording ID
         const recordingId = crypto.randomUUID()
 
@@ -50,12 +58,11 @@ export default defineEventHandler(async (event) => {
 
         // STEP 1: Create database record FIRST with status 'uploading'
         // This ensures we track all upload attempts, even if storage fails
-        const { data: dbData, error: dbError } = await supabaseClient
+        const { data: dbData, error: dbError } = await supabase
             .from('recordings')
             .insert({
                 id: recordingId,
                 user_id: userId,
-                course_id: courseId ? parseInt(courseId) : null,
                 week: week,
                 title: title.trim(),
                 audio_path: storagePath,
@@ -76,7 +83,7 @@ export default defineEventHandler(async (event) => {
         console.log('Database record created (uploading):', recordingId)
 
         // STEP 2: Upload audio to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabaseClient.storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
             .from('audio-recordings')
             .upload(storagePath, audioFile.data, {
                 contentType: audioFile.type || 'audio/webm',
@@ -87,7 +94,7 @@ export default defineEventHandler(async (event) => {
             console.error('Storage upload error:', uploadError)
 
             // Mark record as failed in database (don't delete - user can retry)
-            await supabaseClient
+            await supabase
                 .from('recordings')
                 .update({
                     status: 'failed',
@@ -101,7 +108,7 @@ export default defineEventHandler(async (event) => {
         console.log('Audio uploaded to storage:', uploadData.path)
 
         // STEP 3: Update status to 'pending' (ready for processing)
-        const { error: updateError } = await supabaseClient
+        const { error: updateError } = await supabase
             .from('recordings')
             .update({ status: 'pending' })
             .eq('id', recordingId)

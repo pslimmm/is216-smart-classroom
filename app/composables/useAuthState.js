@@ -9,23 +9,18 @@ export const useAuthState = () => {
         'role', 
         () => JSON.parse(localStorage.getItem('authState') || '{}').role || null
     );
-    const userID = useState(
-        'user_id', 
-        () => JSON.parse(localStorage.getItem('authState') || '{}').user_id || null
-    );
+
     // sets all values and stores it to localStorage for persistence (refreshes dont log the user out)
-    const setAuthState = (sessionData, userRole, user_id) => {
-        session.value = sessionData;
-        role.value = userRole;
-        userID.value = user_id;
-        localStorage.setItem('authState', JSON.stringify({ session: sessionData, role: userRole , user_id : user_id}));
+    const setAuthState = (sessionData, userRole) => {
+        session.value = sessionData
+        role.value = userRole
+        localStorage.setItem('authState', JSON.stringify({ session: sessionData, role: userRole }));
     };
 
     // for logout
     const clearAuthState = () => {
-        session.value = null;    
-        role.value = null;
-        userID.value = null;
+        session.value = null    
+        role.value = null
         localStorage.removeItem('authState');
         navigateTo('/');
     };
@@ -33,7 +28,6 @@ export const useAuthState = () => {
     return {
         session,
         role,
-        userID,
         setAuthState,
         clearAuthState
     };

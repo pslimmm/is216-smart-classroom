@@ -1,24 +1,6 @@
 ## Developer Log
 * Follow the format strictly for easy navigation of progress
 
-### 29 October
-Yichen
-- created Pages:
-    courses/[course_id]/notes.vue → course-specific notes with sticky navigation bar
-- updated Pages:
-    courses/[course_id]/index.vue → added sticky navigation bar with Back to Courses and View Notes buttons
-    courses/index.vue → added DASHBOARD and NOTES buttons to each course card
-    app.vue → fixed horizontal scroll across all pages
-- updated Components:
-    LoginCard.vue → redirect to role-specific pages (/{role}) instead of /courses
-    Sidebar.vue → removed Dashboard link for students
-- implemented responsive sticky navigation bars without horizontal scroll on mobile/desktop
-
-### 28 October
-Peter
-- implemented CRUD in class report and student dashboard
-- other pages WIP
-
 ### 25 October
 
 Yichen
