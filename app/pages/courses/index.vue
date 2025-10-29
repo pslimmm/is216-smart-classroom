@@ -30,16 +30,58 @@ const courses = result.data;
                     <div class="ratio ratio-16x9">
                         <img :src="result.imageUrl" class="rounded-top-4" :alt="role == 'prof' ? course.course_name : course.course_info.course_name">
                     </div>
-                    <div class="card-body lh-1">
-                        <p class="fw-bold">{{ role == "prof" ? course.course_code : course.course_info.course_code }} {{ role == "prof" ? course.course_name : course.course_info.course_name }}</p>
-                        <p>Term and Section</p>
-                        <p class="text-muted">{{ role == "prof" ? course.course_term : course.course_info.course_term }} • G{{ role == "prof" ? course.course_section : course.course_info.course_section }}</p>
-                        <p>Professor</p>
-                        <p class="text-muted">{{ role == "prof" ? course.prof_profile.full_name : course.course_info.prof_profile.full_name }}</p>
-                        <p>Schedule</p>
-                        <p class="text-muted">{{ role == "prof" ? course.course_time : course.course_info.course_time }}</p>
-                        <p>Location</p>
-                        <p class="text-muted">{{ role == "prof" ? course.course_location : course.course_info.course_location }}</p>
+
+                    <div class="card-body lh-sm">
+                        <!-- title (eg IS216 Database)-->
+                        <h3 class="h6 fw-bold mb-2 text-truncate-2" :title="(role=='prof' ? course.course_name : course.course_info.course_name)">
+                            {{ role=='prof' ? (course.course_code + ' ' + course.course_name)
+                                            : (course.course_info.course_code + ' ' + course.course_info.course_name) }}
+                        </h3>
+
+                        <!-- academic year and group -->
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                            <span class="badge text-bg-light">
+                            <i class="bi bi-calendar-week me-1"></i>
+                            {{ role=='prof' ? course.course_term : course.course_info.course_term }}
+                            </span>
+                            <span class="badge text-bg-light">
+                            <i class="bi bi-diagram-3 me-1"></i> G{{ role=='prof' ? course.course_section : course.course_info.course_section }}
+                            </span>
+                        </div>
+
+                        <!-- professor name, schedule, location -->
+                        <ul class="list-unstyled d-grid gap-2 mb-0 small">
+                            <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-person-badge mt-1" aria-hidden="true"></i>
+                            <div>
+                                <div class="text-uppercase text-muted small">Professor</div>
+                                <div class="text-truncate" :title="role=='prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name">
+                                {{ role=='prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name }}
+                                </div>
+                            </div>
+                            </li>
+
+                            <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-clock mt-1" aria-hidden="true"></i>
+                            <div>
+                                <div class="text-uppercase text-muted small">Schedule</div>
+                                <div class="text-truncate" :title="role=='prof' ? course.course_time : course.course_info.course_time">
+                                {{ role=='prof' ? course.course_time : course.course_info.course_time }}
+                                </div>
+                            </div>
+                            </li>
+
+                            <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-geo-alt mt-1" aria-hidden="true"></i>
+                            <div>
+                                <div class="text-uppercase text-muted small">Location</div>
+                                <div class="text-truncate" :title="role=='prof' ? course.course_location : course.course_info.course_location">
+                                {{ role=='prof' ? course.course_location : course.course_info.course_location }}
+                                </div>
+                            </div>
+                            </li>
+                        </ul>
+
                     </div>
                 </button>
             </div>
@@ -59,4 +101,17 @@ button.card:hover {
     transform: scale(1.03);
     transition: transform 0.2s;
 }
+
+/* thise is inplace for long titles (Eg Fundamentals of Programming) */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.lh-sm {
+    line-height: 1.25;
+}
+
 </style>
