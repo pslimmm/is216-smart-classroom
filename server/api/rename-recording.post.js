@@ -1,7 +1,5 @@
-import { createClient } from '@supabase/supabase-js'
-
 export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig()
+
     const body = await readBody(event)
     const { recordingId, newTitle } = body
 
@@ -13,13 +11,9 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        const supabase = createClient(
-            config.public.supabaseUrl,
-            config.supabaseServiceRoleKey
-        )
 
         // Update the recording title in the database
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('recordings')
             .update({ title: newTitle.trim() })
             .eq('id', recordingId)

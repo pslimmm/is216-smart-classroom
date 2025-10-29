@@ -1,7 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
-
 export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig()
+
+    const config = useRuntimeConfig();
     const body = await readBody(event)
 
     const { recordingId } = body
@@ -14,14 +13,10 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        
-        const supabase = createClient(
-            config.public.supabaseUrl,
-            config.supabaseServiceRoleKey
-        )
 
-        
-        const { data: recording, error: fetchError } = await supabase
+
+
+        const { data: recording, error: fetchError } = await supabaseClient
             .from('recordings')
             .select('*')
             .eq('id', recordingId)
@@ -46,7 +41,7 @@ export default defineEventHandler(async (event) => {
         }
 
         // Update status to processing (from 'pending' or 'failed')
-        await supabase
+        await supabaseClient
             .from('recordings')
             .update({
                 status: 'processing',
@@ -56,8 +51,8 @@ export default defineEventHandler(async (event) => {
 
         console.log(`Processing recording ${recordingId}...`)
 
-        
-        const { data: audioData, error: downloadError } = await supabase.storage
+
+        const { data: audioData, error: downloadError } = await supabaseClient.storage
             .from('audio-recordings')
             .download(recording.audio_path)
 
@@ -67,11 +62,11 @@ export default defineEventHandler(async (event) => {
 
         console.log('Audio downloaded from storage, size:', audioData.size)
 
-        
+
         const arrayBuffer = await audioData.arrayBuffer()
         const buffer = Buffer.from(arrayBuffer)
 
-        
+
         const groqFormData = new FormData()
         const blob = new Blob([buffer], { type: 'audio/webm' })
         groqFormData.append('file', blob, 'recording.webm')
@@ -79,7 +74,7 @@ export default defineEventHandler(async (event) => {
         groqFormData.append('language', 'en')
         groqFormData.append('response_format', 'json')
 
-        
+
         const groqResponse = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
             method: 'POST',
             headers: {
@@ -98,12 +93,12 @@ export default defineEventHandler(async (event) => {
 
         console.log('Transcription successful, length:', transcript.length)
 
-        
+
         const words = transcript.split(/\s+/)
         const previewWords = words.slice(0, 500).join(' ')
         const preview = previewWords + (words.length > 500 ? '...' : '')
 
-        
+
         console.log('Generating AI summary...')
         let summary = ''
 
@@ -156,8 +151,8 @@ Provide the summary in Markdown format:`
             summary = 'Summary generation failed. Please review the transcript manually.'
         }
 
-        
-        const { data: updatedRecording, error: updateError } = await supabase
+
+        const { data: updatedRecording, error: updateError } = await supabaseClient
             .from('recordings')
             .update({
                 status: 'completed',
@@ -186,13 +181,9 @@ Provide the summary in Markdown format:`
     } catch (error) {
         console.error('Processing error:', error)
 
-        
-        const supabase = createClient(
-            config.public.supabaseUrl,
-            config.supabaseServiceRoleKey
-        )
 
-        await supabase
+
+        await supabaseClient
             .from('recordings')
             .update({
                 status: 'failed',

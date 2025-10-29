@@ -1,8 +1,5 @@
-import { createClient } from '@supabase/supabase-js'
-
-// TEST ENDPOINT: Create a dummy failed transcript for testing retry functionality
 export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig()
+    // TEST ENDPOINT: Create a dummy failed transcript for testing retry functionality
     const body = await readBody(event)
 
     const { week } = body
@@ -14,13 +11,9 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    // Get a real user_id from the profile table
-    const supabaseTemp = createClient(
-        config.public.supabaseUrl,
-        config.supabaseServiceRoleKey
-    )
 
-    const { data: profileData, error: profileError } = await supabaseTemp
+
+    const { data: profileData, error: profileError } = await supabaseClient
         .from('profile')
         .select('user_id')
         .eq('role', 'prof')
@@ -37,15 +30,12 @@ export default defineEventHandler(async (event) => {
     const userId = profileData.user_id
 
     try {
-        const supabase = createClient(
-            config.public.supabaseUrl,
-            config.supabaseServiceRoleKey
-        )
+
 
         const recordingId = crypto.randomUUID()
 
         // Insert dummy FAILED recording
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('recordings')
             .insert({
                 id: recordingId,

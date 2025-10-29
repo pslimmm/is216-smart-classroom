@@ -65,6 +65,13 @@ const handleSubmit = async () => {
             return;
         }
     } else {
+        formData.value = {
+            fullName: '',
+            email: '',
+            password: '',
+            role: '',
+            cfmPassword: ''
+        };
         // isSignUp.value = false;
         showSuccessBox("Account created successfully! Please log in.");
     }

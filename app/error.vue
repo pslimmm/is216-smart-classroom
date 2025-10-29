@@ -5,7 +5,6 @@ const props = defineProps({
 })
 
 const handleError = () => {
-    
     clearError({ redirect: role.value ? `/${role.value}` : '/' });
 }
 </script>

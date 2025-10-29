@@ -1,5 +1,5 @@
 <template>
-    <div class="mw-100" style="min-height: 100vh;" v-if="!['/forbidden', '/', '/auth'].includes(route.path)">
+    <div class="mw-100" v-if="!['/forbidden', '/', '/auth'].includes(route.path)">
         <Navbar />
         <Sidebar />
         <main class="main-content">
@@ -20,7 +20,10 @@ const route = useRoute();
 .main-content {
     padding-left: 5rem;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100vh - 5rem);
+    max-width: 100vw;
     margin-top: 5rem;
 }
 </style>

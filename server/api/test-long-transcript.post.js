@@ -1,7 +1,5 @@
-import { createClient } from '@supabase/supabase-js'
-
-// TEST ENDPOINT: Create a dummy long transcript for UI testing
 export default defineEventHandler(async (event) => {
+    // TEST ENDPOINT: Create a dummy long transcript for UI testing
     const config = useRuntimeConfig()
     const body = await readBody(event)
 
@@ -14,13 +12,8 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    
-    const supabaseTemp = createClient(
-        config.public.supabaseUrl,
-        config.supabaseServiceRoleKey
-    )
 
-    const { data: profileData, error: profileError } = await supabaseTemp
+    const { data: profileData, error: profileError } = await supabaseClient
         .from('profile')
         .select('user_id')
         .eq('role', 'prof')
@@ -37,12 +30,8 @@ export default defineEventHandler(async (event) => {
     const userId = profileData.user_id
 
     try {
-        const supabase = createClient(
-            config.public.supabaseUrl,
-            config.supabaseServiceRoleKey
-        )
 
-        
+
         const longTranscript = `So these are the learning. Now we are in the problem space, still in the problem space. We finished modelling and now we are going to do the analysis. We finished modelling, we are finding the analysis. In this stage the output will be issues and recommendations. So you can see that the as-is models and the business needs will help us to do process analysis. In outputs from the previous two stages, take your workflow diagram, analyze, take the interview script, analyze, this is the stage that we have. So you have previous outputs as inputs to this particular stage. So how a methodological approach is given for this analysis? So analyzing any particular business process requires both dynamic and static approaches, manual as well as tool-based approaches. Sometimes you cannot understand or analyze with a tool. You have to be in person watching this entire business process and then collect the information or issues. Therefore, manual analysis. Why do you think we are having surveys? When students complain about certain problems in SMU, we do surveys, we do focus interviews. We could have just based on the tool and say okay just use the tool and then we don know Tool can get only certain information So manual analysis is very important stage So, we have manual analysis, which we get it as a root cause analysis, and of course, static reports, when you use a proof. So, this will be static analysis stage. And this is the dynamic analysis stage. So, simulation is very popular. Without simulation, you cannot analyze the numbers. So we need numbers also, right? So how do we get the additional numbers in a dynamic way? That's where you can actually come. Static analysis gives you certain types of numbers. But dynamic analysis will give you a real setting, almost close to the real setting kind of numbers. So both of them have a very important purpose. This analyzes, for example, static analysis in software engineering or in business process management.
 
 Let's see the differences. In software engineering, you do a quick analysis when you write a program. You go and check for the logic. You go and check for whether your if-else groups are in proper way or so. That is known as analyzing the program code without even executing the program. So the second kind of analysis which is dynamic is you have test cases. run those test cases and then check which is simulating your approach. Same thing happens here in business management. We have to take interview scripts as is diagrams and use the static analysis Okay So this is a very important stage because the first step we will be able to get static report and RCI report We will see these two reports today. And the second step we will come up with the RCI report. Okay, all of them are tables. So far we have been drawing different rotation BPMN notation. Here we are getting papers. So we'll start with static reports. So the static reports is helping, is trying to use the tool and get the as-is report in a static manual. Since you don't run the simulations, you simply put all the data inside and then just ask for the static report. So there are different ways the tools function. If you use IPM workflow process, it's a very powerful tool. It gives more than seven to eight static reports. Whereas SignalView hardly gives two to three reports. So it really depends on different types of tools that you are using. So at this stage, it's just to understand the cost, time, and so of course, of course, to get the issues and so on related to the particular numbers. So if you see, oh, okay, the cost is really high. Which activity is having more cost? You can see more clearly at the activity level Okay so these are certain things that your static reports provide Cost calculation and resource calculation Resources here, human resources or machine resources. Both of them you will be able to analyze. As I mentioned, it has to vary the different tools.
@@ -89,14 +78,14 @@ Sometimes people, sometimes, I mean, students argue that inadequate staffing is 
         const words = longTranscript.trim().split(/\s+/)
         const preview = words.slice(0, 20).join(' ') + '...'
 
-        
+
         console.log('Generating AI summary for test transcript...')
         console.log('Transcript length:', longTranscript.length, 'characters')
         console.log('Word count:', words.length, 'words')
         let summary = ''
 
         try {
-            
+
             const maxWords = 6000
             const truncatedTranscript = words.length > maxWords
                 ? words.slice(0, maxWords).join(' ') + '\n\n[Transcript truncated due to length...]'
@@ -153,14 +142,14 @@ Provide the summary in Markdown format:`
 
         const recordingId = crypto.randomUUID()
 
-        
+
         const { error } = await supabase
             .from('recordings')
             .insert({
                 id: recordingId,
                 user_id: userId,
                 week: week,
-                audio_path: `test/${recordingId}.webm`, 
+                audio_path: `test/${recordingId}.webm`,
                 audio_size: 0,
                 duration_seconds: 0,
                 status: 'completed',
