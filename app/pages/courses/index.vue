@@ -24,8 +24,8 @@ const courses = result.data;
             <p class="text-muted">Select a course</p>
         </div>
 
-        <div class="row">
-            <div class="col-md-4" v-for="course in courses" :key="course.course_id">
+        <div class="row g-4">
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3" v-for="course in courses" :key="course.course_id">
                 <!-- Card as Button -->
 
                 <button class="card w-100 rounded-4 shadow text-start border-0 bg-white p-0" style="cursor: pointer;" @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )">
