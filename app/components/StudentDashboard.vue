@@ -296,8 +296,8 @@ onBeforeUnmount(() => {
 
 <template>
     <main class="container py-4 my-4">
-        <div class="container-fluid">
-            <h1 class="mb-4 display-1 fw-bold">My Participation Dashboard</h1>
+        <!-- <div class="container-fluid"> -->
+            <h1 class="mb-4 fw-bold" style="font-size: clamp(1.75rem, 2vw+1.25rem, 3rem);">My Participation Dashboard</h1>
 
             <!-- Course Information -->
             <div class="card shadow-sm mb-4" v-if="courseInfo">
@@ -338,43 +338,44 @@ onBeforeUnmount(() => {
                 </div>
             </div>
 
-            <div class="row g-4 mb-5">
-                <div class="col-lg-3 col-md-6">
+            <!-- <div class="row g-4 mb-5"> -->
+            <div class="row row-cols-2 row-cols-md-4 g-3 g-md-4 mb-5">
+                <div class="col">
                     <div class="card shadow-sm h-100">
                         <div class="card-body text-center">
                             <i class="bi bi-coin text-warning fs-1 mb-2"></i>
-                            <h4 class="fw-bold">{{ totalCoins }}</h4>
-                            <small class="text-muted">Total Coins</small>
+                            <h4 class="fw-bold fs-4">{{ totalCoins }}</h4>
+                            <small class="text-muted small">Total Coins</small>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
+                <div class="col">
                     <div class="card shadow-sm h-100">
                         <div class="card-body text-center">
                             <i class="bi bi-card-list text-primary fs-1 mb-2"></i>
-                            <h4 class="fw-bold">{{ totalParticipations }}</h4>
-                            <small class="text-muted">Total Participations</small>
+                            <h4 class="fw-bold fs-4">{{ totalParticipations }}</h4>
+                            <small class="text-muted small">Total Participations</small>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
+                <div class="col">
                     <div class="card shadow-sm h-100">
                         <div class="card-body text-center">
                             <i class="bi bi-star-fill text-info fs-1 mb-2"></i>
-                            <h4 class="fw-bold">{{ myAvgRating.toFixed(2) }}</h4>
-                            <small class="text-muted">My Avg Rating</small>
+                            <h4 class="fw-bold fs-4">{{ myAvgRating.toFixed(2) }}</h4>
+                            <small class="text-muted small">My Avg Rating</small>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
+                <div class="col">
                     <div class="card shadow-sm h-100">
                         <div class="card-body text-center">
                             <i class="bi bi-trophy-fill fs-1 mb-2" :class="projectedGradeStyle"></i>
-                            <h4 class="fw-bold">{{ projectedGrade }}</h4>
-                            <small class="text-muted">Projected Grade</small>
+                            <h4 class="fw-bold fs-4">{{ projectedGrade }}</h4>
+                            <small class="text-muted small">Projected Grade</small>
                         </div>
                     </div>
                 </div>
@@ -412,7 +413,10 @@ onBeforeUnmount(() => {
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="fw-semibold mb-3">Quality Rating: Me vs Class</h5>
-                            <canvas id="qualityChart"></canvas>
+                            <!-- added ratio -->
+                            <div class="ratio ratio-16x9">
+                                <canvas id="qualityChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -421,7 +425,10 @@ onBeforeUnmount(() => {
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="fw-semibold mb-3">Weekly Participation Count</h5>
-                            <canvas id="countChart"></canvas>
+                            <!-- samee here -->
+                            <div class="ratio ratio-16x9">
+                                <canvas id="countChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -463,17 +470,20 @@ onBeforeUnmount(() => {
                     </div>
                 </div>
             </div>
-        </div>
+        <!-- </div> -->
     </main>
 </template>
 
 <style scoped>
 .card {
-    transition: transform 0.2s;
+    /* transition: transform 0.2s; */
+    transition: transform .18s ease,
+                box-shadow .18s ease;
 }
 
 .card:hover {
     transform: translateY(-2px);
+    box-shadow: 0 .75rem 1.5rem rgba(0,0,0,.8);
 }
 
 .progress {
@@ -497,4 +507,5 @@ onBeforeUnmount(() => {
     top: 0;
     z-index: 1;
 }
+
 </style>
