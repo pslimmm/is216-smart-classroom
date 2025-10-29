@@ -475,6 +475,18 @@ const toggleSidebar = () => {
         column-gap: 0.75rem;
     }
 
+    .sidebar-user-avatar {
+        font-size: 3.5rem;
+    }
+
+    .sidebar-user-name {
+        font-size: 1.6rem;
+    }
+
+    .sidebar-user-role {
+        font-size: 1.25rem;
+    }
+
     .sidebar-open .toggle-btn-container,
     .toggle-btn-container {
         display: none;
@@ -545,7 +557,8 @@ const toggleSidebar = () => {
     padding: 1rem 1rem 0 1rem;
     color: #333; */
     flex-direction: row;
-    align-items: flex-start;
+    /* align-items: flex-start; */
+    align-items: center;
     column-gap: 0.75rem;
 
     border-radius: 0.5rem;
@@ -561,25 +574,32 @@ const toggleSidebar = () => {
 .sidebar-user-right {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-width: 0;
 }
 
 .sidebar-user-text {
     display: flex;
     flex-direction: column;
     margin-bottom: 0.75rem;
+    flex: 1;
+    min-width: 0;
+    width: 100%;
 }
 
 .sidebar-user-name {
-    font-weight: 600;
-    font-size: 1rem;
-    line-height: 1.25rem;
+    font-weight: 700;
+    font-size: clamp(1.125rem,4.2vw,1.5rem);
+    line-height: 1.2rem;
     margin: 0;
+    word-break: break-word;
     color: #000;
 }
 
 .sidebar-user-role {
-    font-size: 0.875rem;
-    line-height: 1rem;
+    font-size: clamp(0.95rem,3.6vw,1.25rem);
+    line-height: 1.2rem;
+    margin: 0.15rem 0 0 0;
     color: #6c757d; /* chose this color as it matches text-muted (bootstrap class) */
     margin: 0;
 }
@@ -594,6 +614,9 @@ const toggleSidebar = () => {
     margin-bottom: 0.75rem;
     cursor: pointer;
     background-color: #fff;
+
+    align-self: flex-start;
+    margin-top: 0.25rem;
 }
 
 .sidebar-coin i {
@@ -602,7 +625,8 @@ const toggleSidebar = () => {
 }
 
 .sidebar-user-avatar {
-    font-size: 2.5rem;
+    flex: 0 0 auto;
+    font-size: clamp(2.5rem,10vw,3.5rem);
     line-height: 1;
     color: #000;
 }
