@@ -26,10 +26,10 @@ const courses = result.data;
 
         <div class="row g-4">
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3" v-for="course in courses" :key="course.course_id">
-                <!-- Card as Button -->
-
                 <button class="card w-100 rounded-4 shadow text-start border-0 bg-white p-0" style="cursor: pointer;" @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )">
-                    <img :src="result.imageUrl" class="rounded-top-4" :alt="role == 'prof' ? course.course_name : course.course_info.course_name">
+                    <div class="ratio ratio-16x9">
+                        <img :src="result.imageUrl" class="rounded-top-4" :alt="role == 'prof' ? course.course_name : course.course_info.course_name">
+                    </div>
                     <div class="card-body lh-1">
                         <p class="fw-bold">{{ role == "prof" ? course.course_code : course.course_info.course_code }} {{ role == "prof" ? course.course_name : course.course_info.course_name }}</p>
                         <p>Term and Section</p>
