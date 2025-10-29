@@ -25,10 +25,9 @@ const courses = result.data;
         </div>
 
         <div class="row">
-            <div class="col-md-4" v-for="course in courses" :key="course.course_id">
-                <!-- Card as Button -->
-
-                <button class="card w-100 rounded-4 shadow text-start border-0 bg-white p-0" style="cursor: pointer;" @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )">
+            <div class="col-md-4 mb-4" v-for="course in courses" :key="course.course_id">
+                <!-- Course Card -->
+                <div class="card w-100 rounded-4 shadow border-0 bg-white">
                     <img :src="result.imageUrl" class="rounded-top-4" :alt="role == 'prof' ? course.course_name : course.course_info.course_name">
                     <div class="card-body lh-1">
                         <p class="fw-bold">{{ role == "prof" ? course.course_code : course.course_info.course_code }} {{ role == "prof" ? course.course_name : course.course_info.course_name }}</p>
@@ -40,8 +39,26 @@ const courses = result.data;
                         <p class="text-muted">{{ role == "prof" ? course.course_time : course.course_info.course_time }}</p>
                         <p>Location</p>
                         <p class="text-muted">{{ role == "prof" ? course.course_location : course.course_info.course_location }}</p>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 mt-3">
+                            <button
+                                @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
+                                class="btn btn-outline-primary flex-fill"
+                            >
+                                <i class="bi bi-speedometer2 me-1"></i>
+                                DASHBOARD
+                            </button>
+                            <button
+                                @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) + '/notes')"
+                                class="btn btn-primary flex-fill"
+                            >
+                                <i class="bi bi-journal-text me-1"></i>
+                                NOTES
+                            </button>
+                        </div>
                     </div>
-                </button>
+                </div>
             </div>
         </div>
     </div>
@@ -55,8 +72,8 @@ const courses = result.data;
     object-fit: cover;
 }
 
-button.card:hover {
-    transform: scale(1.03);
+.card:hover {
+    transform: scale(1.02);
     transition: transform 0.2s;
 }
 </style>

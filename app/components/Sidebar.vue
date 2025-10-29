@@ -18,7 +18,7 @@
                         </button>
                     </div>
                     <!-- Main Navigation -->
-                    <button v-if="role" class="btn nav-item">
+                    <button v-if="role && role !== 'student'" class="btn nav-item">
                         <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
                             <i class="bi bi-bar-chart-line"></i>
                             <span>Dashboard</span>

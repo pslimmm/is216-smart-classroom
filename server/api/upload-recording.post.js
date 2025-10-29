@@ -15,12 +15,13 @@ export default defineEventHandler(async (event) => {
     const week = formData.find(item => item.name === 'week')?.data.toString()
     const durationSeconds = formData.find(item => item.name === 'duration')?.data.toString()
     const title = formData.find(item => item.name === 'title')?.data.toString()
+    const courseId = formData.find(item => item.name === 'courseId')?.data.toString()
 
     // Validate required fields
-    if (!audioFile || !userId || !userRole || !week || !title) {
+    if (!audioFile || !userId || !userRole || !week || !title || !courseId) {
         throw createError({
             statusCode: 400,
-            message: 'Missing required fields: file, userId, userRole, week, or title'
+            message: 'Missing required fields: file, userId, userRole, week, title, or courseId'
         })
     }
 
@@ -54,6 +55,7 @@ export default defineEventHandler(async (event) => {
             .insert({
                 id: recordingId,
                 user_id: userId,
+                course_id: courseId ? parseInt(courseId) : null,
                 week: week,
                 title: title.trim(),
                 audio_path: storagePath,

@@ -20,9 +20,10 @@ const route = useRoute();
 .main-content {
     padding-left: 5rem;
     position: relative;
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
     height: calc(100vh - 5rem);
-    /* width: calc(100vw - 5rem);; */
+    max-width: 100vw;
     margin-top: 5rem;
 }
 </style>
