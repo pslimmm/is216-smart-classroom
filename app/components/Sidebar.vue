@@ -64,56 +64,69 @@
                             <span>Review CP</span>
                         </NuxtLink>
                     </button>
+
+                    <button v-if="role" class="btn nav-item main-nav-item">
+                        <NuxtLink :to="'/notes' + role" class="nav-link w-100 text-start">
+                            <i class="bi bi-journal-bookmark-fill"></i>
+                            <span>Notes</span>
+                        </NuxtLink>
+                    </button>
                 </div>
 
-                <!-- user summary block taken from navbar -->
+                
+            </nav>
+
+            <div class="sidebar-bottom mt-auto">
                 <div class="sidebar-user-block main-nav-item">
-                    <!-- coins pill (only for students in a specific course) -->
-                    <div
-                        v-if="role === 'student' && route.params.course_id"
-                        class="sidebar-coin"
-                        role="button"
-                        title="Marketplace"
-                        @click="navigateTo('/courses/' + course_id + '/marketplace')"
-                    >
-                        <i class="bi bi-coin me-2"></i>
-                        <div>{{ coins }}</div>
-                    </div>
-
-                    <!-- name + role -->
-                    <div class="sidebar-user-text">
-                        <strong class="sidebar-user-name">{{ data.full_name }}</strong>
-                        <p class="sidebar-user-role">
-                            {{ role === 'prof' ? 'Instructor' : role.charAt(0).toUpperCase() + role.slice(1) }}
-                        </p>
-                    </div>
-
-                    <!-- avatar icon -->
                     <i class="bi bi-person-circle sidebar-user-avatar"></i>
-                </div>
-                <!-- end of user summary block -->
 
-                <div class="mt-auto logout-wrapper">
+                    <!-- right side: details -->
+                    <div class="sidebar-user-right">
+                        <div class="sidebar-user-text">
+                            <strong class="sidebar-user-name">{{ data.full_name }}</strong>
+                            <p class="sidebar-user-role">
+                                {{ role === 'prof' ? 'Instructor' : role.charAt(0).toUpperCase() + role.slice(1) }}
+                            </p>
+                        </div>
+
+                        <!-- coins pill (only for students in a specific course) -->
+                        <div
+                            v-if="role === 'student' && route.params.course_id"
+                            class="sidebar-coin"
+                            role="button"
+                            title="Marketplace"
+                            @click="navigateTo('/courses/' + course_id + '/marketplace')"
+                        >
+                            <i class="bi bi-coin me-2"></i>
+                            <div>{{ coins }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="logout-wrapper">
                     <button v-if="role" class="btn nav-item main-nav-item" @click="clearAuthState">
                         <i class="bi bi-box-arrow-left"></i>
                         <span class="nav-link">Log Out</span>
                     </button>
                 </div>
-            </nav>
+            </div>
         </div>
 
-        <!-- Dark overlay for mobile when sidebar is expanded -->
         <!-- <div v-if="isOpen" class="overlay" @click="isOpen = !isOpen"></div> -->
         <div
             v-if="isOpen"
             class="overlay"
             @click="toggleSidebar"
         ></div>
+
+        
+
     </div>
 </template>
 
 <script setup>
 //assume cause never import thats why not working
+//this works, so verify with Peter if Navbar was importing these....
 import { ref, computed, watch } from 'vue'
 
 const isOpen = ref(false) // collapse by default on mobile
@@ -218,7 +231,7 @@ const toggleSidebar = () => {
 .nav-item i {
     min-width: 24px;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
 .nav-item:first-child {
@@ -344,6 +357,13 @@ const toggleSidebar = () => {
     padding-top: 1rem;
 }
 
+.sidebar-open .sidebar-user-block {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    column-gap: 0.75rem;
+}
+
 .sidebar-open .sidebar-header {
     justify-content: space-between;
     padding: 0 1rem;
@@ -448,6 +468,13 @@ const toggleSidebar = () => {
         height: auto;
     }
 
+    .sidebar-user-block {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        column-gap: 0.75rem;
+    }
+
     .sidebar-open .toggle-btn-container,
     .toggle-btn-container {
         display: none;
@@ -488,6 +515,7 @@ const toggleSidebar = () => {
     nav {
         display: flex;
         flex-direction: column;
+        flex: 1;
         padding: 0 1rem;
         height: 100vh;
         max-height: 100vh;
@@ -506,9 +534,20 @@ const toggleSidebar = () => {
 
 /* for the user summary taken from navbar and xfered here */
 /* user div above logout */
-.sidebar-user-block {
+.sidebar-bottom {
     display: flex;
     flex-direction: column;
+}
+
+.sidebar-user-block {
+    /* flex-direction: column;
+    border-radius: 0.5rem;
+    padding: 1rem 1rem 0 1rem;
+    color: #333; */
+    flex-direction: row;
+    align-items: flex-start;
+    column-gap: 0.75rem;
+
     border-radius: 0.5rem;
     padding: 1rem 1rem 0 1rem;
     color: #333;
@@ -518,21 +557,10 @@ const toggleSidebar = () => {
     so that means right sidebar-user-block will show regardless
     and then for mobile, it is hidden because when collapsed, the display:none
     remember! */
-.sidebar-coin {
-    border: 1px solid black;
-    padding: 0.5rem 0.75rem;
-    border-radius: 1.5rem;
-    display: flex;
-    align-items: center;
-    width: fit-content;
-    margin-bottom: 0.75rem;
-    cursor: pointer;
-    background-color: #fff;
-}
 
-.sidebar-coin i {
-    font-size: 1.25rem;
-    line-height: 1;
+.sidebar-user-right {
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar-user-text {
@@ -554,6 +582,23 @@ const toggleSidebar = () => {
     line-height: 1rem;
     color: #6c757d; /* chose this color as it matches text-muted (bootstrap class) */
     margin: 0;
+}
+
+.sidebar-coin {
+    border: 1px solid black;
+    padding: 0.5rem 0.75rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.sidebar-coin i {
+    font-size: 1.25rem;
+    line-height: 1;
 }
 
 .sidebar-user-avatar {
