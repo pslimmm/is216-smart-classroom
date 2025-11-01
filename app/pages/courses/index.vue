@@ -87,7 +87,8 @@ const courses = result.data;
                             </div>
                         </div>
                     </div>
-                </div>
+
+                </button>
             </div>
         </div>
     </div>
