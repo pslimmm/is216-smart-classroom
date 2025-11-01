@@ -25,90 +25,103 @@ const courses = result.data;
 
         <div class="row g-5">
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3" v-for="course in courses" :key="course.course_id">
-                <button class="card w-100 rounded-4 shadow text-start border-0 bg-white p-0" style="cursor: pointer;" @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )">
+                <button
+                    class="card w-100 rounded-4 shadow text-start border-0 bg-white p-0"
+                    style="cursor: pointer;"
+                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )"
+                >
                     <div class="ratio ratio-16x9">
                         <img
                             :src="result.imageUrl"
-                            class="img-fluid rounded-top-4 h-100 w-100 object-fit-cover"
-                            :alt="role == 'prof' ? course.course_name : course.course_info.course_name">
+                            class="img-fluid rounded-top-4 w-100 h-100 object-fit-cover"
+                            :alt="role == 'prof' ? course.course_name : course.course_info.course_name"
+                        >
                     </div>
 
                     <div class="card-body">
-                        <!-- title (eg IS216 Database)-->
-                        <h4 class="fw-bold mb-2 text-truncate-2" :title="(role=='prof' ? course.course_name : course.course_info.course_name)">
+                        <h4
+                            class="fw-bold mb-3 text-truncate-2"
+                            :title="(role=='prof' ? course.course_name : course.course_info.course_name)"
+                        >
                             {{ role=='prof' ? (course.course_code + ' ' + course.course_name)
                                             : (course.course_info.course_code + ' ' + course.course_info.course_name) }}
                         </h4>
 
-                        <!-- academic year and group -->
-                        <div class="d-flex flex-row align-items-start gap-2 mb-2">
-                            <i class="bi bi-person-badge mt-1 display-2" aria-hidden="true"></i>
-                            <div class="d-flex flex-column flex-grow-1 min-w-0">
-                                <div class="text-uppercase text-muted small fs-6">Professor</div>
+                        <div class="row align-items-start g-3 mb-3">
+                            <div class="col-auto">
+                                <i class="bi bi-person-badge fs-1 text-primary" aria-hidden="true"></i>
+                            </div>
+                            <div class="col">
+                                <div class="text-uppercase text-muted small">Professor</div>
                                 <div
-                                    class="text-truncate fs-5"
+                                    class="fs-5 fw-semibold text-break"
                                     :title="role=='prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name"
                                 >
                                     {{ role=='prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name }}
                                 </div>
                             </div>
-                            
-                            <div class="ms-auto d-flex flex-column text-end gap-1">
-                                <span>
-                                    <i class="bi bi-calendar-week me-1 fs-3"></i>
-                                    {{ role=='prof' ? course.course_term : course.course_info.course_term }}
-                                </span>
-                                <span>
-                                    <i class="bi bi-diagram-3 me-1 fs-3"></i>
-                                    G{{ role=='prof' ? course.course_section : course.course_info.course_section }}
-                                </span>
+                            <div class="col-12 col-md-auto text-muted small">
+                                <div class="d-flex flex-wrap align-items-center gap-3 text-md-end">
+                                    <span class="d-flex align-items-center gap-1">
+                                        <i class="bi bi-calendar-week fs-5"></i>
+                                        {{ role=='prof' ? course.course_term : course.course_info.course_term }}
+                                    </span>
+                                    <span class="d-flex align-items-center gap-1">
+                                        <i class="bi bi-diagram-3 fs-5"></i>
+                                        G{{ role=='prof' ? course.course_section : course.course_info.course_section }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- professor name, schedule, location -->
-                        <div class="d-grid gap-2 mb-0 small">
-                            <div class="d-flex align-items-start gap-2">
-                                <i class="bi bi-clock mt-1 fs-3" aria-hidden="true"></i>
-                                <div class="min-w-0">
-                                    <div class="text-uppercase text-muted small fs-6">Schedule</div>
-                                    <div class="text-truncate fs-5"
-                                        :title="role=='prof' ? course.course_time : course.course_info.course_time">
-                                        {{ role=='prof' ? course.course_time : course.course_info.course_time }}
+                        <div class="row row-cols-1 row-cols-lg-2 g-3 small mb-3">
+                            <div class="col">
+                                <div class="d-flex align-items-start gap-2">
+                                    <i class="bi bi-clock mt-1 fs-5" aria-hidden="true"></i>
+                                    <div class="min-w-0">
+                                        <div class="text-uppercase text-muted small">Schedule</div>
+                                        <div
+                                            class="fw-semibold text-break"
+                                            :title="role=='prof' ? course.course_time : course.course_info.course_time"
+                                        >
+                                            {{ role=='prof' ? course.course_time : course.course_info.course_time }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="d-flex align-items-start gap-2">
-                                <i class="bi bi-geo-alt mt-1 fs-3" aria-hidden="true"></i>
-                                <div class="min-w-0">
-                                    <div class="text-uppercase text-muted small fs-6">Location</div>
-                                    <div class="text-truncate fs-5"
-                                        :title="role=='prof' ? course.course_location : course.course_info.course_location">
-                                        {{ role=='prof' ? course.course_location : course.course_info.course_location }}
+                            <div class="col">
+                                <div class="d-flex align-items-start gap-2">
+                                    <i class="bi bi-geo-alt mt-1 fs-5" aria-hidden="true"></i>
+                                    <div class="min-w-0">
+                                        <div class="text-uppercase text-muted small">Location</div>
+                                        <div
+                                            class="fw-semibold text-break"
+                                            :title="role=='prof' ? course.course_location : course.course_info.course_location"
+                                        >
+                                            {{ role=='prof' ? course.course_location : course.course_info.course_location }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="d-flex gap-2 mt-3">
-                                <button
-                                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
-                                    class="btn btn-outline-primary flex-fill"
-                                >
-                                    <i class="bi bi-speedometer2 me-1"></i>
-                                    DASHBOARD
-                                </button>
-                                <button
-                                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) + '/notes')"
-                                    class="btn btn-primary flex-fill"
-                                >
-                                    <i class="bi bi-journal-text me-1"></i>
-                                    NOTES
-                                </button>
-                            </div>
-
+                        <div class="d-grid gap-2 d-sm-flex">
+                            <button
+                                @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
+                                class="btn btn-outline-primary w-100 w-sm-auto flex-sm-fill"
+                            >
+                                <i class="bi bi-speedometer2 me-1"></i>
+                                DASHBOARD
+                            </button>
+                            <button
+                                @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) + '/notes')"
+                                class="btn btn-primary w-100 w-sm-auto flex-sm-fill"
+                            >
+                                <i class="bi bi-journal-text me-1"></i>
+                                NOTES
+                            </button>
                         </div>
                     </div>
-
                 </button>
             </div>
         </div>
@@ -119,7 +132,8 @@ const courses = result.data;
 
 <style scoped>
 .card-img-top {
-    height: 200px;
+    width: 100%;
+    max-height: 200px;
     object-fit: cover;
 }
 
@@ -128,12 +142,12 @@ const courses = result.data;
     transition: transform 0.2s;
 }
 
-/* thise is inplace for long titles (Eg Fundamentals of Programming) */
+/* this is inplace for long titles (Eg Fundamentals of Programming) */
 .text-truncate-2 {
     display: -webkit-box;
-    -webkit-line-clamp: 1;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    word-break: break-word;
 }
-
 </style>
