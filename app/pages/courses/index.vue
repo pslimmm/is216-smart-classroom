@@ -87,7 +87,7 @@ const courses = result.data;
                             </div>
                         </div>
                     </div>
-                </button>
+                </div>
             </div>
         </div>
     </div>
@@ -101,8 +101,8 @@ const courses = result.data;
     object-fit: cover;
 }
 
-button.card:hover {
-    transform: scale(1.03);
+.card:hover {
+    transform: scale(1.02);
     transition: transform 0.2s;
 }
 

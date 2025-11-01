@@ -1,7 +1,7 @@
 <script setup>
 import Chart from 'chart.js/auto';
 
-const { userID, role } = useAuthState();
+const { role } = useAuthState();
 const route = useRoute()
 
 const showSubmitModal = ref(false);
@@ -252,6 +252,8 @@ const studentsData = computed(() => {
         student.recentParticipations = allParticipations.value
             .filter(p => p.student_id === studentId)
             .map(p => ({
+                transaction_id: p.id,
+                remarks: p.prof_remarks,
                 week: p.week,
                 contribution: p.description || 'No description',
                 rating: p.rating,
@@ -587,6 +589,40 @@ const studentStats = computed(() => {
     ];
 });
 
+// approve and reject cp functions
+
+const showApproveModal = ref(false);
+const showRejectModal = ref(false);
+
+watch(showApproveModal, async (newVal, oldVal) => {
+    if (oldVal === true && newVal === false) {
+        await fetchCourseReport(selectedWeek.value);
+        if (selectedStudentId.value) {
+            loadStudentData();
+        }
+    }
+});
+
+watch(showRejectModal, async (newVal, oldVal) => {
+    if (oldVal === true && newVal === false) {
+        await fetchCourseReport(selectedWeek.value);
+        if (selectedStudentId.value) {
+            loadStudentData();
+        }
+    }
+});
+
+const selectedTransaction = ref({});
+const approveCP = (p) => {
+    selectedTransaction.value = p;
+    showApproveModal.value = true;
+}
+
+const rejectCP = (p) => {
+    selectedTransaction.value = p;
+    showRejectModal.value = true;
+}
+
 onBeforeUnmount(() => {
     Object.values(charts.value).forEach(chart => {
         if (chart && typeof chart.destroy === 'function') chart.destroy();
@@ -595,6 +631,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+    <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
+    <ApproveClassPartModal v-if="showApproveModal" v-model:showApproveModal="showApproveModal"
+        :transaction="selectedTransaction" :student_name="selectedStudent.name" />
+    <RejectClassPartModal v-if="showRejectModal" v-model:showRejectModal="showRejectModal"
+        :transaction="selectedTransaction" :student_name="selectedStudent.name" />
     <main class="container py-4 my-4">
         <!-- <div class="container-fluid"> -->
             <!-- <h1 class="mb-4 display-1 fw-bold">Class Participation Report</h1> -->
@@ -651,7 +692,7 @@ onBeforeUnmount(() => {
                             Week</button>
                     </div>
                 </div>
-                <div class="col-md-6 mb-4">
+                <div v-if="role == 'ta'" class="col-md-6 mb-4">
                     <div class="card h-100 shadow-sm">
                         <h3 class="fw-bold text-center">Actions</h3>
                         <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New
@@ -808,6 +849,7 @@ onBeforeUnmount(() => {
                                     <th>Contribution</th>
                                     <th>Rating</th>
                                     <th>Status</th>
+                                    <th>Additional Remarks</th>
                                     <th v-if="role == 'prof'">Actions</th>
                                 </tr>
                             </thead>
@@ -825,7 +867,17 @@ onBeforeUnmount(() => {
                                             {{ p.status }}
                                         </span>
                                     </td>
-                                    <td v-if="role == 'prof'"></td>
+                                    <td>{{ p.remarks }}</td>
+                                    <td v-if="role == 'prof'">
+                                        <button @click="approveCP(p)" class="btn btn-success"
+                                            v-if="['rejected', 'pending'].includes(p.status)">
+                                            Approve
+                                        </button>
+                                        <button @click="rejectCP(p)" class="btn btn-danger"
+                                            v-if="['approved', 'pending'].includes(p.status)">
+                                            Reject
+                                        </button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
