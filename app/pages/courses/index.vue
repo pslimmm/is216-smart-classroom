@@ -85,6 +85,24 @@ const courses = result.data;
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="d-flex gap-2 mt-3">
+                                <button
+                                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
+                                    class="btn btn-outline-primary flex-fill"
+                                >
+                                    <i class="bi bi-speedometer2 me-1"></i>
+                                    DASHBOARD
+                                </button>
+                                <button
+                                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) + '/notes')"
+                                    class="btn btn-primary flex-fill"
+                                >
+                                    <i class="bi bi-journal-text me-1"></i>
+                                    NOTES
+                                </button>
+                            </div>
+
                         </div>
                     </div>
 
