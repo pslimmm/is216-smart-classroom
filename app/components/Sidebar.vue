@@ -66,7 +66,7 @@
                     </button>
 
                     <button v-if="role" class="btn nav-item main-nav-item">
-                        <NuxtLink :to="'/notes' + role" class="nav-link w-100 text-start">
+                        <NuxtLink :to="'/notes'" class="nav-link w-100 text-start">
                             <i class="bi bi-journal-bookmark-fill"></i>
                             <span>Notes</span>
                         </NuxtLink>
