@@ -794,7 +794,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <!-- <div class="row g-3 mb-4"> -->
-                <div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
                     <div class="col" v-for="stat in studentStats" :key="stat.label">
                         <div class="bg-light p-3 rounded-3 text-center border h-100">
                             <i :class="['bi fs-4 mb-2', stat.icon]"></i>
@@ -811,7 +811,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-4">
+                    <div class="col-12 col-md-6 mb-4">
                         <div class="bg-body-secondary p-3 p-md-4 rounded-3 border">
                             <h5 class="mb-3">Quality Rating Comparison</h5>
                             <!-- changed from height 300px to ratio -->
@@ -824,7 +824,7 @@ onBeforeUnmount(() => {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-4">
+                    <div class="col-12 col-md-6 mb-4">
                         <div class="bg-body-secondary p-3 p-md-4 rounded-3 border">
                             <h5 class="mb-3">Weekly Participation Count</h5>
                             <!-- samex here -->

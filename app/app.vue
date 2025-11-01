@@ -22,18 +22,14 @@ const route = useRoute();
 .main-content {
     position: relative;
     overflow: auto; /* changed scroll -> auto for dynamic exp */
-    height: 100vh;
-    /* width: calc(100vw - 5rem);; */
-    margin-top: 5rem;
-    padding-left: 0;
+    min-height: 100vh;
+    padding: 5rem 1rem 2rem;
 }
 
 /* this applies to desktop screens */
 @media (min-width:768px) {
     .main-content {
-        padding-left: 22.5rem;
-        height: 100vh;
-        margin-top: 0;
+        padding: 1.5rem 2rem 2rem 22.5rem;
     }
 }
 </style>

@@ -37,12 +37,12 @@
                 <div class="nav-menu">
                     <!-- Main Navigation -->
                     <!-- added main-nav-item -->
-                    <button v-if="role" class="btn nav-item main-nav-item">
+                    <!-- <button v-if="role" class="btn nav-item main-nav-item">
                         <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
                             <i class="bi bi-bar-chart-line"></i>
                             <span>Dashboard</span>
                         </NuxtLink>
-                    </button>
+                    </button> -->
 
                     <button v-if="role" class="btn nav-item main-nav-item">
                         <NuxtLink to="/courses" class="nav-link w-100 text-start">
@@ -65,7 +65,7 @@
                         </NuxtLink>
                     </button>
 
-                    <button v-if="role" class="btn nav-item main-nav-item">
+                    <button v-if="['student'].includes(role)" class="btn nav-item main-nav-item">
                         <NuxtLink :to="'/notes'" class="nav-link w-100 text-start">
                             <i class="bi bi-journal-bookmark-fill"></i>
                             <span>Notes</span>

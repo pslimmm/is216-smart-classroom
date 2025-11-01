@@ -342,7 +342,7 @@ onBeforeUnmount(() => {
             </div>
 
             <!-- <div class="row g-4 mb-5"> -->
-            <div class="row row-cols-2 row-cols-md-4 g-3 g-md-4 mb-5">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 g-md-4 mb-5">
                 <div class="col">
                     <div class="card shadow-sm h-100">
                         <div class="card-body text-center">
@@ -384,24 +384,22 @@ onBeforeUnmount(() => {
                 </div>
             </div>
 
-            <div class="row mb-4 d-flex">
-                <div class="col-md-6">
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-md-6">
                     <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h6 class="text-muted mb-2">Current Week</h6>
                             <div class="d-flex align-items-center gap-3">
                                 <label for="weekSelect" class="form-label mb-0">Week:</label>
-                                <select id="weekSelect" v-model="selectedWeek" class="form-select form-select-sm"
-                                    style="width: auto;">
-                                    <option v-for="week in processedData.weeks" :key="week" :value="week">{{ week }}
-                                    </option>
+                                <select id="weekSelect" v-model="selectedWeek" class="form-select form-select-sm w-auto">
+                                    <option v-for="week in processedData.weeks" :key="week" :value="week">{{ week }}</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-12 col-md-6">
                     <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h6 class="text-muted mb-2">Class Average (Week {{ selectedWeek }})</h6>
@@ -412,7 +410,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="row g-4 mb-5">
-                <div class="col-lg-6">
+                <div class="col-12 col-lg-6">
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="fw-semibold mb-3">Quality Rating: Me vs Class</h5>
@@ -424,7 +422,7 @@ onBeforeUnmount(() => {
                     </div>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-12 col-lg-6">
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="fw-semibold mb-3">Weekly Participation Count</h5>

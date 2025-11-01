@@ -78,7 +78,7 @@ const handleSubmit = async () => {
 }
 
 .modal-wrapper {
-    width: 500px;
+    width: min(90vw, 500px);
     max-height: 90vh;
     overflow-y: auto;
 }

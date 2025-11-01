@@ -27,7 +27,10 @@ const courses = result.data;
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3" v-for="course in courses" :key="course.course_id">
                 <button class="card w-100 rounded-4 shadow text-start border-0 bg-white p-0" style="cursor: pointer;" @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )">
                     <div class="ratio ratio-16x9">
-                        <img :src="result.imageUrl" class="rounded-top-4" :alt="role == 'prof' ? course.course_name : course.course_info.course_name">
+                        <img
+                            :src="result.imageUrl"
+                            class="img-fluid rounded-top-4 h-100 w-100 object-fit-cover"
+                            :alt="role == 'prof' ? course.course_name : course.course_info.course_name">
                     </div>
 
                     <div class="card-body">

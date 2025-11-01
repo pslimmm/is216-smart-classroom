@@ -1,8 +1,8 @@
 <template>
     <div>
         <!-- Back Button and Course Header - Sticky Full Width -->
-        <div class="sticky-header d-flex align-items-center mb-4 py-3 bg-white">
-            <button @click="navigateTo('/courses')" class="btn btn-outline-secondary me-3">
+        <div class="sticky-header d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4 bg-white">
+            <button @click="navigateTo('/courses')" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-2"></i>Back to Courses
             </button>
             <div v-if="courseInfo">
@@ -718,23 +718,20 @@ const confirmDelete = async () => {
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-left: calc(-5rem);
-    margin-right: calc(-100vw + 100%);
-    padding-left: 6.5rem;
-    padding-right: 1.5rem;
-    width: 100vw;
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+    margin: 0 -0.75rem 1.5rem;
+    border-radius: 0.75rem;
 }
 
 /* Responsive: Stack content on mobile */
-@media (max-width: 768px) {
+@media (min-width: 768px) {
     .sticky-header {
         flex-direction: column;
         align-items: flex-start !important;
         gap: 0.5rem;
-        margin-left: -5rem;
-        margin-right: -1rem;
-        padding-left: 6rem;
-        padding-right: 1rem;
+        margin: 0 0 2rem;
+        padding: 1.25rem 2rem;
         width: 100vw;
     }
 

@@ -41,7 +41,7 @@ function removeFromCart() {
 <template>
     <div class="card shadow-sm h-100 border border-primary-subtle">
         <!-- Product Image -->
-        <img :src="image" alt="Product image" class="card-img-top object-fit-contain" />
+        <img :src="image" alt="Product image" class="card-img-top img-fluid object-fit-contain" />
 
         <!-- Product Details -->
         <div class="card-body d-flex flex-column justify-content-between">
@@ -77,7 +77,7 @@ function removeFromCart() {
 <style scoped>
 .card-img-top {
     width: 100%;
-    height: 180px;
+    max-height: 180px;
     object-fit: contain;
 }
 </style>
