@@ -461,7 +461,7 @@ onBeforeUnmount(() => {
                                     <td>
                                         <span class="fs-3">{{ p.week }}</span>
                                     </td>
-                                    <td class="text-truncate fs-3" style="max-width: 340px">
+                                    <td class="text-truncate fs-3" style="max-width: 340px;">
                                         {{ p.contribution }}
                                     </td>
                                     <td>
@@ -506,10 +506,6 @@ onBeforeUnmount(() => {
 .section-elev {
     /* background-color: #f8f8ff; */
     background-color: white;
-}
-
-.section-header {
-    background: linear-gradient(90deg, #5b8cff 0%, #6a57ff 100%);
 }
 
 .stat-tile {

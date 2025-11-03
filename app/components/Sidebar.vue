@@ -355,10 +355,13 @@ const toggleSidebar = () => {
 }
 
 .sidebar-open .sidebar-user-block {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
     column-gap: 0.75rem;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-auto-rows: auto;
+    column-gap: 0.75rem;
+    align-items: center;
 }
 
 .sidebar-open .sidebar-header {
@@ -483,9 +486,14 @@ const toggleSidebar = () => {
     }
 
     .sidebar-user-block {
-        align-items: flex-start;
-        border-radius: 0.75;
         background: red;
+
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-auto-rows: auto;
+        column-gap: var(--sidebar-user-block-gap, 1.25rem);
+        align-items: center;
+        border-radius: 0.75rem;
     }
 
     .app-logo {
@@ -573,10 +581,16 @@ const toggleSidebar = () => {
     border-radius: 0.5rem;
     padding: 1rem 1rem 0 1rem;
     color: #333; */
-    flex-direction: row;
+    /* flex-direction: row; */
     /* align-items: flex-start; */
-    align-items: center;
+    /* align-items: center; */
+    /* column-gap: var(--sidebar-user-block-gap, 0.75rem); */
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-auto-rows: auto;
     column-gap: var(--sidebar-user-block-gap, 0.75rem);
+    align-items: center;
 
     border-radius: var(--sidebar-user-block-radius, 0.5rem);
     padding: var(--sidebar-user-block-padding, 1.75rem 2rem 0 2rem);
@@ -593,6 +607,9 @@ const toggleSidebar = () => {
     flex-direction: column;
     flex: 1;
     min-width: 0;
+
+    grid-column: 2;
+    grid-row: 1;
 }
 
 .sidebar-user-text {
@@ -602,6 +619,9 @@ const toggleSidebar = () => {
     flex: 1;
     min-width: 0;
     width: 100%;
+
+    grid-column: 2;
+    grid-row: 1;
 }
 
 .sidebar-user-name {
@@ -632,9 +652,12 @@ const toggleSidebar = () => {
     cursor: pointer;
     background-color: #fff;
 
-    align-self: flex-start;
+    /* align-self: flex-start; */
     margin-top: 0.25rem;
     font-size: var(--sidebar-coin-font-size, inherit);
+    
+    grid-column: 2;
+    grid-row: 2;
 }
 
 .sidebar-coin i {
@@ -647,6 +670,9 @@ const toggleSidebar = () => {
     font-size: var(--sidebar-user-avatar-size, clamp(2.5rem,10vw,3.5rem));
     line-height: 1;
     color: #000;
+
+    grid-column: 1;
+    grid-row: 1;
 }
 
 </style>

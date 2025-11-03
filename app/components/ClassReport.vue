@@ -636,49 +636,66 @@ onBeforeUnmount(() => {
         :transaction="selectedTransaction" :student_name="selectedStudent.name" />
     <RejectClassPartModal v-if="showRejectModal" v-model:showRejectModal="showRejectModal"
         :transaction="selectedTransaction" :student_name="selectedStudent.name" />
-    <main class="container py-4 my-4">
-        <!-- <div class="container-fluid"> -->
-            <!-- <h1 class="mb-4 display-1 fw-bold">Class Participation Report</h1> -->
-            <h1 class="mb-4 display-5 display-md-3 fw-bold">Class Participation Report</h1>
-            <div class="card shadow-sm mb-4" v-if="courseData">
-                <!-- <div class="card-body">
-                    <h4 class="card-title">{{ courseData.course_name }}</h4>
-                    <p class="card-text mb-1">
-                        <strong>Course Code:</strong> {{ courseData.course_code }} |
-                        <strong>Section:</strong> {{ courseData.course_section }}
-                    </p>
-                    <p class="card-text mb-1">
-                        <strong>Term:</strong> {{ courseData.course_term }} |
-                        <strong>Time:</strong> {{ courseData.course_time }}
-                    </p>
-                    <p class="card-text mb-0">
-                        <strong>Location:</strong> {{ courseData.course_location }} |
-                        <strong>Started:</strong> {{ new Date(courseData.starting_date).toLocaleDateString() }}
-                    </p>
-                </div> -->
 
-                <!-- new design -->
-                <div class="card-body">
-                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
-                        <div>
-                            <h4 class="card-title mb-1">{{ courseData.course_name }}</h4>
-                            <div class="small text-muted">
-                            {{ courseData.course_code }} • G{{ courseData.course_section }} • {{ courseData.course_term }}
-                            </div>
+
+    <div class="py-4 px-5">
+        <div class="row mb-5 g-4 align-items-stretch">
+            <!-- Course Info -->
+            <div class="col-12 col-lg-8">
+                <div class="section-elev rounded-4 h-100 d-flex-column">
+                    <!-- Course Info Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.5rem;">Course Information</div>
+                    </div>
+
+                    <!-- Course Info Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <div class="fw-bold text-navy" style="font-size: 3rem;">
+                            {{ courseData.course_name }}
                         </div>
-                        <div class="small text-muted">
-                            <i class="bi bi-clock me-1"></i>{{ courseData.course_time }} |
-                            <i class="bi bi-geo-alt me-1"></i>{{ courseData.course_location }} |
-                            <i class="bi bi-calendar-date me-1"></i>{{ new Date(courseData.starting_date).toLocaleDateString() }}
+                        <div>
+                            <div class="fs-1"><strong>Code:</strong> {{ courseData.course_code }}</div>
+                            <div class="fs-1"><strong>Section:</strong> G{{ courseData.course_section }}</div>
+                            <div class="fs-1"><strong>Time:</strong> {{ courseData.course_time }}</div>
+                            <div class="fs-1"><strong>Location:</strong> {{ courseData.course_location }}</div>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
-            <div class="row d-flex">
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
+
+            <!-- Submit Class Participation -->
+            <div class="col-12 col-lg-4">
+                <!-- <div v-if="role == 'ta'" class="col-md-6 mb-4"> -->
+                <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                    <!-- Submit Class Participation Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Action</div>
+                    </div>
+                    <!-- Submit Class Participation Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+
+                    </div>
+                    <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
+                    <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New
+                        CP</button>
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+
+
+
+        <!-- Class Participation Report -->
+        <div class="col-12 mb-5">
+            <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                <!-- Class Participation Report Header -->
+                <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                    <div class="fw-bold" style="font-size: 3.25rem;">Class Participation Report</div>
+                </div>
+                <!-- Body -->
+                <div class="align-items-center">
+                    <!-- Left Side -->
+                    <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
                         <p>Currently on Week {{ selectedWeek }} (Total weeks so far: {{ currentWeek }})</p>
                         <div class="d-flex align-items-center gap-3 mb-4">
                             <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
@@ -691,212 +708,106 @@ onBeforeUnmount(() => {
                         <button @click="selectedWeek = currentWeek" class="btn btn-secondary btn-sm mb-4">Current
                             Week</button>
                     </div>
-                </div>
-                <div v-if="role == 'ta'" class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <h3 class="fw-bold text-center">Actions</h3>
-                        <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New
-                            CP</button>
-                    </div>
-                </div>
-            </div>
-            <div v-if="isLoading" class="text-center py-4">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
 
-            <div v-else class="row g-3 mb-4">
-                <div class="col-md-3">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                            <h6 class="fs-2 mb-0 text-muted">Total Students</h6>
-                            <i class="bi bi-people-fill text-primary fs-1"></i>
-                        </div>
-                        <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                            <h6 class="fs-2 mb-0 text-muted">Class Avg Rating</h6>
-                            <i class="bi bi-bar-chart-line-fill text-info fs-1"></i>
-                        </div>
-                        <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                            <h6 class="fs-2 mb-0 text-muted">Students on Track</h6>
-                            <i class="bi bi-check-circle-fill text-success fs-1"></i>
-                        </div>
-                        <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card shadow-sm h-100 border border-danger">
-                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                            <h6 class="fs-2 mb-0 text-muted">Needs Attention</h6>
-                            <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
-                        </div>
-                        <div class="card-body pt-0">
-                            <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-4 shadow-sm mb-4">
-                <h3 class="mb-4">Select Student to View Details</h3>
-                <div class="d-flex justify-content-between">
-                    <div class="input-group position-relative">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input v-model="searchQuery" @input="filterStudents"
-                            @focus="showSuggestions = searchQuery.length > 0"
-                            @blur="setTimeout(() => showSuggestions = false, 200)" type="text" class="form-control"
-                            placeholder="Search by student name..." />
-                        <div v-if="showSuggestions && searchSuggestions.length > 0"
-                            class="suggestions-dropdown position-absolute w-100 bg-white border rounded shadow-sm"
-                            style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto;">
-                            <div v-for="student in searchSuggestions" :key="student.student_id"
-                                @click="selectSuggestion(student)" class="suggestion-item p-2 border-bottom"
-                                style="cursor: pointer;" @mouseenter="$event.target.style.backgroundColor = '#f8f9fa'"
-                                @mouseleave="$event.target.style.backgroundColor = 'white'">
-                                <strong>{{ student.student.full_name }}</strong>
+                    <!-- Right Side -->
+                    <div class="px-4 py-3 flex-grow-1 rounded-end-4">
+                        <div class="row row-cols-2 g-3">
+                            <div class="col-md-3">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body d-flex justify-content-between align-items-center pb-2">
+                                        <h6 class="fs-2 mb-0 text-muted">Total Students</h6>
+                                        <i class="bi bi-people-fill text-primary fs-1"></i>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary ms-3" @click="selectedStudentId = ''">Reset</button>
-                </div>
-            </div>
 
-            <div v-if="selectedStudent" class="bg-white p-4 rounded-4 shadow-sm mb-5">
-                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-                    <div>
-                        <h2 class="fw-bold">{{ selectedStudent.name }}</h2>
-                    </div>
-                    <div>
-                        <h4>Projected Grade:</h4>
-                        <div :class="['badge fs-5 p-3 rounded-4', getGradeBadgeClass(selectedStudent.projectedGrade)]">
-                            {{ selectedStudent.projectedGrade }}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- <div class="row g-3 mb-4"> -->
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
-                    <div class="col" v-for="stat in studentStats" :key="stat.label">
-                        <div class="bg-light p-3 rounded-3 text-center border h-100">
-                            <i :class="['bi fs-4 mb-2', stat.icon]"></i>
-                            <h5 class="fw-bold fs-5">{{ stat.value }}</h5>
-                            <small class="text-muted small">{{ stat.label }}</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    This student is below 3 participations/week: <strong>{{ selectedStudent.avgPerWeek.toFixed(2) }}
-                        participation(s) / week</strong>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 col-md-6 mb-4">
-                        <div class="bg-body-secondary p-3 p-md-4 rounded-3 border">
-                            <h5 class="mb-3">Quality Rating Comparison</h5>
-                            <!-- changed from height 300px to ratio -->
-                            <div class="ratio ratio-16x9">
-                                <canvas :id="'qualityChart-' + selectedStudent.id"></canvas>
+                            <div class="col-md-3">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body d-flex justify-content-between align-items-center pb-2">
+                                        <h6 class="fs-2 mb-0 text-muted">Class Avg Rating</h6>
+                                        <i class="bi bi-bar-chart-line-fill text-info fs-1"></i>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mt-2 text-muted small">
-                                <i class="bi bi-info-circle me-1"></i>
-                                * indicates current week.
+
+                            <div class="col-md-3">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body d-flex justify-content-between align-items-center pb-2">
+                                        <h6 class="fs-2 mb-0 text-muted">Students on Track</h6>
+                                        <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 mb-4">
-                        <div class="bg-body-secondary p-3 p-md-4 rounded-3 border">
-                            <h5 class="mb-3">Weekly Participation Count</h5>
-                            <!-- samex here -->
-                            <div class="ratio ratio-16x9">
-                                <canvas :id="'countChart-' + selectedStudent.id"></canvas>
-                            </div>
-                            <div class="mt-2 text-muted small">
-                                <i class="bi bi-info-circle me-1"></i>
-                                * indicates current week.
+
+                            <div class="col-md-3">
+                                <div class="card shadow-sm h-100 border border-danger">
+                                    <div class="card-body d-flex justify-content-between align-items-center pb-2">
+                                        <h6 class="fs-2 mb-0 text-muted">Needs Attention</h6>
+                                        <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!-- End of Class Participation Report -->
 
-                <h5 class="mb-3">All Participation History</h5>
-                <div class="table-responsive">
-                    <div v-if="selectedStudent.recentParticipations.length > 0" class="border rounded">
-                        <table class="table table-bordered table-hover align-middle mb-0">
-                            <thead class="table-secondary sticky-top">
-                                <tr>
-                                    <th>Week</th>
-                                    <th>Contribution</th>
-                                    <th>Rating</th>
-                                    <th>Status</th>
-                                    <th>Additional Remarks</th>
-                                    <th v-if="role == 'prof'">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="p in selectedStudent.recentParticipations" :key="p.date + p.contribution">
-                                    <td>Week {{ p.week }}</td>
-                                    <td>{{ p.contribution }}</td>
-                                    <td>
-                                        <span :class="['badge', getRatingBadgeClass(p.rating)]">
-                                            {{ p.rating }} ⭐
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span :class="['badge', getStatusBadgeClass(p.status)]">
-                                            {{ p.status }}
-                                        </span>
-                                    </td>
-                                    <td>{{ p.remarks }}</td>
-                                    <td v-if="role == 'prof'">
-                                        <button @click="approveCP(p)" class="btn btn-success"
-                                            v-if="['rejected', 'pending'].includes(p.status)">
-                                            Approve
-                                        </button>
-                                        <button @click="rejectCP(p)" class="btn btn-danger"
-                                            v-if="['approved', 'pending'].includes(p.status)">
-                                            Reject
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div v-else class="text-center py-4 text-muted">
-                        <i class="bi bi-clipboard-x fs-1 mb-3"></i>
-                        <p>No participation history found for this student.</p>
+        <!-- Select Student to View Details -->
+        <div class="col-12 mb-5">
+            <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                <!-- Select Student to View Details Header -->
+                <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                    <div class="fw-bold" style="font-size: 3.25rem;">Select Student to View Details</div>
+                </div>
+
+                <!-- Select Student to View Details Body -->
+                <div class="px-4 py-4 flex-grow-1">
+                    <div class="d-flex justify-content-between">
+                        <div class="input-group position-relative">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input v-model="searchQuery" @input="filterStudents"
+                                @focus="showSuggestions = searchQuery.length > 0"
+                                @blur="setTimeout(() => showSuggestions = false, 200)" type="text" class="form-control"
+                                placeholder="Search by student name..." />
+                            <div v-if="showSuggestions && searchSuggestions.length > 0"
+                                class="suggestions-dropdown position-absolute w-100 bg-white border rounded shadow-sm"
+                                style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto;">
+                                <div v-for="student in searchSuggestions" :key="student.student_id"
+                                    @click="selectSuggestion(student)" class="suggestion-item p-2 border-bottom"
+                                    style="cursor: pointer;"
+                                    @mouseenter="$event.target.style.backgroundColor = '#f8f9fa'"
+                                    @mouseleave="$event.target.style.backgroundColor = 'white'">
+                                    <strong>{{ student.student.full_name }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary ms-3" @click="selectedStudentId = ''">Reset</button>
                     </div>
                 </div>
-            </div>
 
-            <div v-else class="rounded-4 p-4 bg-white">
 
-                <p class="text-center">Press any name in the table below or search for a name above to open dashboard
-                </p>
+                <span class="text-muted text-center">Press any name in the table below or search for a name above to
+                    open
+                    dashboard
+                </span>
                 <table class="table table-bordered table-hover align-middle mb-0 text-start">
                     <thead>
                         <tr class="table-secondary">
-                            <th class="col-1">*</th>
+                            <th class="col-1">No.</th>
                             <th class="col ms-3">Student Name</th>
                         </tr>
                     </thead>
@@ -909,18 +820,180 @@ onBeforeUnmount(() => {
                     </tbody>
                 </table>
             </div>
-        <!-- </div> -->
-    </main>
+        </div>
+        <!-- End of Select Students to View Details -->
+
+        <!-- Start of v-if selectedStudent -->
+        <div v-if="selectedStudent">
+            <!-- Selected Student Details -->
+            <div class="col-12 mb-5">
+                <div class="section-elev rounded-4">
+                    <!-- Selected Student Details Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">{{ selectedStudent.name }}'s Details</div>
+                    </div>
+    
+                    <!-- Selected Student Details Body -->
+                    <div class="px-4 py-4">
+                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4">
+                            <!-- Stats -->
+                            <div class="col" v-for="stat in studentStats" :key="stat.label">
+                                <div class="bg-light p-3 rounded-3 text-center border h-100">
+                                    <i :class="['bi fs-4 mb-2', stat.icon]"></i>
+                                    <h5 class="fw-bold fs-5">{{ stat.value }}</h5>
+                                    <small class="text-muted small">{{ stat.label }}</small>
+                                </div>
+                            </div>
+                            <!-- Projected Grade -->
+                            <div v-if="selectedStudent">
+                                <h4>Projected Grade:</h4>
+                                <div
+                                    :class="['badge fs-5 p-3 rounded-4', getGradeBadgeClass(selectedStudent.projectedGrade)]">
+                                    {{ selectedStudent.projectedGrade }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Warning to Appear if participation below 3 -->
+                    <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        This student is below 3 participations/week: <strong>{{
+                            selectedStudent.avgPerWeek.toFixed(2) }}
+                            participation(s) / week</strong>
+                    </div>
+    
+                    <!-- Chart -->
+                    <div class="row g-3 g-md-4 px-4 py-4">
+                        <!-- Left Chart -->
+                        <div class="col-12 col-lg-6">
+                            <div class="border rounded-3 p-3 h-100">
+                                <h6 class="fw-semibold mb-3">Quality Rating: Student vs Class</h6>
+                                <div class="ratio ratio-16x9">
+                                    <canvas :id="'qualityChart-' + selectedStudent.id"></canvas>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Right Chart -->
+                        <div class="col-12 col-lg-6">
+                            <div class="border rounded-3 p-3 h-100">
+                                <h6 class="fw-semibold mb-3">Week Participation</h6>
+                                <div class="ratio ratio-16x9">
+                                    <canvas :id="'countChart-' + selectedStudent.id"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of Chart -->
+                </div>
+                <!-- End of Selected Student Details -->
+            </div>
+
+            <!-- Participation History -->
+            <div class="col-12 mb-3">
+                <div class="section-elev rounded-4">
+                    <!-- Participation History Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Participation History</div>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-4 py-4">
+                        <div class="table-responsive rounded-3 border">
+                            <div v-if="selectedStudent.recentParticipations.length > 0">
+                                <table class="table align-middle mb-0">
+                                    <thead class="table-light sticky-top fs-3">
+                                        <tr>
+                                            <th>Week</th>
+                                            <th>Contribution</th>
+                                            <th>Rating</th>
+                                            <th>Status</th>
+                                            <th>Remarks</th>
+                                            <th v-if="role == 'prof'">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="p in selectedStudent.recentParticipations"
+                                            :key="p.date + p.contribution">
+                                            <td>
+                                                <span class="fs-3">{{ p.week }}</span>
+                                            </td>
+                                            <td class="text-truncate fs-3" style="max-width: 340px;">
+                                                {{ p.contribution }}
+                                            </td>
+                                            <td>
+                                                <span class="text-navy fw-semibold fs-3"> {{ p.rating.toFixed(0) }}
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="text-white fw-semibold fs-3 px-3 py-2 my-0" :class="{
+                                                    'bg-danger': p.status === 'rejected',
+                                                    'bg-warning': p.status === 'pending',
+                                                    'bg-success': p.status === 'approved'
+                                                }"> {{ p.status }}
+                                                </span>
+                                            </td>
+                                            <td class="text-muted text-truncate fs-3">
+                                                {{ p.remarks }}
+                                            </td>
+                                            <td v-if="role == 'prof'">
+                                                <button @click="approveCP(p)" class="btn btn-success"
+                                                    v-if="['rejected', 'pending'].includes(p.status)">
+                                                    Approve
+                                                </button>
+                                                <button @click="rejectCP(p)" class="btn btn-danger"
+                                                    v-if="['approved', 'pending'].includes(p.status)">
+                                                    Reject
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-else class="text-center py-4 text-muted">
+                                <i class="bi bi-clipboard-x fs-1 mb-3"></i>
+                                <p>No participation history found for this student.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of v-if selectedStudent -->
+        <div>
+            <!-- <div v-if="isLoading" class="text-center py-4">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div> -->
+        </div>
+    </div>
 </template>
 
 <style scoped>
+.section-elev {
+    background-color: white;
+}
+
 .suggestion-item {
     transition: background-color 0.2s;
 }
 
+/* Table polish */
 .table-responsive {
     max-height: 300px;
     overflow-y: auto;
+}
+
+.table thead th {
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.table tbody tr+tr {
+    border-top: 1px solid var(--border);
 }
 
 .sticky-top {
