@@ -173,19 +173,19 @@ const createQualityChart = () => {
     }
 
     qualityChart.value = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: processedData.value.weeks,
             datasets: [
                 {
-                    label: 'My Avg Rating',
+                    label: 'My Average Rating',
                     data: processedData.value.myAvgRating,
                     backgroundColor: 'rgba(54, 162, 235, 0.7)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2
                 },
                 {
-                    label: 'Class Avg Rating',
+                    label: 'Class Average Rating',
                     data: processedData.value.classAvgRating,
                     backgroundColor: 'rgba(255, 159, 64, 0.7)',
                     borderColor: 'rgba(255, 159, 64, 1)',
@@ -253,6 +253,8 @@ const createCountChart = () => {
             responsive: true,
             scales: {
                 y: {
+                    min: 0,
+                    max: 5,
                     beginAtZero: true,
                     ticks: { stepSize: 1 },
                     title: { display: true, text: 'No. of Participations' }
@@ -298,175 +300,195 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <main class="container py-4 my-4">
-        <!-- <div class="container-fluid"> -->
-            <h1 class="mb-4 fw-bold" style="font-size: clamp(1.75rem, 2vw+1.25rem, 3rem);">My Participation Dashboard</h1>
-
-            <!-- Course Information -->
-            <div class="card shadow-sm mb-4" v-if="courseInfo">
-                <div class="card-body">
-                    <h4 class="card-title">{{ courseInfo.course_name }}</h4>
-                    <p class="card-text mb-1">
-                        <strong>Course Code:</strong> {{ courseInfo.course_code }} |
-                        <strong>Section:</strong> {{ courseInfo.course_section }}
-                    </p>
-                    <p class="card-text mb-1">
-                        <strong>Term:</strong> {{ courseInfo.course_term }} |
-                        <strong>Time:</strong> {{ courseInfo.course_time }}
-                    </p>
-                    <p class="card-text mb-0">
-                        <strong>Location:</strong> {{ courseInfo.course_location }} |
-                        <strong>Started:</strong> {{ new Date(courseInfo.starting_date).toLocaleDateString() }}
-                    </p>
+    <div class="py-4 px-5 modern">
+        <!-- Top Row -->
+        <div class="row mb-5 g-4 align-items-stretch">
+            <!-- Course Info Card -->
+            <div class="col-12 col-lg-8">
+                <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                    <!-- Course Info Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Course Information</div>
+                    </div>
+                    <!-- Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <div class="fw-bold text-navy" style="font-size: 3rem;">
+                            {{ courseInfo?.course_name || 'Course' }}
+                        </div>
+                        <div>
+                            <div class="fs-1"><strong>Code:</strong> {{ courseInfo?.course_code }}</div>
+                            <div class="fs-1"><strong>Section:</strong> {{ courseInfo?.course_section }}</div>
+                            <div class="fs-1"><strong>Time:</strong> {{ courseInfo?.course_time }}</div>
+                            <div class="fs-1"><strong>Location:</strong> {{ courseInfo?.course_location }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Progress Bar Card -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">This Week's Progress</h5>
-                    <div class="progress" style="height: 30px;">
-                        <div class="progress-bar" :class="{
+            <!-- Course Stats -->
+            <div class="col-12 col-lg-4">
+                <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                    <!-- Course Stats Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Course Statistics</div>
+                    </div>
+                    <!-- Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <div class="row row-cols-2 g-3">
+                            <div class="col" v-for="stat in [
+                                { icon: 'bi-coin', color: 'text-warning', value: totalCoins, label: 'Coins' },
+                                { icon: 'bi-card-list', color: 'text-primary', value: totalParticipations, label: 'Total Participation' },
+                                { icon: 'bi-star-fill', color: 'text-info', value: myAvgRating.toFixed(2), label: 'My Avg Rating' },
+                                { icon: 'bi-trophy-fill', color: projectedGradeStyle, value: projectedGrade, label: 'Projected Grade' }
+                            ]" :key="stat.label">
+                                <div class="card shadow-sm border-0 h-100 stat-card text-center py-3">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi fs-1 mb-2" :class="[stat.icon, stat.color]"></i>
+                                        <div class="fw-bold fs-3">{{ stat.value }}</div>
+                                        <small class="text-muted">{{ stat.label }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="col-12 mb-5">
+            <div class="section-elev rounded-4 d-flex align-items-center">
+                <!-- Left Side: Title -->
+                <div class="fw-bold bg-navy text-white px-4 py-3 flex-shrink-0 rounded-start-4"
+                    style="font-size: 3.25rem;">
+                    This Week's Progress:
+                </div>
+                <!-- Right Side: Progress Bar -->
+                <div class="progress-wrap flex-grow-1 mx-3 d-flex flex-column">
+                    <div class="progress-track mb-2">
+                        <div class="progress-bar progress-gradient text-white fw-bold text-center" :class="{
                             'bg-success': currentWeekProgressPercentage >= 100,
                             'bg-warning': currentWeekProgressPercentage >= 66 && currentWeekProgressPercentage < 100,
                             'bg-danger': currentWeekProgressPercentage < 66
                         }" :style="{ width: currentWeekProgressPercentage + '%' }">
-                            <span class="fw-bold fs-6">{{ currentWeekParticipations }}/3</span>
+                            {{ currentWeekProgressPercentage }}%
                         </div>
                     </div>
-                    <div class="text-center mt-2">
-                        <h3 class="fw-bold text-primary">{{ currentWeekProgressPercentage }}%</h3>
-                        <small class="text-muted">{{ currentWeekParticipations }}/3 participation done this week</small>
-                    </div>
+                    <small class="fw-semibold fs-5">
+                        You have done {{ currentWeekParticipations }}/3 participations this week.
+                    </small>
                 </div>
             </div>
+        </div>
 
-            <!-- <div class="row g-4 mb-5"> -->
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 g-md-4 mb-5">
-                <div class="col">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-coin text-warning fs-1 mb-2"></i>
-                            <h4 class="fw-bold fs-4">{{ totalCoins }}</h4>
-                            <small class="text-muted small">Total Coins</small>
-                        </div>
-                    </div>
+        <!-- Course Analytics -->
+        <div class="col-12 mb-3">
+            <!-- Course Analytics Header -->
+            <div class="section-elev rounded-4">
+                <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                    <div class="fw-bold" style="font-size: 3.25rem;">Course Analytics</div>
                 </div>
 
-                <div class="col">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-card-list text-primary fs-1 mb-2"></i>
-                            <h4 class="fw-bold fs-4">{{ totalParticipations }}</h4>
-                            <small class="text-muted small">Total Participations</small>
+                <!-- Body -->
+                <div class="px-4 py-4">
+                    <!-- Week Selector & Class Average -->
+                    <div class="row g-3 g-md-4 py-2">
+                        <div class="col-12 col-md-6 d-flex align-items-center gap-2 flex-wrap px-5">
+                            <label for="weekSelect" class="form-label fs-2 text-navy fw-semibold">Select Week:</label>
+                            <select id="weekSelect" v-model="selectedWeek"
+                                class="form-select form-select-sm w-auto fs-4">
+                                <option v-for="w in processedData.weeks" :key="w" :value="w">
+                                    {{ w }}
+                                </option>
+                            </select>
                         </div>
-                    </div>
-                </div>
 
-                <div class="col">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-star-fill text-info fs-1 mb-2"></i>
-                            <h4 class="fw-bold fs-4">{{ myAvgRating.toFixed(2) }}</h4>
-                            <small class="text-muted small">My Avg Rating</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-trophy-fill fs-1 mb-2" :class="projectedGradeStyle"></i>
-                            <h4 class="fw-bold fs-4">{{ projectedGrade }}</h4>
-                            <small class="text-muted small">Projected Grade</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4 mb-4">
-                <div class="col-12 col-md-6">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h6 class="text-muted mb-2">Current Week</h6>
-                            <div class="d-flex align-items-center gap-3">
-                                <label for="weekSelect" class="form-label mb-0">Week:</label>
-                                <select id="weekSelect" v-model="selectedWeek" class="form-select form-select-sm w-auto">
-                                    <option v-for="week in processedData.weeks" :key="week" :value="week">{{ week }}</option>
-                                </select>
+                        <div class="col-12 col-md-6 d-flex align-items-center gap-2 flex-wrap">
+                            <div class="fs-2 text-navy fw-semibold">Class Average - Week {{ selectedWeek }} : </div>
+                            <div class="fs-2 fw-semibold">
+                                {{ (classAvgData[selectedWeek] || 0).toFixed(2) }}
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-12 col-md-6">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h6 class="text-muted mb-2">Class Average (Week {{ selectedWeek }})</h6>
-                            <h4 class="fw-bold">{{ (classAvgData[selectedWeek] || 0).toFixed(2) }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4 mb-5">
-                <div class="col-12 col-lg-6">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="fw-semibold mb-3">Quality Rating: Me vs Class</h5>
-                            <!-- added ratio -->
-                            <div class="ratio ratio-16x9">
-                                <canvas id="qualityChart"></canvas>
+                    <!-- Bottom section: Charts -->
+                    <div class="row g-3 g-md-4">
+                        <div class="col-12 col-lg-6">
+                            <div class="border rounded-3 p-3 h-100">
+                                <h6 class="fw-semibold mb-3">Quality Rating: Me vs Class</h6>
+                                <div class="ratio ratio-16x9">
+                                    <canvas id="qualityChart"></canvas>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="col-12 col-lg-6">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="fw-semibold mb-3">Weekly Participation Count</h5>
-                            <!-- samee here -->
-                            <div class="ratio ratio-16x9">
-                                <canvas id="countChart"></canvas>
+                        <div class="col-12 col-lg-6">
+                            <div class="border rounded-3 p-3 h-100">
+                                <h6 class="fw-semibold mb-3">Weekly Participation</h6>
+                                <div class="ratio ratio-16x9">
+                                    <canvas id="countChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="fw-semibold mb-3">Participation History</h5>
-                    <div class="table-responsive border rounded" >
-                        <table class="table table-bordered table-hover align-middle mb-0">
-                            <thead class="table-secondary sticky-top">
+        <!-- Table -->
+        <div class="col-12 mb-3">
+            <div class="section-elev rounded-4">
+                <!-- Table Header -->
+                <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                    <div class="fw-bold" style="font-size: 3.25rem;">Participation History</div>
+                </div>
+                <!-- Body -->
+                <div class="px-4 py-4">
+                    <div class="table-responsive rounded-3 border">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light sticky-top fs-3">
                                 <tr>
                                     <th>Week</th>
                                     <th>Contribution</th>
                                     <th>Rating</th>
-                                    <th>Coins Earned</th>
+                                    <th>Coins</th>
                                     <th>Status</th>
-                                    <th>Additional Remarks</th>
+                                    <th>Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="p in participationHistory" :key="p.id">
-                                    <td>Week {{ p.week }}</td>
-                                    <td>{{ p.contribution }}</td>
                                     <td>
-                                        <span class="badge bg-info">{{ p.rating.toFixed(0) }} ⭐</span>
+                                        <span class="fs-3">{{ p.week }}</span>
+                                    </td>
+                                    <td class="text-truncate fs-3" style="max-width: 340px">
+                                        {{ p.contribution }}
                                     </td>
                                     <td>
-                                        <span class="badge bg-warning text-dark">
-                                            <i class="bi bi-coin"></i> {{ p.coinsEarned }}
+                                        <span class="text-navy fw-semibold fs-3">{{ p.rating.toFixed(0) }}
+                                            <i class="bi bi-star-fill text-warning"></i>
                                         </span>
                                     </td>
-                                    <td :class="p.status == 'rejected' ? 'bg-danger' : (p.status == 'pending' ? 'bg-warning' : 'bg-success')" class="text-light">{{ p.status }}</td>
-                                    <td>{{ p.remarks }}</td>
+                                    <td>
+                                        <span class="text-warning fw-semibold fs-3">
+                                            <i class="bi bi-coin"></i>
+                                            {{ p.coinsEarned }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-white fw-semibold fs-3 px-3 py-2 my-0" :class="{
+                                            'bg-danger': p.status === 'rejected',
+                                            'bg-warning': p.status === 'pending',
+                                            'bg-success': p.status === 'approved'
+                                        }">{{ p.status }}
+                                        </span>
+                                    </td>
+                                    <td class="text-muted text-truncate fs-3">
+                                        {{ p.remarks }}
+                                    </td>
                                 </tr>
-                                <tr v-if="participationHistory.length === 0">
-                                    <td colspan="5" class="text-center text-muted py-4">
+                                <tr v-if="!participationHistory.length">
+                                    <td colspan="6" class="text-center fs-3 fw-semibold py-4">
                                         No participation records found
                                     </td>
                                 </tr>
@@ -475,34 +497,71 @@ onBeforeUnmount(() => {
                     </div>
                 </div>
             </div>
-        <!-- </div> -->
-    </main>
+        </div>
+    </div>
 </template>
 
 <style scoped>
-.card {
-    /* transition: transform 0.2s; */
-    transition: transform .18s ease,
-                box-shadow .18s ease;
+/* Unified style theme (no white cards) */
+.section-elev {
+    /* background-color: #f8f8ff; */
+    background-color: white;
 }
 
-.card:hover {
+.section-header {
+    background: linear-gradient(90deg, #5b8cff 0%, #6a57ff 100%);
+}
+
+.stat-tile {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.stat-tile:hover {
     transform: translateY(-2px);
-    box-shadow: 0 .75rem 1.5rem rgba(0,0,0,.8);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-.progress {
-    border-radius: 10px;
-}
-
-.progress-bar {
-    border-radius: 10px;
+.progress-wrap {
+    flex: 1 1 auto;
+    min-width: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: width 0.5s ease-in-out;
 }
 
+/* Track spans 100% of wrapper width */
+.progress-track {
+    width: 100%;
+    height: 32px;
+    /* adjust thickness */
+    background: #f1f5f9;
+    /* track color */
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+/* The colored fill */
+.progress-bar {
+    height: 100%;
+    border-radius: 999px;
+    transition: width .35s ease;
+}
+
+/* Red→orange gradient */
+.progress-gradient {
+    background: linear-gradient(90deg, #ff3b30 0%, #ffb800 100%);
+}
+
+/* Reuse existing colors */
+.text-navy {
+    color: #1e293b !important;
+}
+
+.bg-light-subtle {
+    background: #f8fafc;
+}
 
 .table-responsive {
     max-height: 300px;
@@ -515,4 +574,57 @@ onBeforeUnmount(() => {
     z-index: 1;
 }
 
+/* Added 3 Nov 2025 */
+.modern {
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+}
+
+.text-navy {
+    color: navy !important;
+}
+
+/* Elevated card look */
+.card-elev {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+}
+
+.card-elev:hover {
+    transform: translateY(-2px);
+    transition: transform .18s ease, box-shadow .18s ease;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.12);
+}
+
+/* Stat card icon */
+.stat-card .icon-wrap {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #F1F5FF;
+}
+
+/* Table polish */
+.table thead th {
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.table tbody tr+tr {
+    border-top: 1px solid var(--border);
+}
+
+/* Responsiveness niceties */
+@media (max-width: 576px) {
+    .stat-card .icon-wrap {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.bg-navy {
+    background-color: navy;
+}
 </style>

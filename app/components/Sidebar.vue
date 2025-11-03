@@ -8,14 +8,14 @@
         <div class="sidebar transition-delay"
             :class="{'sidebar-open': isOpen}">
 
-            <div class="sidebar-header">
+            <div class="sidebar-header bg-navy">
                 <NuxtLink to="/" class="app-logo">
                     <div class="app-logo-text">
                         <!-- <i class="bi bi-hand-index-thumb-fill hand-icon"></i> -->
                         <img src="/hand.png"
                             alt="ClassParti logo"
                             class="hand-icon"/>
-                        <span>ClassParti</span>
+                        <span class="text-white fw-bold" style="font-size: 3.5rem;">ClassParti</span>
                     </div>
                 </NuxtLink>
 
@@ -172,6 +172,18 @@ const toggleSidebar = () => {
     top: 1rem;
     left: 1rem;
 
+    --sidebar-nav-label-size: clamp(2.45rem, 5vw, 3.1rem);
+    --sidebar-nav-link-size: calc(var(--sidebar-nav-label-size) * 1.05);
+    --sidebar-nav-icon-size: calc(var(--sidebar-nav-label-size) * 0.7);
+    --sidebar-toggle-icon-size: clamp(1.6rem, 3.5vw, 2.1rem);
+    --sidebar-logo-text-size: clamp(2.3rem, 5vw, 2.85rem);
+    --sidebar-hand-icon-size: clamp(2.1rem, 4.5vw, 2.65rem);
+    --sidebar-user-name-size: clamp(1.85rem, 4vw, 2.35rem);
+    --sidebar-user-role-size: clamp(1.3rem, 3.5vw, 1.7rem);
+    --sidebar-user-text-gap: 0.8rem;
+    --sidebar-coin-font-size: clamp(1.1rem, 3.2vw, 1.5rem);
+    --sidebar-user-avatar-size: clamp(3rem, 9vw, 3.8rem);
+
     width: 3.5rem;
     height: 3.5rem;
 
@@ -199,11 +211,25 @@ const toggleSidebar = () => {
 .sidebar-header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     height: 100%;
-    padding: 0;
+    padding: 0.75rem 1rem;
     margin-bottom: 0;
+    border-radius: inherit;
+    color: #fff;
+    gap: 0.75rem;
+    overflow: hidden;
+}
+
+.sidebar-header .toggle-btn,
+.sidebar-header .sidebar-toggle-icon {
+    color: inherit;
+}
+
+.sidebar:not(.sidebar-open) .sidebar-header {
+    justify-content: center;
+    padding: 0;
 }
 
 /* nav links styles */
@@ -231,7 +257,7 @@ const toggleSidebar = () => {
 .nav-item i {
     min-width: 24px;
     text-align: center;
-    font-size: 2rem;
+    font-size: var(--sidebar-nav-icon-size);
 }
 
 .nav-item:first-child {
@@ -239,8 +265,8 @@ const toggleSidebar = () => {
 }
 
 .nav-link {
-    font-size: 1.25rem;
-    line-height: 1.5rem;
+    font-size: var(--sidebar-nav-link-size);
+    line-height: 1.15;
     height: auto;
     text-decoration: none;
     color: #333;
@@ -250,6 +276,8 @@ const toggleSidebar = () => {
     opacity: 0;
     margin-left: 1rem;
     color: #333;
+    font-size: var(--sidebar-nav-label-size);
+    line-height: 1.15;
 
     /**added new */
     pointer-events: none;
@@ -273,13 +301,13 @@ const toggleSidebar = () => {
     /* background-color: purple; */
 }
 
-.app-logo:visited,
+/* .app-logo:visited,
 .app-logo:active,
 .app-logo:hover,
 .app-logo:focus {
     text-decoration: none;
     color: inherit;
-}
+} */
 
 .main-nav-item {
     display: none;
@@ -319,7 +347,7 @@ const toggleSidebar = () => {
 /* replaced .sidebar-toggle-arrow and .sidebar-toggle-arrow-active
     with .sidebar-toggle-icon */
 .sidebar-toggle-icon {
-    font-size: 1.25rem;
+    font-size: var(--sidebar-toggle-icon-size);
     line-height: 1;
     display: inline-flex;
     align-items: center;
@@ -366,9 +394,10 @@ const toggleSidebar = () => {
 
 .sidebar-open .sidebar-header {
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0.75rem 1rem;
     margin-bottom: 1rem;
     height: auto;
+    border-radius: 0;
 }
 
 .sidebar-open .app-logo {
@@ -421,8 +450,8 @@ const toggleSidebar = () => {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 1.75rem; /* suitable for mobile size */
-    line-height: 1.75rem; /* keep text tight with icon */
+    font-size: var(--sidebar-logo-text-size); /* suitable for mobile size */
+    line-height: 1.1; /* keep text tight with icon */
     font-weight: 600;
     margin: 0;
     color: black;
@@ -434,8 +463,8 @@ const toggleSidebar = () => {
     display: inline-flex;
     align-items: center;
     justify-content: center; */
-    width: 2rem;
-    height: 2rem;
+    width: var(--sidebar-hand-icon-size);
+    height: var(--sidebar-hand-icon-size);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -448,21 +477,27 @@ const toggleSidebar = () => {
     .sidebar {
         top: 0;
         left: 0;
-        width: 40rem;
+        width: 35rem;
         height: 100vh;
         border-radius: 0;
         /* --sidebar-user-block-padding: 1.75rem 2rem 0 2rem; */
         --sidebar-user-block-radius: 0.75rem;
         --sidebar-user-block-gap: 1.25rem;
-        --sidebar-user-name-size: clamp(1.75rem, 1vw + 1.25rem, 2.4rem);
+        --sidebar-nav-label-size: clamp(2.75rem, calc(0.9vw + 2.5rem), 3.1rem);
+        --sidebar-nav-link-size: calc(var(--sidebar-nav-label-size) * 1.08);
+        --sidebar-nav-icon-size: calc(var(--sidebar-nav-label-size) * 0.72);
+        --sidebar-toggle-icon-size: clamp(1.9rem, calc(0.7vw + 1.6rem), 2.3rem);
+        --sidebar-logo-text-size: clamp(2.9rem, calc(0.9vw + 2.5rem), 3.25rem);
+        --sidebar-hand-icon-size: clamp(2.5rem, calc(0.9vw + 2.3rem), 3rem);
+        --sidebar-user-name-size: clamp(2.2rem, calc(1vw + 1.8rem), 2.85rem);
         --sidebar-user-name-line-height: 1.35;
-        --sidebar-user-role-size: clamp(1.35rem, 0.6vw + 1.1rem, 1.75rem);
+        --sidebar-user-role-size: clamp(1.6rem, calc(0.7vw + 1.3rem), 2rem);
         --sidebar-user-role-line-height: 1.4;
         --sidebar-user-text-gap: 1rem;
-        --sidebar-coin-padding: 0.75rem 1.25rem;
+        --sidebar-coin-padding: 0.8rem 1.3rem;
         --sidebar-coin-radius: 2rem;
-        --sidebar-coin-font-size: clamp(1.1rem, 0.6vw + 0.9rem, 1.4rem);
-        --sidebar-user-avatar-size: clamp(3.5rem, 3vw + 2rem, 4.75rem);
+        --sidebar-coin-font-size: clamp(1.3rem, calc(0.6vw + 1.05rem), 1.7rem);
+        --sidebar-user-avatar-size: clamp(3.6rem, calc(2vw + 3rem), 4.6rem);
 
         display: flex;
         flex-direction: column;
@@ -485,10 +520,10 @@ const toggleSidebar = () => {
         align-items: flex-start;
     }
 
-    .sidebar-open .toggle-btn-container,
+    /* .sidebar-open .toggle-btn-container,
     .toggle-btn-container {
         display: none;
-    }
+    } */
 
     .app-logo {
         display: block;
@@ -498,7 +533,7 @@ const toggleSidebar = () => {
     }
 
     .app-logo-text {
-        font-size: clamp(2.75rem, 1vw + 2.25rem, 3.25rem); /* change this to control desktop size remember */
+        font-size: var(--sidebar-logo-text-size); /* change this to control desktop size remember */
         line-height: 1.1;
     }
 
@@ -508,7 +543,6 @@ const toggleSidebar = () => {
     }
 
     .nav-link {
-        font-size: clamp(2.1rem, 0.8vw + 1.8rem, 2.6rem);
         line-height: 1.2;
         height: auto;
     }
@@ -517,14 +551,6 @@ const toggleSidebar = () => {
         padding: 1.25rem 1.75rem;
         min-height: 5rem;
         border-radius: inherit;
-    }
-
-    .nav-item i {
-        font-size: clamp(2.25rem, 0.8vw + 1.9rem, 2.75rem);
-    }
-
-    .nav-item span {
-        font-size: clamp(1.5rem, 0.6vw + 1.25rem, 1.9rem);
     }
 
     .nav-menu {
@@ -566,8 +592,8 @@ const toggleSidebar = () => {
     }
 
     .hand-icon {
-        width: 3rem;
-        height: 3rem;
+        width: var(--sidebar-hand-icon-size);
+        height: var(--sidebar-hand-icon-size);
     }
 }
 
@@ -628,7 +654,7 @@ const toggleSidebar = () => {
     line-height: var(--sidebar-user-role-line-height, 1.2rem);
     margin: 0.15rem 0 0 0;
     color: #6c757d; /* chose this color as it matches text-muted (bootstrap class) */
-    margin: 0;
+    /* margin: 0; */
 }
 
 .sidebar-coin {
@@ -648,7 +674,7 @@ const toggleSidebar = () => {
 }
 
 .sidebar-coin i {
-    font-size: 1.25rem;
+    font-size: calc(var(--sidebar-nav-icon-size, 2rem) * 0.55);
     line-height: 1;
 }
 

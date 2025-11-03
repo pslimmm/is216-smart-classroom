@@ -148,22 +148,6 @@ button:focus-visible {
     color: hsl(var(--primary-foreground));
 }
 
-
-/* standby if needed */
-/* .gradient-success {
-    background: var(--gradient-success);
-    color: hsl(var(--primary-foreground));
+.bg-navy {
+    background-color: navy;
 }
-
-.gradient-accent {
-    background: var(--gradient-accent);
-    color: hsl(var(--accent-foreground));
-}
-
-.shadow-elevated {
-    box-shadow: var(--shadow-elevated);
-}
-
-.shadow-card {
-    box-shadow: var(--shadow-card);
-} */
