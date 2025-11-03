@@ -27,9 +27,9 @@ const courses = result.data;
         </div>
 
         <div class="row g-5">
-            <div class="col-12 col-sm-6 col-lg-4" v-for="course in courses" :key="course.course_id">
+            <div class="col-12 col-sm-6 col-lg-4 d-flex" v-for="course in courses" :key="course.course_id">
                 <button
-                    class="course-card card w-100 rounded-4 shadow text-start border-0 bg-white p-0"
+                    class="course-card card h-100 w-100 rounded-4 shadow text-start border-0 bg-white p-0"
                     @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )"
                 >
                     <div class="ratio ratio-16x9">
@@ -107,7 +107,7 @@ const courses = result.data;
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 d-sm-flex">
+                        <div class="d-grid gap-2 d-sm-flex mt-auto">
                             <button
                                 @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
                                 class="btn btn-outline-primary w-100 w-sm-auto flex-sm-fill"
@@ -142,6 +142,8 @@ const courses = result.data;
 .course-card {
     cursor: pointer;
     font-size: clamp(1.15rem, 1rem + 0.8vw, 1.25rem);
+    display: flex;
+    flex-direction: column;
     transition: transform 0.2s;
 }
 
@@ -155,8 +157,15 @@ const courses = result.data;
     border-top-right-radius: inherit;
 }
 
+.course-card .ratio {
+    flex: 0 0 auto;
+}
+
 .course-card .card-body {
     padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
 }
 
 .course-card h4 {
