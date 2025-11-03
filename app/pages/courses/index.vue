@@ -203,12 +203,17 @@ const courses = result.data;
     font-size: 1.1em;
 }
 
-/* this is inplace for long titles (Eg Fundamentals of Programming) */
 .text-truncate-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    word-break: break-word;
+    text-overflow: ellipsis;
+    white-space: normal;
+    line-height: 1.4em;
+    min-height: 2.8em;
+    /* max-height: calc(1.4em * 2); */
+    word-break: keep-all;
 }
+
 </style>
