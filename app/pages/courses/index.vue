@@ -20,14 +20,16 @@ const courses = result.data;
 <template>
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h1 class="fw-bold">My Courses</h1>
+            <!-- Changes depending on role -->
+            <h1 v-if="role === 'prof'" class="fw-bold">Teaching Courses</h1>
+            <h1 v-else-if="role === 'ta'">Teaching Assistant Courses</h1>
+            <h1 v-else>My Courses</h1>
         </div>
 
         <div class="row g-5">
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3" v-for="course in courses" :key="course.course_id">
+            <div class="col-12 col-sm-6 col-lg-4" v-for="course in courses" :key="course.course_id">
                 <button
-                    class="card w-100 rounded-4 shadow text-start border-0 bg-white p-0"
-                    style="cursor: pointer;"
+                    class="course-card card w-100 rounded-4 shadow text-start border-0 bg-white p-0"
                     @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )"
                 >
                     <div class="ratio ratio-16x9">
@@ -137,9 +139,59 @@ const courses = result.data;
     object-fit: cover;
 }
 
-.card:hover {
-    transform: scale(1.02);
+.course-card {
+    cursor: pointer;
+    font-size: clamp(1.15rem, 1rem + 0.8vw, 1.25rem);
     transition: transform 0.2s;
+}
+
+.course-card:hover {
+    transform: scale(1.015);
+}
+
+.course-card .ratio,
+.course-card img {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+.course-card .card-body {
+    padding: 1.25rem;
+}
+
+.course-card h4 {
+    font-size: clamp(1.65rem, 1.2rem + 1vw, 1.875rem);
+}
+
+.course-card .small,
+.course-card .text-muted.small {
+    font-size: 1.09375rem;
+}
+
+.course-card .fs-5 {
+    font-size: 1.5625rem !important;
+}
+
+.course-card .fs-1 {
+    font-size: 3.125rem !important;
+}
+
+.course-card .row.g-3 {
+    --bs-gutter-x: 1.25rem;
+    --bs-gutter-y: 1.25rem;
+}
+
+.course-card .d-grid.gap-2 {
+    gap: 1.25rem;
+}
+
+.course-card .btn {
+    font-size: 1.25rem;
+    padding: 0.6rem 1.25rem;
+}
+
+.course-card .btn i {
+    font-size: 1.1em;
 }
 
 /* this is inplace for long titles (Eg Fundamentals of Programming) */
