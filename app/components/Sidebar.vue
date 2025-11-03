@@ -1,21 +1,15 @@
 <template>
     <div class="sidebar-wrapper">
-
-
-        <!-- Sidebar -->
-        <!-- <div class="sidebar" :class="isOpen ? 'sidebar-expanded transition-delay' : ''"> -->
-        <!-- <div class="sidebar sidebar-expanded transition-delay"> -->
         <div class="sidebar transition-delay"
             :class="{'sidebar-open': isOpen}">
 
-            <div class="sidebar-header bg-navy">
+            <div class="sidebar-header">
                 <NuxtLink to="/" class="app-logo">
                     <div class="app-logo-text">
-                        <!-- <i class="bi bi-hand-index-thumb-fill hand-icon"></i> -->
                         <img src="/hand.png"
                             alt="ClassParti logo"
                             class="hand-icon"/>
-                        <span class="text-white fw-bold" style="font-size: 3.5rem;">ClassParti</span>
+                        <span class="text-navy fw-bold" style="font-size: 3.5rem;">ClassParti</span>
                     </div>
                 </NuxtLink>
 
@@ -35,15 +29,6 @@
 
             <nav>
                 <div class="nav-menu">
-                    <!-- Main Navigation -->
-                    <!-- added main-nav-item -->
-                    <!-- <button v-if="role" class="btn nav-item main-nav-item">
-                        <NuxtLink :to="'/' + role" class="nav-link w-100 text-start">
-                            <i class="bi bi-bar-chart-line"></i>
-                            <span>Dashboard</span>
-                        </NuxtLink>
-                    </button> -->
-
                     <button v-if="role" class="btn nav-item main-nav-item">
                         <NuxtLink to="/courses" class="nav-link w-100 text-start">
                             <i class="bi bi-journals"></i>
@@ -125,8 +110,6 @@
 </template>
 
 <script setup>
-//assume cause never import thats why not working
-//this works, so verify with Peter if Navbar was importing these....
 import { ref, computed, watch } from 'vue'
 
 const isOpen = ref(false) // collapse by default on mobile
@@ -211,25 +194,11 @@ const toggleSidebar = () => {
 .sidebar-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 0.75rem 1rem;
-    margin-bottom: 0;
-    border-radius: inherit;
-    color: #fff;
-    gap: 0.75rem;
-    overflow: hidden;
-}
-
-.sidebar-header .toggle-btn,
-.sidebar-header .sidebar-toggle-icon {
-    color: inherit;
-}
-
-.sidebar:not(.sidebar-open) .sidebar-header {
-    justify-content: center;
     padding: 0;
+    margin-bottom: 0;
 }
 
 /* nav links styles */
@@ -394,10 +363,9 @@ const toggleSidebar = () => {
 
 .sidebar-open .sidebar-header {
     justify-content: space-between;
-    padding: 0.75rem 1rem;
+    padding: 0 1rem;
     margin-bottom: 1rem;
     height: auto;
-    border-radius: 0;
 }
 
 .sidebar-open .app-logo {
@@ -477,18 +445,16 @@ const toggleSidebar = () => {
     .sidebar {
         top: 0;
         left: 0;
-        width: 35rem;
+        width: 30rem;
         height: 100vh;
         border-radius: 0;
         /* --sidebar-user-block-padding: 1.75rem 2rem 0 2rem; */
-        --sidebar-user-block-radius: 0.75rem;
         --sidebar-user-block-gap: 1.25rem;
         --sidebar-nav-label-size: clamp(2.75rem, calc(0.9vw + 2.5rem), 3.1rem);
         --sidebar-nav-link-size: calc(var(--sidebar-nav-label-size) * 1.08);
         --sidebar-nav-icon-size: calc(var(--sidebar-nav-label-size) * 0.72);
         --sidebar-toggle-icon-size: clamp(1.9rem, calc(0.7vw + 1.6rem), 2.3rem);
         --sidebar-logo-text-size: clamp(2.9rem, calc(0.9vw + 2.5rem), 3.25rem);
-        --sidebar-hand-icon-size: clamp(2.5rem, calc(0.9vw + 2.3rem), 3rem);
         --sidebar-user-name-size: clamp(2.2rem, calc(1vw + 1.8rem), 2.85rem);
         --sidebar-user-name-line-height: 1.35;
         --sidebar-user-role-size: clamp(1.6rem, calc(0.7vw + 1.3rem), 2rem);
@@ -518,12 +484,9 @@ const toggleSidebar = () => {
 
     .sidebar-user-block {
         align-items: flex-start;
+        border-radius: 0.75;
+        background: red;
     }
-
-    /* .sidebar-open .toggle-btn-container,
-    .toggle-btn-container {
-        display: none;
-    } */
 
     .app-logo {
         display: block;
@@ -589,11 +552,12 @@ const toggleSidebar = () => {
     .sidebar-bottom {
         padding: 2rem 2rem 0;
         gap: 1.5rem;
+        background-color: purple;
     }
 
     .hand-icon {
-        width: var(--sidebar-hand-icon-size);
-        height: var(--sidebar-hand-icon-size);
+        width: clamp(2.5rem, calc(0.9vw + 2.3rem), 3rem);
+        height: clamp(2.5rem, calc(0.9vw + 2.3rem), 3rem);
     }
 }
 

@@ -382,7 +382,7 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Course Analytics -->
-        <div class="col-12 mb-3">
+        <div class="col-12 mb-5">
             <!-- Course Analytics Header -->
             <div class="section-elev rounded-4">
                 <div class="bg-navy text-white px-4 py-3 rounded-top-4">
@@ -556,7 +556,7 @@ onBeforeUnmount(() => {
 
 /* Reuse existing colors */
 .text-navy {
-    color: #1e293b !important;
+    color: navy !important;
 }
 
 .bg-light-subtle {
