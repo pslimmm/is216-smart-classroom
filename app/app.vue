@@ -24,12 +24,14 @@ const route = useRoute();
     overflow: auto; /* changed scroll -> auto for dynamic exp */
     min-height: 100vh;
     padding: 5rem 1rem 2rem;
+    background: #f8f9fa;
 }
 
 /* this applies to desktop screens */
 @media (min-width:768px) {
     .main-content {
-        padding: 1.5rem 2rem 2rem 22.5rem;
+        padding: 2rem 0rem 2rem 40rem;
+        background: #f8f9fa;
     }
 }
 </style>

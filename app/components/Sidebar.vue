@@ -53,7 +53,7 @@
 
                     <button v-if="['prof', 'student'].includes(role)" class="btn nav-item main-nav-item">
                         <NuxtLink to="/marketplace" class="nav-link w-100 text-start">
-                            <i class="bi bi-bag"></i>
+                            <i class="bi bi-basket"></i>
                             <span>Marketplace</span>
                         </NuxtLink>
                     </button>
@@ -448,43 +448,41 @@ const toggleSidebar = () => {
     .sidebar {
         top: 0;
         left: 0;
-        width: 22.5rem;
+        width: 40rem;
         height: 100vh;
         border-radius: 0;
+        /* --sidebar-user-block-padding: 1.75rem 2rem 0 2rem; */
+        --sidebar-user-block-radius: 0.75rem;
+        --sidebar-user-block-gap: 1.25rem;
+        --sidebar-user-name-size: clamp(1.75rem, 1vw + 1.25rem, 2.4rem);
+        --sidebar-user-name-line-height: 1.35;
+        --sidebar-user-role-size: clamp(1.35rem, 0.6vw + 1.1rem, 1.75rem);
+        --sidebar-user-role-line-height: 1.4;
+        --sidebar-user-text-gap: 1rem;
+        --sidebar-coin-padding: 0.75rem 1.25rem;
+        --sidebar-coin-radius: 2rem;
+        --sidebar-coin-font-size: clamp(1.1rem, 0.6vw + 0.9rem, 1.4rem);
+        --sidebar-user-avatar-size: clamp(3.5rem, 3vw + 2rem, 4.75rem);
 
         display: flex;
         flex-direction: column;
         align-items: stretch;
         justify-content: flex-start;
 
-        padding-top: 1rem;
+        padding: 2rem 2.5rem;
         box-shadow: 2px 0 3px rgba(0,0,0,0.1);
     }
 
     .sidebar-header {
         justify-content: flex-start;
-        padding: 0 1rem;
-        margin-bottom: 1rem;
+        padding: 0;
+        margin-bottom: 2rem;
         height: auto;
+        column-gap: 1.5rem;
     }
 
     .sidebar-user-block {
-        display: flex;
-        flex-direction: row;
         align-items: flex-start;
-        column-gap: 0.75rem;
-    }
-
-    .sidebar-user-avatar {
-        font-size: 3.5rem;
-    }
-
-    .sidebar-user-name {
-        font-size: 1.6rem;
-    }
-
-    .sidebar-user-role {
-        font-size: 1.25rem;
     }
 
     .sidebar-open .toggle-btn-container,
@@ -500,18 +498,37 @@ const toggleSidebar = () => {
     }
 
     .app-logo-text {
-        font-size: 2.5rem; /* change this to control desktop size remember */
-        line-height: 2.5rem; /* matches line height so scales nicely */
+        font-size: clamp(2.75rem, 1vw + 2.25rem, 3.25rem); /* change this to control desktop size remember */
+        line-height: 1.1;
     }
 
     .main-nav-item {
         display: flex;
+        border-radius: 0.75rem;
     }
 
     .nav-link {
-        font-size: 2rem;
-        line-height: 2rem;
+        font-size: clamp(2.1rem, 0.8vw + 1.8rem, 2.6rem);
+        line-height: 1.2;
         height: auto;
+    }
+
+    .nav-item {
+        padding: 1.25rem 1.75rem;
+        min-height: 5rem;
+        border-radius: inherit;
+    }
+
+    .nav-item i {
+        font-size: clamp(2.25rem, 0.8vw + 1.9rem, 2.75rem);
+    }
+
+    .nav-item span {
+        font-size: clamp(1.5rem, 0.6vw + 1.25rem, 1.9rem);
+    }
+
+    .nav-menu {
+        gap: 1.25rem;
     }
 
     /* always show labels on desktop */
@@ -522,15 +539,15 @@ const toggleSidebar = () => {
 
     .logout-wrapper {
         display: block;
+        padding: 0 2rem 0;
     }
 
     nav {
         display: flex;
         flex-direction: column;
         flex: 1;
-        padding: 0 1rem;
-        height: 100vh;
-        max-height: 100vh;
+        padding: 0;
+        gap: 1.5rem;
     }
 
     /* hide the mobile toggle button on desktop */
@@ -541,6 +558,16 @@ const toggleSidebar = () => {
     /* dont show overlay on desktop even if isOpen === true */
     .overlay {
         display: none !important;
+    }
+
+    .sidebar-bottom {
+        padding: 2rem 2rem 0;
+        gap: 1.5rem;
+    }
+
+    .hand-icon {
+        width: 3rem;
+        height: 3rem;
     }
 }
 
@@ -559,10 +586,10 @@ const toggleSidebar = () => {
     flex-direction: row;
     /* align-items: flex-start; */
     align-items: center;
-    column-gap: 0.75rem;
+    column-gap: var(--sidebar-user-block-gap, 0.75rem);
 
-    border-radius: 0.5rem;
-    padding: 1rem 1rem 0 1rem;
+    border-radius: var(--sidebar-user-block-radius, 0.5rem);
+    padding: var(--sidebar-user-block-padding, 1.75rem 2rem 0 2rem);
     color: #333;
 }
 
@@ -581,7 +608,7 @@ const toggleSidebar = () => {
 .sidebar-user-text {
     display: flex;
     flex-direction: column;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--sidebar-user-text-gap, 0.75rem);
     flex: 1;
     min-width: 0;
     width: 100%;
@@ -589,16 +616,16 @@ const toggleSidebar = () => {
 
 .sidebar-user-name {
     font-weight: 700;
-    font-size: clamp(1.125rem,4.2vw,1.5rem);
-    line-height: 1.2rem;
+    font-size: var(--sidebar-user-name-size, clamp(1.125rem,4.2vw,1.5rem));
+    line-height: var(--sidebar-user-name-line-height, 1.2rem);
     margin: 0;
     word-break: break-word;
     color: #000;
 }
 
 .sidebar-user-role {
-    font-size: clamp(0.95rem,3.6vw,1.25rem);
-    line-height: 1.2rem;
+    font-size: var(--sidebar-user-role-size, clamp(0.95rem,3.6vw,1.25rem));
+    line-height: var(--sidebar-user-role-line-height, 1.2rem);
     margin: 0.15rem 0 0 0;
     color: #6c757d; /* chose this color as it matches text-muted (bootstrap class) */
     margin: 0;
@@ -606,8 +633,8 @@ const toggleSidebar = () => {
 
 .sidebar-coin {
     border: 1px solid black;
-    padding: 0.5rem 0.75rem;
-    border-radius: 1.5rem;
+    padding: var(--sidebar-coin-padding, 0.5rem 0.75rem);
+    border-radius: var(--sidebar-coin-radius, 1.5rem);
     display: flex;
     align-items: center;
     width: fit-content;
@@ -617,6 +644,7 @@ const toggleSidebar = () => {
 
     align-self: flex-start;
     margin-top: 0.25rem;
+    font-size: var(--sidebar-coin-font-size, inherit);
 }
 
 .sidebar-coin i {
@@ -626,7 +654,7 @@ const toggleSidebar = () => {
 
 .sidebar-user-avatar {
     flex: 0 0 auto;
-    font-size: clamp(2.5rem,10vw,3.5rem);
+    font-size: var(--sidebar-user-avatar-size, clamp(2.5rem,10vw,3.5rem));
     line-height: 1;
     color: #000;
 }

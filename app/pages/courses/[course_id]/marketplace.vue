@@ -166,7 +166,7 @@ function checkout() {
 
 <style scoped>
 .marketplace {
-    background-color: var(--bs-body-bg);
+    background-color: red;
     min-height: 100vh;
 }
 

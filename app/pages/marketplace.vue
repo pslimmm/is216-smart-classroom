@@ -76,7 +76,7 @@ function checkout() {
 
 <template>
     <!-- <NuxtPage /> -->
-    <main class="container py-4 flex-grow-1">
+    <!-- <main class="container py-4 flex-grow-1"> -->
         <div class="marketplace container py-5">
 
             <div class="mb-4 text-center">
@@ -161,7 +161,7 @@ function checkout() {
                 </div>
             </div>
         </div>
-    </main>
+    <!-- </main> -->
 </template>
 
 <style scoped>
