@@ -447,7 +447,7 @@ onBeforeUnmount(() => {
                     <div class="table-responsive rounded-3 border">
                         <table class="table align-middle mb-0">
                             <thead class="table-light sticky-top fs-3">
-                                <tr>
+                                <tr class="text-center">
                                     <th>Week</th>
                                     <th>Contribution</th>
                                     <th>Rating</th>
@@ -456,7 +456,7 @@ onBeforeUnmount(() => {
                                     <th>Remarks</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="text-center">
                                 <tr v-for="p in participationHistory" :key="p.id">
                                     <td>
                                         <span class="fs-3">{{ p.week }}</span>
@@ -475,12 +475,12 @@ onBeforeUnmount(() => {
                                             {{ p.coinsEarned }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <span class="text-white fw-semibold fs-3 px-3 py-2 my-0" :class="{
+                                    <td :class="{
                                             'bg-danger': p.status === 'rejected',
                                             'bg-warning': p.status === 'pending',
                                             'bg-success': p.status === 'approved'
-                                        }">{{ p.status }}
+                                        }" class="border-bottom-0">
+                                        <span class="text-white fw-semibold fs-3" >{{ p.status }}
                                         </span>
                                     </td>
                                     <td class="text-muted text-truncate fs-3">

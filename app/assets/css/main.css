@@ -155,3 +155,29 @@ button:focus-visible {
 .text-navy {
     color: navy !important;
 }
+
+.btn-navy {
+    background-color: navy;
+    border-color: navy;
+    color: white
+}
+
+.btn-navy:hover {
+    background-color: white;
+    border-color: navy;
+    color: navy;
+}
+
+.btn-outline-navy {
+    color: navy;
+    border-color: navy;
+}
+
+.btn-outline-navy:hover{
+    background-color: navy;
+    color: white;
+}
+
+.btn-outline-navy:focus {
+    box-shadow: none !important;
+}

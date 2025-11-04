@@ -386,26 +386,25 @@ const createStudentCharts = () => {
                         {
                             label: selectedStudent.value.name + ' Rating',
                             data: selectedStudent.value.myAvgRating,
-                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                            borderColor: 'rgba(13, 110, 253, 1)',
-                            borderWidth: 3,
-                            fill: true,
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                            borderColor: 'rgba(54, 162, 253, 1)',
+                            borderWidth: 2,
                             tension: 0.4,
-                            pointBackgroundColor: selectedStudent.value.myAvgRating.map(rating =>
-                                rating === 0 ? 'rgba(200, 200, 200, 0.8)' :
-                                    rating >= 4 ? 'rgba(40, 167, 69, 0.8)' :
-                                        rating >= 3 ? 'rgba(255, 193, 7, 0.8)' :
-                                            'rgba(220, 53, 69, 0.8)'
-                            ),
-                            pointBorderColor: selectedStudent.value.myAvgRating.map(rating =>
-                                rating === 0 ? 'rgba(100, 100, 100, 1)' :
-                                    rating >= 4 ? 'rgba(40, 167, 69, 1)' :
-                                        rating >= 3 ? 'rgba(255, 193, 7, 1)' :
-                                            'rgba(220, 53, 69, 1)'
-                            ),
-                            pointBorderWidth: 2,
-                            pointRadius: 6,
-                            pointHoverRadius: 8
+                            // pointBackgroundColor: selectedStudent.value.myAvgRating.map(rating =>
+                            //     rating === 0 ? 'rgba(200, 200, 200, 0.8)' :
+                            //         rating >= 4 ? 'rgba(40, 167, 69, 0.8)' :
+                            //             rating >= 3 ? 'rgba(255, 193, 7, 0.8)' :
+                            //                 'rgba(220, 53, 69, 0.8)'
+                            // ),
+                            // pointBorderColor: selectedStudent.value.myAvgRating.map(rating =>
+                            //     rating === 0 ? 'rgba(100, 100, 100, 1)' :
+                            //         rating >= 4 ? 'rgba(40, 167, 69, 1)' :
+                            //             rating >= 3 ? 'rgba(255, 193, 7, 1)' :
+                            //                 'rgba(220, 53, 69, 1)'
+                            // ),
+                            // pointBorderWidth: 2,
+                            // pointRadius: 6,
+                            // pointHoverRadius: 8
                         },
                         {
                             label: 'Class Average',
@@ -502,6 +501,7 @@ const createStudentCharts = () => {
                     interaction: { intersect: false, mode: 'index' },
                     scales: {
                         y: {
+                            max: 5,
                             beginAtZero: true,
                             ticks: {
                                 stepSize: 1,
@@ -725,16 +725,16 @@ onBeforeUnmount(() => {
                 <div class="px-4 py-4 flex-grow-1">
                     <div class="d-flex justify-content-between">
                         <div class="input-group position-relative">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <span class="input-group-text"><i class="bi bi-search fs-2"></i></span>
                             <input v-model="searchQuery" @input="filterStudents"
                                 @focus="showSuggestions = searchQuery.length > 0"
-                                @blur="setTimeout(() => showSuggestions = false, 200)" type="text" class="form-control"
+                                @blur="setTimeout(() => showSuggestions = false, 200)" type="text" class="form-control fs-2"
                                 placeholder="Search by student name..." />
                             <div v-if="showSuggestions && searchSuggestions.length > 0"
                                 class="suggestions-dropdown position-absolute w-100 bg-white border rounded shadow-sm"
                                 style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto;">
                                 <div v-for="student in searchSuggestions" :key="student.student_id"
-                                    @click="selectSuggestion(student)" class="suggestion-item p-2 border-bottom"
+                                    @click="selectSuggestion(student)" class="suggestion-item p-2 border-bottom fs-3"
                                     style="cursor: pointer;"
                                     @mouseenter="$event.target.style.backgroundColor = '#f8f9fa'"
                                     @mouseleave="$event.target.style.backgroundColor = 'white'">
@@ -742,13 +742,13 @@ onBeforeUnmount(() => {
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-primary ms-3" @click="selectedStudentId = ''">Reset</button>
+                        <button class="btn bg-navy text-white ms-3 fs-2 fw-semibold" @click="selectedStudentId = ''">Reset</button>
                     </div>
                 </div>
 
 
-                <span class="text-muted text-center">Press any name in the table below or search for a name above to
-                    open dashboard
+                <span class="text-muted fw-bold px-4">(Press any name in the table below or search for a name above to
+                    open dashboard)
                 </span>
 
                 <!-- Select Student Table -->
@@ -818,7 +818,6 @@ onBeforeUnmount(() => {
                                 </div>
                             </div>
                             <!-- Projected Grade -->
-                            <!-- <div v-if="selectedStudent"> -->
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
                                     <div
@@ -880,7 +879,7 @@ onBeforeUnmount(() => {
                             <div v-if="selectedStudent.recentParticipations.length > 0">
                                 <table class="table align-middle mb-0">
                                     <thead class="table-light sticky-top fs-3">
-                                        <tr>
+                                        <tr class="text-center">
                                             <th>Week</th>
                                             <th>Contribution</th>
                                             <th>Rating</th>
@@ -889,7 +888,7 @@ onBeforeUnmount(() => {
                                             <th v-if="role == 'prof'">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="text-center">
                                         <tr v-for="p in selectedStudent.recentParticipations"
                                             :key="p.date + p.contribution">
                                             <td>
@@ -903,23 +902,24 @@ onBeforeUnmount(() => {
                                                     <i class="bi bi-star-fill text-warning"></i>
                                                 </span>
                                             </td>
-                                            <td>
-                                                <span class="text-white fw-semibold fs-3 px-3 py-2 my-0" :class="{
+                                            <td :class="{
                                                     'bg-danger': p.status === 'rejected',
                                                     'bg-warning': p.status === 'pending',
                                                     'bg-success': p.status === 'approved'
-                                                }"> {{ p.status }}
+                                                }" class="border-bottom-0 text-center"
+                                                >
+                                                <span class="text-white fw-semibold fs-3"> {{ p.status }}
                                                 </span>
                                             </td>
                                             <td class="text-muted text-truncate fs-3">
                                                 {{ p.remarks }}
                                             </td>
                                             <td v-if="role == 'prof'">
-                                                <button @click="approveCP(p)" class="btn btn-success"
+                                                <button @click="approveCP(p)" class="btn btn-success fs-3"
                                                     v-if="['rejected', 'pending'].includes(p.status)">
                                                     Approve
                                                 </button>
-                                                <button @click="rejectCP(p)" class="btn btn-danger"
+                                                <button @click="rejectCP(p)" class="btn btn-danger fs-3"
                                                     v-if="['approved', 'pending'].includes(p.status)">
                                                     Reject
                                                 </button>
