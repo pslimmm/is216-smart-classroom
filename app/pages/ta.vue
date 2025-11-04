@@ -28,10 +28,12 @@ onMounted(() => {
     loadStats();
 });
 
+navigateTo('/courses')
+
 </script>
 
-<template>
-    <!-- <div>
+<!-- <template>
+    <div>
         <div class="ta-dashboard">
             <h1>Teaching Assistant Dashboard</h1>
             <p>Welcome, TA 👋 Here’s your teaching overview:</p>
@@ -42,7 +44,7 @@ onMounted(() => {
                 <li>Active students: {{ taData.activeStudents }}</li>
             </ul>
         </div>
-    </div> -->
+    </div>
     <main class="container py-4 flex-grow-1">
         <div class="container py-4">
             <div class="mb-4">
@@ -111,4 +113,4 @@ ul {
     padding: 0;
     line-height: 1.8;
 }
-</style>
+</style> -->

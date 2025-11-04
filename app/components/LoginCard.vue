@@ -53,36 +53,35 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-    <h2 class="fw-bold text-center">Welcome Back</h2>
-    <p class="text-center">Login to your account</p>
+    <h1 class="fw-bold text-center">Welcome Back</h1>
+    <p class="text-center text-muted fs-4">Login to your account</p>
     <form @submit.prevent="handleSubmit">
         <!-- email -->
         <div class="mb-3">
-            <label for="loginEmail" class="form-label">Email</label>
-            <input v-model="formData.email" type="email" class="form-control" id="loginEmail"
+            <label for="loginEmail" class="form-label fw-semibold fs-1">Email</label>
+            <input v-model="formData.email" type="email" class="form-control fs-2" id="loginEmail"
                 placeholder="you@example.com" required />
         </div>
         <!-- password -->
         <div class="mb-3">
-            <label for="loginPassword" class="form-label">Password</label>
+            <label for="loginPassword" class="form-label fw-semibold fs-1">Password</label>
             <div class="input-group">
-                <input v-model="formData.password" :type="showPassword ? 'text' : 'password'" class="form-control"
+                <input v-model="formData.password" :type="showPassword ? 'text' : 'password'" class="form-control fs-2"
                     id="loginPassword" required />
                 <button type="button" class="inputButton" @click="showPassword = !showPassword">
-                    <i v-if="showPassword" class="bi bi-eye"></i>
-                    <i v-else class="bi bi-eye-slash"></i>
+                    <i v-if="showPassword" class="bi bi-eye fs-4"></i>
+                    <i v-else class="bi bi-eye-slash fs-4"></i>
                 </button>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100 mt-3">
+        <button type="submit" class="btn btn-navy w-100 mt-3 fs-2">
             Log In
         </button>
-        <div class="text-center mt-4 pt-3 border-top">
-            <p>Dont't have an account?
+        <div class="text-center mt-4 pt-3 border-top fs-4">
+            <p>Don't have an account?
                 <a role="button" @click="isSignUp = true"
                     class="link-body-emphasis link-offset-2 link-underline-opacity-75 link-underline-opacity-25-hover">
                     Sign up
-
                 </a>
             </p>
         </div>

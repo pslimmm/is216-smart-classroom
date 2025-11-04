@@ -1,199 +1,299 @@
 <template>
-    <div>
-        <!-- Back Button and Course Header - Sticky Full Width -->
-        <div class="sticky-header d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4 bg-white">
+    <div class="py-4 px-5">
+        <!-- Top Row -->
+        <div class="row mb-5 g-4 align-items-stretch">
+            <!-- Record -->
+            <div v-if="canRecord" class="col-12 col-lg-3">
+                <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                    <!-- Record Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Record Lecture</div>
+                    </div>
+                    <!-- Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <div class="text-center py-4">
+                            <!-- Recording Status -->
+                            <div v-if="isRecording" class="mb-4">
+                                <div class="spinner-grow text-danger" role="status">
+                                    <span class="visually-hidden">Recording...</span>
+                                </div>
+                                <h5 class="text-danger mt-2">Recording in progress...</h5>
+                                <p class="text-muted">{{ recordingDuration }}s</p>
+                            </div>
+
+                            <div v-else-if="isTranscribing" class="mb-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Transcribing...</span>
+                                </div>
+                                <h5 class="text-primary mt-2">Transcribing audio...</h5>
+                            </div>
+
+                            <!-- Control Buttons -->
+                            <div class="d-flex gap-3 justify-content-center mb-4">
+                                <button v-if="!isRecording" @click="startRecording" class="btn btn-danger btn-lg fs-4"
+                                    :disabled="isTranscribing">
+                                    <i class="bi bi-mic-fill me-2"></i>
+                                    Start Recording
+                                </button>
+
+                                <button v-if="isRecording" @click="stopRecording" class="btn btn-secondary btn-lg fs-4">
+                                    <i class="bi bi-stop-fill me-2"></i>
+                                    Stop Recording
+                                </button>
+
+                                <button v-if="audioBlob && !isRecording && !isPlaying" @click="playRecording"
+                                    class="btn btn-info btn-lg fs-4" :disabled="isTranscribing">
+                                    <i class="bi bi-play-fill me-2"></i>
+                                    Play Recording
+                                </button>
+
+                                <button v-if="audioBlob && !isRecording && isPlaying" @click="stopPlayback"
+                                    class="btn btn-warning btn-lg fs-4">
+                                    <i class="bi bi-stop-fill me-2"></i>
+                                    Stop Playback
+                                </button>
+                            </div>
+
+                            <!-- Recording Details -->
+                            <div v-if="audioBlob && !isRecording" class="mb-3">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <label for="recordingTitle" class="form-label">Recording Title:</label>
+                                        <input type="text" id="recordingTitle" v-model="recordingTitle"
+                                            class="form-control mb-3"
+                                            placeholder="e.g., Introduction to Cloud Computing" maxlength="100" />
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <label for="weekSelect" class="form-label">Save to Week:</label>
+                                        <select id="weekSelect" v-model="selectedWeek" class="form-select">
+                                            <option v-for="i in 16" :key="i" :value="`Week ${i}`">Week {{ i }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Transcribe & Discard Buttons -->
+                            <div v-if="audioBlob && !isRecording" class="d-flex gap-3 justify-content-center">
+                                <button @click="transcribeAudio" class="btn btn-success btn-lg"
+                                    :disabled="isTranscribing || !recordingTitle.trim()">
+                                    <i class="bi bi-file-text me-2"></i>
+                                    {{ isTranscribing ? 'Transcribing...' : 'Transcribe & Save' }}
+                                </button>
+                                <button @click="discardRecording" class="btn btn-outline-danger btn-lg"
+                                    :disabled="isTranscribing">
+                                    <i class="bi bi-trash me-2"></i>
+                                    Discard
+                                </button>
+                            </div>
+                            <div v-if="audioBlob && !isRecording && !recordingTitle.trim()"
+                                class="text-muted small mt-2">
+                                Please enter a title for your recording
+                            </div>
+
+                            <!-- Error Message -->
+                            <div v-if="errorMessage" class="alert alert-danger mt-3" role="alert">
+                                {{ errorMessage }}
+                            </div>
+
+                            <!-- Success Message -->
+                            <div v-if="successMessage" class="alert alert-success mt-3" role="alert">
+                                {{ successMessage }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Notes Section (Visible to All) -->
+            <div :class="['col-12', canRecord ? 'col-lg-9' : 'col-lg-12']">
+                <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                    <!-- Search and Notes Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Search Notes</div>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <!-- <label for="search" class="form-label">Search Notes: </label> -->
+                        <input type="text" id="search" v-model="search" class="form-control fs-1"
+                            placeholder="Type in keywords"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5 g-4 align-items-stretch">
+            <!-- Notes Accordion -->
+            <div class="col-12">
+                <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                    <!-- Notes Accordion Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Recorded Lecture Notes</div>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <div class="accordion accordion-flush" id="notesAccordion">
+                            <NoteCard v-for="(item, index) in weeksData" :key="item.week" :week="item.week"
+                                :transcripts="item.transcripts" :searchterm="search"
+                                @delete-transcript="deleteTranscript" @retry-transcript="retryTranscript"
+                                @rename-transcript="renameTranscript" @open-slide-panel="openSlidePanel" />
+                        </div>
+
+                        <!-- Slide-out Panel for Full Transcript -->
+                        <TranscriptSlidePanel :is-open="isPanelOpen" :transcript="selectedTranscript"
+                            @close="closeSlidePanel" />
+
+                        <!-- Delete Confirmation Modal -->
+                        <DeleteConfirmModal :is-open="isDeleteModalOpen" @confirm="confirmDelete"
+                            @cancel="cancelDelete" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div>
+        <div
+            class="sticky-header d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4 bg-white">
             <button @click="navigateTo('/courses')" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-2"></i>Back to Courses
             </button>
             <div v-if="courseInfo">
                 <h2 class="mb-0">{{ courseInfo.course_code }}: {{ courseInfo.course_name }}</h2>
-                <p class="text-muted small mb-0">{{ courseInfo.course_term }} | Section {{ courseInfo.course_section }}</p>
+                <p class="text-muted small mb-0">{{ courseInfo.course_term }} | Section {{ courseInfo.course_section }}
+                </p>
             </div>
         </div>
 
         <div class="container py-5 d-flex justify-content-center flex-column">
+            <div v-if="canRecord" class="card shadow-sm w-100 h-100 mb-4">
+                <div class="card-header bg-gradient-primary">
+                    <h4 class="card-title mb-0 display-2 text-center">
+                        Record Lecture
+                    </h4>
+                </div>
 
-        <!-- Recording Section - ONLY for Prof/TA -->
-        <div v-if="canRecord" class="card shadow-sm w-100 h-100 mb-4">
-            <div class="card-header bg-gradient-primary">
-                <h4 class="card-title mb-0 display-2 text-center">
-                    Record Lecture
-                </h4>
-            </div>
-
-            <div class="card-body">
-                <div class="text-center py-4">
-                    <!-- Recording Status -->
-                    <div v-if="isRecording" class="mb-4">
-                        <div class="spinner-grow text-danger" role="status">
-                            <span class="visually-hidden">Recording...</span>
+                <div class="card-body">
+                    <div class="text-center py-4">
+                        <div v-if="isRecording" class="mb-4">
+                            <div class="spinner-grow text-danger" role="status">
+                                <span class="visually-hidden">Recording...</span>
+                            </div>
+                            <h5 class="text-danger mt-2">Recording in progress...</h5>
+                            <p class="text-muted">{{ recordingDuration }}s</p>
                         </div>
-                        <h5 class="text-danger mt-2">Recording in progress...</h5>
-                        <p class="text-muted">{{ recordingDuration }}s</p>
-                    </div>
 
-                    <div v-else-if="isTranscribing" class="mb-4">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Transcribing...</span>
+                        <div v-else-if="isTranscribing" class="mb-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Transcribing...</span>
+                            </div>
+                            <h5 class="text-primary mt-2">Transcribing audio...</h5>
                         </div>
-                        <h5 class="text-primary mt-2">Transcribing audio...</h5>
-                    </div>
 
-                    <!-- Control Buttons -->
-                    <div class="d-flex gap-3 justify-content-center mb-4">
-                        <button
-                            v-if="!isRecording"
-                            @click="startRecording"
-                            class="btn btn-danger btn-lg"
-                            :disabled="isTranscribing"
-                        >
-                            <i class="bi bi-mic-fill me-2"></i>
-                            Start Recording
-                        </button>
+                        <div class="d-flex gap-3 justify-content-center mb-4">
+                            <button v-if="!isRecording" @click="startRecording" class="btn btn-danger btn-lg"
+                                :disabled="isTranscribing">
+                                <i class="bi bi-mic-fill me-2"></i>
+                                Start Recording
+                            </button>
 
-                        <button
-                            v-if="isRecording"
-                            @click="stopRecording"
-                            class="btn btn-secondary btn-lg"
-                        >
-                            <i class="bi bi-stop-fill me-2"></i>
-                            Stop Recording
-                        </button>
+                            <button v-if="isRecording" @click="stopRecording" class="btn btn-secondary btn-lg">
+                                <i class="bi bi-stop-fill me-2"></i>
+                                Stop Recording
+                            </button>
 
-                        <button
-                            v-if="audioBlob && !isRecording && !isPlaying"
-                            @click="playRecording"
-                            class="btn btn-info btn-lg"
-                            :disabled="isTranscribing"
-                        >
-                            <i class="bi bi-play-fill me-2"></i>
-                            Play Recording
-                        </button>
+                            <button v-if="audioBlob && !isRecording && !isPlaying" @click="playRecording"
+                                class="btn btn-info btn-lg" :disabled="isTranscribing">
+                                <i class="bi bi-play-fill me-2"></i>
+                                Play Recording
+                            </button>
 
-                        <button
-                            v-if="audioBlob && !isRecording && isPlaying"
-                            @click="stopPlayback"
-                            class="btn btn-warning btn-lg"
-                        >
-                            <i class="bi bi-stop-fill me-2"></i>
-                            Stop Playback
-                        </button>
-                    </div>
+                            <button v-if="audioBlob && !isRecording && isPlaying" @click="stopPlayback"
+                                class="btn btn-warning btn-lg">
+                                <i class="bi bi-stop-fill me-2"></i>
+                                Stop Playback
+                            </button>
+                        </div>
 
-                    <!-- Recording Details -->
-                    <div v-if="audioBlob && !isRecording" class="mb-3">
-                        <div class="row justify-content-center">
-                            <div class="col-md-6">
-                                <label for="recordingTitle" class="form-label">Recording Title:</label>
-                                <input
-                                    type="text"
-                                    id="recordingTitle"
-                                    v-model="recordingTitle"
-                                    class="form-control mb-3"
-                                    placeholder="e.g., Introduction to Cloud Computing"
-                                    maxlength="100"
-                                />
+                        <div v-if="audioBlob && !isRecording" class="mb-3">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="recordingTitle" class="form-label">Recording Title:</label>
+                                    <input type="text" id="recordingTitle" v-model="recordingTitle"
+                                        class="form-control mb-3" placeholder="e.g., Introduction to Cloud Computing"
+                                        maxlength="100" />
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="weekSelect" class="form-label">Save to Week:</label>
+                                    <select id="weekSelect" v-model="selectedWeek" class="form-select">
+                                        <option v-for="i in 16" :key="i" :value="`Week ${i}`">Week {{ i }}</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-6">
-                                <label for="weekSelect" class="form-label">Save to Week:</label>
-                                <select id="weekSelect" v-model="selectedWeek" class="form-select">
-                                    <option v-for="i in 16" :key="i" :value="`Week ${i}`">Week {{ i }}</option>
-                                </select>
-                            </div>
+
+                        <div v-if="audioBlob && !isRecording" class="d-flex gap-3 justify-content-center">
+                            <button @click="transcribeAudio" class="btn btn-success btn-lg"
+                                :disabled="isTranscribing || !recordingTitle.trim()">
+                                <i class="bi bi-file-text me-2"></i>
+                                {{ isTranscribing ? 'Transcribing...' : 'Transcribe & Save' }}
+                            </button>
+                            <button @click="discardRecording" class="btn btn-outline-danger btn-lg"
+                                :disabled="isTranscribing">
+                                <i class="bi bi-trash me-2"></i>
+                                Discard
+                            </button>
                         </div>
-                    </div>
+                        <div v-if="audioBlob && !isRecording && !recordingTitle.trim()" class="text-muted small mt-2">
+                            Please enter a title for your recording
+                        </div>
 
-                    <!-- Transcribe & Discard Buttons -->
-                    <div v-if="audioBlob && !isRecording" class="d-flex gap-3 justify-content-center">
-                        <button
-                            @click="transcribeAudio"
-                            class="btn btn-success btn-lg"
-                            :disabled="isTranscribing || !recordingTitle.trim()"
-                        >
-                            <i class="bi bi-file-text me-2"></i>
-                            {{ isTranscribing ? 'Transcribing...' : 'Transcribe & Save' }}
-                        </button>
-                        <button
-                            @click="discardRecording"
-                            class="btn btn-outline-danger btn-lg"
-                            :disabled="isTranscribing"
-                        >
-                            <i class="bi bi-trash me-2"></i>
-                            Discard
-                        </button>
-                    </div>
-                    <div v-if="audioBlob && !isRecording && !recordingTitle.trim()" class="text-muted small mt-2">
-                        Please enter a title for your recording
-                    </div>
+                        <div v-if="errorMessage" class="alert alert-danger mt-3" role="alert">
+                            {{ errorMessage }}
+                        </div>
 
-                    <!-- Error Message -->
-                    <div v-if="errorMessage" class="alert alert-danger mt-3" role="alert">
-                        {{ errorMessage }}
-                    </div>
-
-                    <!-- Success Message -->
-                    <div v-if="successMessage" class="alert alert-success mt-3" role="alert">
-                        {{ successMessage }}
+                        <div v-if="successMessage" class="alert alert-success mt-3" role="alert">
+                            {{ successMessage }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Search and Notes Section - VISIBLE TO ALL -->
-        <div class="card shadow-sm w-100 h-100 mt-4">
-            <div class="card-header bg-gradient-primary">
-                <h4 class="card-title mb-0 display-2 text-center">
-                    Lecture Notes
-                    <span v-if="!canRecord" class="badge bg-info ms-2">VIEW ONLY</span>
-                </h4>
-            </div>
+            <div class="card shadow-sm w-100 h-100 mt-4">
+                <div class="card-header bg-gradient-primary">
+                    <h4 class="card-title mb-0 display-2 text-center">
+                        Lecture Notes
+                        <span v-if="!canRecord" class="badge bg-info ms-2">VIEW ONLY</span>
+                    </h4>
+                </div>
 
-            <div class="card-body display-5">
-                <div>
-                    <label for="search" class="form-label">Search Bar:</label>
-                    <input
-                        type="text"
-                        id="search"
-                        v-model="search"
-                        class="form-control"
-                        placeholder="What are you searching for?"
-                    >
+                <div class="card-body display-5">
+                    <div>
+                        <label for="search" class="form-label">Search Bar:</label>
+                        <input type="text" id="search" v-model="search" class="form-control"
+                            placeholder="What are you searching for?">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Notes Accordion -->
-        <div class="accordion accordion-flush mt-4" id="notesAccordion">
-            <NoteCard
-                v-for="(item, index) in weeksData"
-                :key="item.week"
-                :week="item.week"
-                :transcripts="item.transcripts"
-                :searchterm="search"
-                @delete-transcript="deleteTranscript"
-                @retry-transcript="retryTranscript"
-                @rename-transcript="renameTranscript"
-                @open-slide-panel="openSlidePanel"
-            />
-        </div>
+            <div class="accordion accordion-flush mt-4" id="notesAccordion">
+                <NoteCard v-for="(item, index) in weeksData" :key="item.week" :week="item.week"
+                    :transcripts="item.transcripts" :searchterm="search" @delete-transcript="deleteTranscript"
+                    @retry-transcript="retryTranscript" @rename-transcript="renameTranscript"
+                    @open-slide-panel="openSlidePanel" />
+            </div>
 
-        <!-- Slide-out Panel for Full Transcript -->
-        <TranscriptSlidePanel
-            :is-open="isPanelOpen"
-            :transcript="selectedTranscript"
-            @close="closeSlidePanel"
-        />
+            <TranscriptSlidePanel :is-open="isPanelOpen" :transcript="selectedTranscript" @close="closeSlidePanel" />
 
-        <!-- Delete Confirmation Modal -->
-        <DeleteConfirmModal
-            :is-open="isDeleteModalOpen"
-            @confirm="confirmDelete"
-            @cancel="cancelDelete"
-        />
+            <DeleteConfirmModal :is-open="isDeleteModalOpen" @confirm="confirmDelete" @cancel="cancelDelete" />
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script setup>
@@ -707,6 +807,10 @@ const confirmDelete = async () => {
 </script>
 
 <style scoped>
+.section-elev {
+    background-color: white;
+}
+
 .spinner-grow,
 .spinner-border {
     width: 3rem;

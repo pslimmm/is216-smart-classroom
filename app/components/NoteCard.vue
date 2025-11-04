@@ -10,10 +10,11 @@
         :aria-controls="'collapse' + sanitizedWeek"
         @click="handleAccordionClick"
       >
-        <strong>{{ week }}</strong>
-        <span v-if="hasNotes" class="badge bg-success ms-2">
-          {{ transcripts.length }} {{ transcripts.length === 1 ? 'Transcript' : 'Transcripts' }}
-        </span>
+        <div class="fw-semibold fs-3">{{ week }}
+          <span v-if="hasNotes" class="badge bg-success ms-2 fs-4">
+            {{ transcripts.length }} {{ transcripts.length === 1 ? 'Transcript' : 'Transcripts' }}
+          </span>
+        </div>
       </button>
     </h2>
     <div 
@@ -32,12 +33,12 @@
             <div class="d-flex justify-content-between align-items-start mb-2">
               <div class="flex-grow-1">
                 <div class="d-flex align-items-center gap-2 mb-1">
-                  <i class="bi bi-file-earmark-text me-1"></i>
+                  <i class="bi bi-file-earmark-text me-1 fs-3"></i>
 
                   <!-- View mode -->
                   <h6
                     v-if="editingTranscriptId !== transcript.id"
-                    class="mb-0 transcript-title"
+                    class="mb-0 transcript-title fs-1"
                   >
                     {{ transcript.title }}
                   </h6>
@@ -56,17 +57,18 @@
                   />
 
                   <span
-                    class="badge"
+                    class="badge fs-4"
                     :class="transcript.status === 'failed' ? 'bg-danger' : 'bg-success'"
+                    style="margin-left: 1rem;"
                   >
                     <span v-if="transcript.status === 'failed'">Failed</span>
                     <span v-else>Completed</span>
                   </span>
                 </div>
-                <small class="text-muted">
+                <div class="fs-4">
                   <i class="bi bi-clock me-1"></i>
                   {{ transcript.timestamp }}
-                </small>
+                </div>
               </div>
 
               <!-- 3-Dot Menu -->
@@ -77,7 +79,7 @@
                   @click.stop="toggleDropdown(transcript.id)"
                   style="font-size: 1.2rem;"
                 >
-                  <i class="bi bi-three-dots-vertical"></i>
+                  <i class="bi bi-three-dots-vertical fs-3"></i>
                 </button>
                 <ul
                   v-if="openDropdownId === transcript.id"
@@ -86,28 +88,28 @@
                 >
                   <li>
                     <button
-                      class="dropdown-item"
+                      class="dropdown-item fs-5"
                       @click="handleRename(transcript)"
                     >
-                      <i class="bi bi-pencil me-2"></i>
+                      <i class="bi bi-pencil me-2 fs-4"></i>
                       Rename
                     </button>
                   </li>
                   <li v-if="transcript.status === 'failed'">
                     <button
-                      class="dropdown-item text-warning"
+                      class="dropdown-item text-warning fs-5"
                       @click="handleRetry(transcript.id)"
                     >
-                      <i class="bi bi-arrow-clockwise me-2"></i>
+                      <i class="bi bi-arrow-clockwise me-2 fs-4"></i>
                       Retry Processing
                     </button>
                   </li>
                   <li>
                     <button
-                      class="dropdown-item text-danger"
+                      class="dropdown-item text-danger fs-5"
                       @click="handleDelete(transcript.id)"
                     >
-                      <i class="bi bi-trash me-2"></i>
+                      <i class="bi bi-trash me-2 fs-4"></i>
                       Delete
                     </button>
                   </li>
@@ -116,8 +118,8 @@
             </div>
 
             <!-- Failed Status Alert -->
-            <div v-if="transcript.status === 'failed'" class="alert alert-danger mb-3" role="alert">
-              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div v-if="transcript.status === 'failed'" class="alert alert-danger mb-3 fs-5" role="alert">
+              <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
               <strong>Processing Failed:</strong> {{ transcript.errorMessage || 'Unknown error occurred' }}
               <br>
               <small class="text-muted">Click "Retry Processing" in the menu above to try again.</small>
@@ -126,7 +128,7 @@
             <!-- Transcript Preview (clickable) -->
             <div
               v-if="transcript.status !== 'failed'"
-              class="transcript-content"
+              class="transcript-content fs-3 py-4"
               v-html="highlightText(transcript.content)"
               @click="openSlidePanel(transcript)"
               style="cursor: pointer;"
@@ -136,16 +138,16 @@
             <!-- View Full Button -->
             <button
               v-if="transcript.status !== 'failed'"
-              class="btn btn-sm btn-outline-primary mt-2"
+              class="btn btn-sm btn-outline-primary mt-2 fs-5"
               @click="openSlidePanel(transcript)"
             >
-              <i class="bi bi-arrows-angle-expand me-1"></i>
+              <i class="bi bi-arrows-angle-expand me-1 fs-4"></i>
               View Full Transcript
             </button>
           </div>
         </div>
-        <div v-else class="text-muted fst-italic">
-          <i class="bi bi-journal-x me-2"></i>
+        <div v-else class="text-muted fst-italic fs-5">
+          <i class="bi bi-journal-x me-2 fs-4"></i>
           No transcripts available for this week
         </div>
       </div>

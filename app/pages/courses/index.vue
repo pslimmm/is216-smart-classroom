@@ -51,10 +51,10 @@ const courses = result.data;
 
                         <div class="row align-items-start g-3 mb-3">
                             <div class="col-auto">
-                                <i class="bi bi-person-badge fs-1 text-primary" aria-hidden="true"></i>
+                                <i class="bi bi-person-badge fs-1 text-navy" aria-hidden="true"></i>
                             </div>
                             <div class="col">
-                                <div class="text-uppercase text-muted small">Professor</div>
+                                <div class="text-uppercase small">Professor</div>
                                 <div
                                     class="fs-5 fw-semibold text-break"
                                     :title="role=='prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name"
@@ -62,7 +62,7 @@ const courses = result.data;
                                     {{ role=='prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name }}
                                 </div>
                             </div>
-                            <div class="col-12 col-md-auto text-muted small">
+                            <div class="col-12 col-md-auto small">
                                 <div class="d-flex flex-wrap align-items-center gap-3 text-md-end">
                                     <span class="d-flex align-items-center gap-1">
                                         <i class="bi bi-calendar-week fs-5"></i>
@@ -81,7 +81,7 @@ const courses = result.data;
                                 <div class="d-flex align-items-start gap-2">
                                     <i class="bi bi-clock mt-1 fs-5" aria-hidden="true"></i>
                                     <div class="min-w-0">
-                                        <div class="text-uppercase text-muted small">Schedule</div>
+                                        <div class="text-uppercase small">Schedule</div>
                                         <div
                                             class="fw-semibold text-break"
                                             :title="role=='prof' ? course.course_time : course.course_info.course_time"
@@ -95,7 +95,7 @@ const courses = result.data;
                                 <div class="d-flex align-items-start gap-2">
                                     <i class="bi bi-geo-alt mt-1 fs-5" aria-hidden="true"></i>
                                     <div class="min-w-0">
-                                        <div class="text-uppercase text-muted small">Location</div>
+                                        <div class="text-uppercase small">Location</div>
                                         <div
                                             class="fw-semibold text-break"
                                             :title="role=='prof' ? course.course_location : course.course_info.course_location"
@@ -110,14 +110,14 @@ const courses = result.data;
                         <div class="d-grid gap-2 d-sm-flex mt-auto">
                             <button
                                 @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
-                                class="btn btn-outline-primary w-100 w-sm-auto flex-sm-fill"
+                                class="btn btn-outline-navy w-100 w-sm-auto flex-sm-fill"
                             >
                                 <i class="bi bi-speedometer2 me-1"></i>
                                 DASHBOARD
                             </button>
                             <button
                                 @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) + '/notes')"
-                                class="btn btn-primary w-100 w-sm-auto flex-sm-fill"
+                                class="btn btn-navy w-100 w-sm-auto flex-sm-fill"
                             >
                                 <i class="bi bi-journal-text me-1"></i>
                                 NOTES

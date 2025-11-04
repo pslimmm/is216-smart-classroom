@@ -386,10 +386,9 @@ const createStudentCharts = () => {
                         {
                             label: selectedStudent.value.name + ' Rating',
                             data: selectedStudent.value.myAvgRating,
-                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                            borderColor: 'rgba(13, 110, 253, 1)',
-                            borderWidth: 3,
-                            fill: true,
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                            borderColor: 'rgba(54, 162, 253, 1)',
+                            borderWidth: 2,
                             tension: 0.4,
                             pointBackgroundColor: selectedStudent.value.myAvgRating.map(rating =>
                                 rating === 0 ? 'rgba(200, 200, 200, 0.8)' :
@@ -502,6 +501,7 @@ const createStudentCharts = () => {
                     interaction: { intersect: false, mode: 'index' },
                     scales: {
                         y: {
+                            max: 5,
                             beginAtZero: true,
                             ticks: {
                                 stepSize: 1,
@@ -641,7 +641,8 @@ onBeforeUnmount(() => {
     <div class="py-4 px-5">
         <div class="row mb-5 g-4 align-items-stretch">
             <!-- Course Info -->
-            <div class="col-12 col-lg-8">
+            <div :class="['col-12', role === 'ta' ? 'col-lg-6' : 'col-lg-8']">
+                <!-- <div class="col-12 col-lg-"> -->
                 <div class="section-elev rounded-4 h-100 d-flex-column">
                     <!-- Course Info Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
@@ -658,6 +659,36 @@ onBeforeUnmount(() => {
                             <div class="fs-1"><strong>Section:</strong> G{{ courseData.course_section }}</div>
                             <div class="fs-1"><strong>Time:</strong> {{ courseData.course_time }}</div>
                             <div class="fs-1"><strong>Location:</strong> {{ courseData.course_location }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Statistics -->
+            <div :class="['col-12', role === 'ta' ? 'col-lg-3' : 'col-lg-4']">
+                <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                    <!-- Section Statistics Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Section Statistics</div>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <div class="row row-cols-2 g-3">
+                            <div class="col" v-for="stat in [
+                                { icon: 'bi-people-fill', colorSecStat: 'text-primary', value: classStats.totalStudents, label: 'Total Students' },
+                                { icon: 'bi-bar-chart-line-fill', colorSecStat: 'text-info', value: classStats.classAvgRating, label: 'Average Rating' },
+                                { icon: 'bi-check-circle-fill', colorSecStat: 'text-success', value: classStats.studentsOnTrack, label: 'On Track' },
+                                { icon: 'bi-exclamation-triangle-fill', colorSecStat: 'text-danger', value: classStats.studentsNeedHelp, label: 'Need Help' }
+                            ]" :key="stat.label">
+                                <div class="card shadow-sm border-0 h-100 stat-card text-center py-3">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi fs-1 mb-2" :class="[stat.icon, stat.colorSecStat]"></i>
+                                        <div class="fw-bold fs-3">{{ stat.value }}</div>
+                                        <small class="text-muted">{{ stat.label }}</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -766,7 +797,7 @@ onBeforeUnmount(() => {
                 </div>
             </div>
         </div>
-        <!-- End of Class Participation Report -->
+
 
         <!-- Select Student to View Details -->
         <div class="col-12 mb-5">
@@ -780,16 +811,16 @@ onBeforeUnmount(() => {
                 <div class="px-4 py-4 flex-grow-1">
                     <div class="d-flex justify-content-between">
                         <div class="input-group position-relative">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <span class="input-group-text"><i class="bi bi-search fs-2"></i></span>
                             <input v-model="searchQuery" @input="filterStudents"
                                 @focus="showSuggestions = searchQuery.length > 0"
-                                @blur="setTimeout(() => showSuggestions = false, 200)" type="text" class="form-control"
+                                @blur="setTimeout(() => showSuggestions = false, 200)" type="text" class="form-control fs-2"
                                 placeholder="Search by student name..." />
                             <div v-if="showSuggestions && searchSuggestions.length > 0"
                                 class="suggestions-dropdown position-absolute w-100 bg-white border rounded shadow-sm"
                                 style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto;">
                                 <div v-for="student in searchSuggestions" :key="student.student_id"
-                                    @click="selectSuggestion(student)" class="suggestion-item p-2 border-bottom"
+                                    @click="selectSuggestion(student)" class="suggestion-item p-2 border-bottom fs-3"
                                     style="cursor: pointer;"
                                     @mouseenter="$event.target.style.backgroundColor = '#f8f9fa'"
                                     @mouseleave="$event.target.style.backgroundColor = 'white'">
@@ -797,30 +828,41 @@ onBeforeUnmount(() => {
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-primary ms-3" @click="selectedStudentId = ''">Reset</button>
+                        <button class="btn bg-navy text-white ms-3 fs-2 fw-semibold" @click="selectedStudentId = ''">Reset</button>
                     </div>
                 </div>
 
 
-                <span class="text-muted text-center">Press any name in the table below or search for a name above to
-                    open
-                    dashboard
+                <span class="text-muted fw-bold px-4">(Press any name in the table below or search for a name above to
+                    open dashboard)
                 </span>
-                <table class="table table-bordered table-hover align-middle mb-0 text-start">
-                    <thead>
-                        <tr class="table-secondary">
-                            <th class="col-1">No.</th>
-                            <th class="col ms-3">Student Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(student, index) in allStudents" :key="student.student_id"
-                            @click="selectedStudentId = student.student_id" style="cursor: pointer">
-                            <td>{{ index + 1 }}</td>
-                            <td class="ms-3">{{ student.student.full_name }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <!-- Select Student Table -->
+                <div class="px-4 py-4">
+                    <div class="table-responsive rounded-3 border">
+                        <div v-if="allStudents">
+                            <table class="table align-middle mb-0">
+                                <thead class="table-light sticky-top fs-3">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Student Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(student, index) in allStudents" :key="student.student_id"
+                                        @click="selectedStudentId = student.student_id" style="cursor: pointer">
+                                        <td class="fs-3">{{ index + 1 }}</td>
+                                        <td class="fs-3">{{ student.student.full_name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-else class="text-center py-4 text-muted">
+                            <i class="bi bi-person fs-1 fw-bold mb-3"></i>
+                            <p class="fs-1 fw-bold">No students found for this section.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- End of Select Students to View Details -->
@@ -832,10 +874,25 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4">
                     <!-- Selected Student Details Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">{{ selectedStudent.name }}'s Details</div>
+                        <div class="fw-bold" style="font-size: 3.25rem;">{{ selectedStudent.name }}'s Participation
+                            Report</div>
                     </div>
 
                     <!-- Selected Student Details Body -->
+                    <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
+                        <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{
+                            selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
+                        <div class="d-flex align-items-center gap-3 mb-4 fw-bold fs-3">
+                            <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
+                            <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
+                                style="width: auto;" @change="changeWeek()" :value="selectedWeek">
+                                <option v-for="week in currentWeek" :key="week" :value="week">{{ week }}</option>
+                            </select>
+                        </div>
+                        <button @click="selectedWeek = currentWeek" class="btn btn-secondary mb-4">Current
+                            Week</button>
+                    </div>
+
                     <div class="px-4 py-4">
                         <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4">
                             <!-- Stats -->
@@ -847,7 +904,6 @@ onBeforeUnmount(() => {
                                 </div>
                             </div>
                             <!-- Projected Grade -->
-                            <!-- <div v-if="selectedStudent"> -->
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
                                     <div
@@ -909,7 +965,7 @@ onBeforeUnmount(() => {
                             <div v-if="selectedStudent.recentParticipations.length > 0">
                                 <table class="table align-middle mb-0">
                                     <thead class="table-light sticky-top fs-3">
-                                        <tr>
+                                        <tr class="text-center">
                                             <th>Week</th>
                                             <th>Contribution</th>
                                             <th>Rating</th>
@@ -918,7 +974,7 @@ onBeforeUnmount(() => {
                                             <th v-if="role == 'prof'">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="text-center">
                                         <tr v-for="p in selectedStudent.recentParticipations"
                                             :key="p.date + p.contribution">
                                             <td>
@@ -932,23 +988,24 @@ onBeforeUnmount(() => {
                                                     <i class="bi bi-star-fill text-warning"></i>
                                                 </span>
                                             </td>
-                                            <td>
-                                                <span class="text-white fw-semibold fs-3 px-3 py-2 my-0" :class="{
+                                            <td :class="{
                                                     'bg-danger': p.status === 'rejected',
                                                     'bg-warning': p.status === 'pending',
                                                     'bg-success': p.status === 'approved'
-                                                }"> {{ p.status }}
+                                                }" class="border-bottom-0 text-center"
+                                                >
+                                                <span class="text-white fw-semibold fs-3"> {{ p.status }}
                                                 </span>
                                             </td>
                                             <td class="text-muted text-truncate fs-3">
                                                 {{ p.remarks }}
                                             </td>
                                             <td v-if="role == 'prof'">
-                                                <button @click="approveCP(p)" class="btn btn-success"
+                                                <button @click="approveCP(p)" class="btn btn-success fs-3"
                                                     v-if="['rejected', 'pending'].includes(p.status)">
                                                     Approve
                                                 </button>
-                                                <button @click="rejectCP(p)" class="btn btn-danger"
+                                                <button @click="rejectCP(p)" class="btn btn-danger fs-3"
                                                     v-if="['approved', 'pending'].includes(p.status)">
                                                     Reject
                                                 </button>

@@ -21,7 +21,7 @@ const isSignUp = ref(false) // Default to "Login" tab instead of "Sign Up"
 </script>
 
 <template>
-    <div class="min-vh-100 d-flex justify-content-center align-items-center px-3 py-5 bg-light">
+    <div class="min-vh-100 d-flex justify-content-center align-items-center px-3 py-5" style="background-color: #E1E7F4;">
         <div class="card shadow-lg rounded-5 p-0" style="width: 80%">
             <div class="row g-0">
                 <div class="col-md-6 col-sm-12 mx-0 p-5">
