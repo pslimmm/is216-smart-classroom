@@ -390,21 +390,21 @@ const createStudentCharts = () => {
                             borderColor: 'rgba(54, 162, 253, 1)',
                             borderWidth: 2,
                             tension: 0.4,
-                            // pointBackgroundColor: selectedStudent.value.myAvgRating.map(rating =>
-                            //     rating === 0 ? 'rgba(200, 200, 200, 0.8)' :
-                            //         rating >= 4 ? 'rgba(40, 167, 69, 0.8)' :
-                            //             rating >= 3 ? 'rgba(255, 193, 7, 0.8)' :
-                            //                 'rgba(220, 53, 69, 0.8)'
-                            // ),
-                            // pointBorderColor: selectedStudent.value.myAvgRating.map(rating =>
-                            //     rating === 0 ? 'rgba(100, 100, 100, 1)' :
-                            //         rating >= 4 ? 'rgba(40, 167, 69, 1)' :
-                            //             rating >= 3 ? 'rgba(255, 193, 7, 1)' :
-                            //                 'rgba(220, 53, 69, 1)'
-                            // ),
-                            // pointBorderWidth: 2,
-                            // pointRadius: 6,
-                            // pointHoverRadius: 8
+                            pointBackgroundColor: selectedStudent.value.myAvgRating.map(rating =>
+                                rating === 0 ? 'rgba(200, 200, 200, 0.8)' :
+                                    rating >= 4 ? 'rgba(40, 167, 69, 0.8)' :
+                                        rating >= 3 ? 'rgba(255, 193, 7, 0.8)' :
+                                            'rgba(220, 53, 69, 0.8)'
+                            ),
+                            pointBorderColor: selectedStudent.value.myAvgRating.map(rating =>
+                                rating === 0 ? 'rgba(100, 100, 100, 1)' :
+                                    rating >= 4 ? 'rgba(40, 167, 69, 1)' :
+                                        rating >= 3 ? 'rgba(255, 193, 7, 1)' :
+                                            'rgba(220, 53, 69, 1)'
+                            ),
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
                         },
                         {
                             label: 'Class Average',
