@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
             .from('student_course')
             .select(`
                 *,
-                profile:student_id(*)
+                student:student_id(*)
                 `)
             .eq("course_id", responseBody.course_id);
 

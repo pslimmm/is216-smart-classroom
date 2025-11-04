@@ -1,106 +1,105 @@
 <script setup>
-const props = defineProps({
-    name: String,
-    price: Number,
-    image: String
+const route = useRoute();
+const course_id = route.params.course_id;
+const { role } = useAuthState();
+
+const showAddingModal = ref(false);
+const products = ref([]);
+
+
+const { courseData } = await $fetch('/api/course-info', {
+    method: 'POST',
+    body: {
+        course_id
+    }
 })
 
-// define variables
-let coins = ref(100);
-let totalPrice = ref(0);
-let balance = computed(() => coins.value - totalPrice.value);
-
-const products = reactive([
-    { name: "Snickers", price: 10, image: "/img/snicker.jpg" },
-    { name: "Mnm's", price: 10, image: "/img/mnm.jpg" },
-    { name: "Mars", price: 10, image: "/img/mars.jpg" },
-    { name: "Mamee Monster", price: 10, image: "/img/mameemonster.jpg" },
-    { name: "Skittles", price: 10, image: "/img/skittles.jpg" },
-    { name: "Twisters", price: 10, image: "/img/twister.jpg" },
-    { name: "Lays", price: 10, image: "/img/lays.jpg" },
-    { name: "Mentos", price: 10, image: "/img/mentos.jpg" },
-])
-
-// push in an array of objects
-var cart = reactive([]);
-
-//functions
-function addToCartShop(obj) {
-    let exist = false;
-    for (let item of cart) {
-        if (item.name == obj.name) {
-            item.quantity_in_cart += 1;
-            exist = true;
-            break;
+const loadProducts = async () => {
+    const productResults = await $fetch('/api/marketplace', {
+        method: 'POST',
+        body: {
+            prof_id: courseData.prof_id
         }
-    }
-    if (!exist) {
-        cart.push(obj);
-    }
-    calculate_price();
+
+    })
+    products.value = productResults.products;
 }
 
-function removeFromCartShop(obj) {
-    for (let i = 0; i < cart.length; i++) {
-        if (cart[i].name == obj.name) {
-            cart[i].quantity_in_cart -= 1;
-            //if its 0 quantity, remove the whole object entirely
-            if (cart[i].quantity_in_cart == 0) {
-                cart.splice(i, 1);
-                break;
-            }
+loadProducts();
+
+watch(showAddingModal, (newVal) => {
+    loadProducts();
+})
+
+// handle emit events
+
+const addToCart = (pbj) => {
+
+};
+
+const removeFromCart = () => {
+
+};
+
+const showAddItemModal = ref(false);
+const selectedItem = ref({});
+const addItemStock = (obj) => {
+    selectedItem.value = obj;
+    showAddItemModal.value = true;
+}
+
+watch(showAddItemModal, (newVal) => {
+    loadProducts();
+})
+
+const deleteItem = async (obj) => {
+    await $fetch('/api/delete-marketplace-item', {
+        method: 'POST',
+        body: {
+            item_id : obj.item_id
         }
-    }
-    calculate_price();
-}
+    })
 
-
-//calculate price
-function calculate_price() {
-    totalPrice.value = 0;
-    for (let obj of cart) {
-        totalPrice.value += Number(obj.quantity_in_cart) * Number(obj.price);
-    }
-}
-
-
-// checkout
-function checkout() {
-    //update the student balance 
-    coins.value -= totalPrice.value;
-    cart.splice(0, cart.length);
-    totalPrice.value = 0;
+    loadProducts()
 }
 
 </script>
 
 <template>
-    <!-- <NuxtPage /> -->
+    <AddItemsModal v-if="showAddingModal" v-model:showAddingModal="showAddingModal" />
+    <AddItemStockModal v-if="showAddItemModal" v-model:showAddItemModal="showAddItemModal" v-model:selectedItem="selectedItem"/>
     <main class="container py-4 flex-grow-1">
         <div class="marketplace container py-5">
 
-            <div class="mb-4 text-center">
-                <h1 class="display-1 fw-bold d-flex align-items-center justify-content-center gap-2">
-                    <i class="bi bi-shop-window text-primary"></i>
+            <div class="mb-4 d-flex flex-row align-items-center justify-content-between">
+                <h1 class="display-1 fw-bold d-flex align-items-center justify-content-center gap-2 text-navy">
+                    <i class="bi bi-shop-window text-navy me-2"></i>
                     Marketplace
                 </h1>
-                <h1 class="text-muted display-4">
-                    <i class="bi bi-coin text-warning me-1"></i>
-                    You have <strong>{{ coins }}</strong> coins
-                    <i class="bi bi-coin text-warning me-1"></i>
-                </h1>
-            </div>
+                <div>
 
-            <!-- Products Grid -->
-            <div class="row g-4">
-                <div class="col-6 col-sm-4 col-md-3" v-for="obj in products" :key="obj.name">
-                    <ProductCard :name="obj.name" :price="obj.price" :image="obj.image" @add-to-cart="addToCartShop"
-                        @remove-from-cart="removeFromCartShop" />
+                    <h1 class="text-muted display-4" v-if="role == 'student'">
+                        <i class="bi bi-coin text-warning me-1"></i>
+                        You have <strong>{{ coins }}</strong> coins
+                        <i class="bi bi-coin text-warning me-1"></i>
+                    </h1>
+                    <div v-if="role == 'prof'">
+                        <button class="btn btn-navy" @click="showAddingModal = !showAddingModal">Add new items</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Cart Summary -->
-            <div class="mt-5">
+            <div class="row g-4">
+                <div class="col-6 col-sm-4 col-md-3" v-for="obj in products" :key="obj.item_name">
+                    <ProductCard :id="obj.id" :name="obj.item_name" :price="obj.item_price" :image="obj.img_url"
+                        :stock="obj.item_count" @add-to-cart="addToCart" @remove-from-cart="removeFromCart"
+                        @delete-item="deleteItem" @add-item-stock="addItemStock" />
+                </div>
+
+
+            </div>
+
+            <div class="mt-5" v-if="role == 'student'">
                 <div class="row justify-content-center g-4">
                     <div class="col-md-6">
                         <div class="card shadow-sm">
@@ -129,7 +128,6 @@ function checkout() {
                         </div>
                     </div>
 
-                    <!-- Summary & Checkout -->
                     <div class="col-md-4">
                         <div class="card shadow-sm h-100">
                             <div
@@ -166,7 +164,6 @@ function checkout() {
 
 <style scoped>
 .marketplace {
-    background-color: red;
     min-height: 100vh;
 }
 

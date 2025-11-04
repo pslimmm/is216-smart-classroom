@@ -2,7 +2,7 @@
   <div class="container py-5">
     <!-- Page Header -->
     <div class="mb-4 text-center">
-      <h2 class="text-success mb-3">✅ Approved Class Participation Logs</h2>
+      <h2 class="text-success mb-3">Approved Class Participation Logs</h2>
     </div>
 
     <!-- Search Bar -->
@@ -38,7 +38,7 @@
                 @mouseenter="$event.target.style.backgroundColor = '#f8f9fa'"
                 @mouseleave="$event.target.style.backgroundColor = 'white'"
               >
-                <strong>{{ student.profile.full_name }}</strong>
+                <strong>{{ student.student.full_name }}</strong>
               </div>
             </div>
           </div>
@@ -48,8 +48,13 @@
       <!-- Selected Student Label -->
       <div v-if="filteredStudents.length > 0" class="mt-4 text-center">
         <p class="mb-1 text-muted">Showing approved logs for:</p>
-        <h5 v-for="s in filteredStudents" :key="s.student_id" class="fw-bold mb-0">{{ s.profile.full_name }}</h5>
+        <h5 v-for="s in filteredStudents" :key="s.student_id" class="fw-bold mb-0">{{ s.student.full_name }}</h5>
       </div>
+          <div class="text-center mt-3">
+      <NuxtLink :to="'/courses/' + course_id" class="btn btn-outline-secondary">
+        ← Back to Review
+      </NuxtLink>
+    </div>
     </div>
 
     <!-- No Approved Logs -->
@@ -86,11 +91,7 @@
     </div>
 
     <!-- Back Button -->
-    <div class="text-center mt-3">
-      <NuxtLink to="/prof/review" class="btn btn-outline-secondary">
-        ← Back to Review
-      </NuxtLink>
-    </div>
+
   </div>
 </template>
 
@@ -111,20 +112,24 @@ const showSuggestions = ref(false)
 const filteredStudents = ref([])
 
 /* computed list of approved logs */
-const approvedLogs = classParticipationData.filter(s => s.status == 'approved')
+const approvedLogs = computed(() => {
+    if(!searchQuery.value) return classParticipationData.filter(s => s.status == 'approved');
+    return classParticipationData.filter(s => s.status == 'approved').filter(s => s.student.full_name == searchQuery.value.trim())
+});
+
 
 /* suggestions dropdown */
 const searchSuggestions = computed(() => {
   if (!searchQuery.value.trim()) return []
   const query = searchQuery.value.toLowerCase()
   return allStudents.filter(s =>
-    s.profile.full_name.toLowerCase().includes(query)
+    s.student.full_name.toLowerCase().includes(query)
   )
 })
 
 /* select from dropdown */
 const selectSuggestion = (student) => {
-  searchQuery.value = student.profiles.name
+  searchQuery.value = student.student.full_name
   filteredStudents.value = [student]
   showSuggestions.value = false
 }
@@ -138,7 +143,7 @@ const handleSearch = () => {
   }
 
   filteredStudents.value = allStudents.filter(s =>
-    s.profile.full_name.toLowerCase().includes(query)
+    s.student.full_name.toLowerCase().includes(query)
   )
 
   if (filteredStudents.value.length === 0) {

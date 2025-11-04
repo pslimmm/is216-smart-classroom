@@ -11,7 +11,7 @@
                 </NuxtLink>
 
                 <!-- Toggle button (For mobile only; hidden on desktop via CSS)-->
-                <div class="toggle-btn-container">
+                <div class="toggle-btn-container rounded-5">
                     <button @click="toggleSidebar" class="toggle-btn">
                         <i :class="[
                             'sidebar-toggle-icon',
@@ -31,8 +31,8 @@
                         </NuxtLink>
                     </button>
 
-                    <button v-if="['prof', 'student'].includes(role)" class="btn nav-item main-nav-item">
-                        <NuxtLink to="/marketplace" class="nav-link w-100 text-start">
+                    <button v-if="['prof', 'student'].includes(role) && course_id" class="btn nav-item main-nav-item">
+                        <NuxtLink :to="'/courses/' + course_id + '/marketplace'" class="nav-link w-100 text-start">
                             <i class="bi bi-basket"></i>
                             <span>Marketplace</span>
                         </NuxtLink>

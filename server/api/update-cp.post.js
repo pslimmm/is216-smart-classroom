@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
                     'coins_awarded': responseBody.coins_awarded
                 })
                 .eq('id', responseBody.transaction_id)
+            
             error = result.error
         } else if (responseBody.action == 'rejected') {
             

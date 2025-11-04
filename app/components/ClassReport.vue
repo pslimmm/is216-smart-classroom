@@ -637,7 +637,6 @@ onBeforeUnmount(() => {
     <RejectClassPartModal v-if="showRejectModal" v-model:showRejectModal="showRejectModal"
         :transaction="selectedTransaction" :student_name="selectedStudent.name" />
 
-
     <div class="py-4 px-5">
         <div class="row mb-5 g-4 align-items-stretch">
             <!-- Course Info -->
@@ -841,7 +840,7 @@ onBeforeUnmount(() => {
                 <div class="px-4 py-4">
                     <div class="table-responsive rounded-3 border">
                         <div v-if="allStudents">
-                            <table class="table align-middle mb-0">
+                            <table class="table align-middle mb-0 table-hover">
                                 <thead class="table-light sticky-top fs-3">
                                     <tr>
                                         <th>No.</th>
