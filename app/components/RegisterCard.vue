@@ -80,49 +80,49 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-    <h2 class="fw-bold text-center">Create your account</h2>
-    <p class="text-center">Sign up for an account</p>
+    <h1 class="fw-bold text-center">Create your account</h1>
+    <p class="text-center text-muted fs-4">Sign up for an account</p>
     <form @submit.prevent="handleSubmit">
         <!-- full name -->
         <div class="mb-3">
-            <label for="signupName" class="form-label">Full Name</label>
-            <input v-model="formData.fullName" type="text" class="form-control" id="signupName" placeholder="John Doe"
+            <label for="signupName" class="form-label fw-semibold fs-1">Full Name</label>
+            <input v-model="formData.fullName" type="text" class="form-control fs-2" id="signupName" placeholder="John Doe"
                 required />
         </div>
         <!-- email -->
         <div class="mb-3">
-            <label for="signupEmail" class="form-label">Email</label>
-            <input v-model="formData.email" type="email" class="form-control" id="signupEmail"
+            <label for="signupEmail" class="form-label fw-semibold fs-1">Email</label>
+            <input v-model="formData.email" type="email" class="form-control fs-2" id="signupEmail"
                 placeholder="you@example.com" required />
         </div>
         <!-- password -->
         <div class="mb-3">
-            <label for="signupPassword" class="form-label">Password</label>
+            <label for="signupPassword" class="form-label fw-semibold fs-1">Password</label>
             <div class="input-group">
-                <input v-model="formData.password" :type="showPassword ? 'text' : 'password'" class="form-control"
+                <input v-model="formData.password" :type="showPassword ? 'text' : 'password'" class="form-control fs-2"
                     id="signupPassword" minlength="8" required />
                 <button type="button" class="inputButton" @click="showPassword = !showPassword">
-                    <i v-if="showPassword" class="bi bi-eye"></i>
-                    <i v-else class="bi bi-eye-slash"></i>
+                    <i v-if="showPassword" class="bi bi-eye fs-4"></i>
+                    <i v-else class="bi bi-eye-slash fs-4"></i>
                 </button>
             </div>
         </div>
         <!-- cfm password -->
         <div class="mb-3">
-            <label for="cfmPassword" class="form-label">Confirm Password</label>
+            <label for="cfmPassword" class="form-label fw-semibold fs-1">Confirm Password</label>
             <div class="input-group">
-                <input v-model="formData.cfmPassword" :type="showCfmPassword ? 'text' : 'password'" class="form-control"
+                <input v-model="formData.cfmPassword" :type="showCfmPassword ? 'text' : 'password'" class="form-control fs-2"
                     id="signupPassword" minlength="8" required />
                 <button type="button" class="inputButton" @click="showCfmPassword = !showCfmPassword">
-                    <i v-if="showCfmPassword" class="bi bi-eye"></i>
-                    <i v-else class="bi bi-eye-slash"></i>
+                    <i v-if="showCfmPassword" class="bi bi-eye fs-4"></i>
+                    <i v-else class="bi bi-eye-slash fs-4"></i>
                 </button>
             </div>
         </div>
         <!-- role -->
         <div class="mb-3">
-            <label for="signupRole" class="form-label">I am a...</label>
-            <select v-model="formData.role" class="form-select" id="signupRole" required>
+            <label for="signupRole" class="form-label fs-1">I am a...</label>
+            <select v-model="formData.role" class="form-select fs-2" id="signupRole" required>
                 <option selected disabled value="">Choose...</option>
                 <option value="student">Student</option>
                 <option value="prof">Professor</option>
@@ -130,11 +130,11 @@ const handleSubmit = async () => {
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100 mt-3">
+        <button type="submit" class="btn btn-navy w-100 mt-3 fs-2">
             Create Account
         </button>
 
-        <div class="text-center mt-4 pt-3 border-top">
+        <div class="text-center mt-4 pt-3 border-top fs-4">
             <p>
                 Already have an account?
                 <a role="button" @click="isSignUp = false"

@@ -163,9 +163,9 @@ button:focus-visible {
 }
 
 .btn-navy:hover {
-    background-color: white;
+    background-color: rgb(1, 1, 80);
     border-color: navy;
-    color: navy;
+    color: white;
 }
 
 .btn-outline-navy {
