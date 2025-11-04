@@ -126,8 +126,9 @@ const deleteItem = async (obj) => {
                     Marketplace
                 </h1>
                 <div class="col-sm-12 col-lg-6 d-flex flex-row align-items-center justify-content-lg-end">
+                    <button class="btn btn-navy me-3" @click="navigateTo('martketplace-transactions')">Transaction History</button>
                     <div v-if="role == 'student'" class="d-flex flex-row align-items-center">
-                        <button class="btn btn-navy me-3" @click="navigateTo('/courses/' + course_id)">Back to Course Dashboard</button>
+                        <button class="btn btn-navy me-3" @click="navigateTo('/courses/' + course_id)">Course Dashboard</button>
                         <button class="btn btn-navy me-3" @click="showCartModal = !showCartModal">
                             <i class="bi bi-cart me-1"></i>
                             View Cart

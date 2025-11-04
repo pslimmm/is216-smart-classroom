@@ -37,13 +37,6 @@
                             <span>Marketplace</span>
                         </NuxtLink>
                     </button>
-
-                    <button v-if="role === 'prof'" class="btn nav-item main-nav-item">
-                        <NuxtLink to="/prof/review" class="nav-link w-100 text-start" active-class="active">
-                            <i class="bi bi-card-checklist"></i>
-                            <span>Review CP</span>
-                        </NuxtLink>
-                    </button>
                 </div>
 
 
