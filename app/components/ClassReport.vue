@@ -665,21 +665,19 @@ onBeforeUnmount(() => {
 
             <!-- Submit Class Participation -->
             <div class="col-12 col-lg-4">
-                <!-- <div v-if="role == 'ta'" class="col-md-6 mb-4"> -->
                 <div class="section-elev rounded-4 h-100 d-flex flex-column">
                     <!-- Submit Class Participation Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">Action</div>
+                        <div class="fw-bold" style="font-size: 3.25rem;">Actions</div>
                     </div>
                     <!-- Submit Class Participation Body -->
                     <div class="px-4 py-4 flex-grow-1">
-
+                        <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New CP</button>
+                        <NuxtLink :to="course_id + '/approved'" class="btn btn-primary">Review Approved CP</NuxtLink>
+                        <NuxtLink :to="course_id + '/rejected'" class="btn btn-primary">Review Rejected CP</NuxtLink>
                     </div>
                     <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
-                    <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New
-                        CP</button>
                 </div>
-                <!-- </div> -->
             </div>
         </div>
 
@@ -697,7 +695,8 @@ onBeforeUnmount(() => {
                     <!-- Left Side -->
                     <div class="col-12 col-lg-6">
                         <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
-                            <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{ selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
+                            <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{
+                                selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
                             <div class="d-flex align-items-center gap-3 mb-4 fw-bold fs-3">
                                 <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
                                 <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
