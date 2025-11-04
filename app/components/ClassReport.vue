@@ -641,7 +641,8 @@ onBeforeUnmount(() => {
     <div class="py-4 px-5">
         <div class="row mb-5 g-4 align-items-stretch">
             <!-- Course Info -->
-            <div class="col-12 col-lg-8">
+            <div :class="['col-12', role === 'ta' ? 'col-lg-6' : 'col-lg-8']">
+                <!-- <div class="col-12 col-lg-"> -->
                 <div class="section-elev rounded-4 h-100 d-flex-column">
                     <!-- Course Info Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
@@ -663,23 +664,50 @@ onBeforeUnmount(() => {
                 </div>
             </div>
 
+            <!-- Section Statistics -->
+            <div :class="['col-12', role === 'ta' ? 'col-lg-3' : 'col-lg-4']">
+                <div class="section-elev rounded-4 h-100 d-flex flex-column">
+                    <!-- Section Statistics Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.25rem;">Section Statistics</div>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <div class="row row-cols-2 g-3">
+                            <div class="col" v-for="stat in [
+                                { icon: 'bi-people-fill', colorSecStat: 'text-primary', value: classStats.totalStudents, label: 'Total Students' },
+                                { icon: 'bi-bar-chart-line-fill', colorSecStat: 'text-info', value: classStats.classAvgRating, label: 'Average Rating' },
+                                { icon: 'bi-check-circle-fill', colorSecStat: 'text-success', value: classStats.studentsOnTrack, label: 'On Track' },
+                                { icon: 'bi-exclamation-triangle-fill', colorSecStat: 'text-danger', value: classStats.studentsNeedHelp, label: 'Need Help' }
+                            ]" :key="stat.label">
+                                <div class="card shadow-sm border-0 h-100 stat-card text-center py-3">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi fs-1 mb-2" :class="[stat.icon, stat.colorSecStat]"></i>
+                                        <div class="fw-bold fs-3">{{ stat.value }}</div>
+                                        <small class="text-muted">{{ stat.label }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Submit Class Participation -->
-            <div class="col-12 col-lg-4">
+            <div v-if="role === 'ta'" class="col-12 col-lg-3">
                 <!-- <div v-if="role == 'ta'" class="col-md-6 mb-4"> -->
                 <div class="section-elev rounded-4 h-100 d-flex flex-column">
                     <!-- Submit Class Participation Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">Action</div>
+                        <div class="fw-bold" style="font-size: 3.25rem;">Submit CP</div>
                     </div>
                     <!-- Submit Class Participation Body -->
                     <div class="px-4 py-4 flex-grow-1">
-
+                        <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
+                        <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New CP</button>
                     </div>
-                    <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
-                    <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New
-                        CP</button>
                 </div>
-                <!-- </div> -->
             </div>
         </div>
 
@@ -697,7 +725,8 @@ onBeforeUnmount(() => {
                     <!-- Left Side -->
                     <div class="col-12 col-lg-6">
                         <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
-                            <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{ selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
+                            <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{
+                                selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
                             <div class="d-flex align-items-center gap-3 mb-4 fw-bold fs-3">
                                 <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
                                 <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
@@ -711,59 +740,7 @@ onBeforeUnmount(() => {
                     </div>
 
                     <!-- Right Side -->
-                    <div class="col-12 col-lg-6">
-                        <div class="px-4 py-3 flex-grow-1 rounded-end-4 w-100">
-                            <div class="row row-cols-2 g-3">
-                                <div class="col">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                                            <h6 class="fs-2 mb-0 text-muted">Total Students</h6>
-                                            <i class="bi bi-people-fill text-primary fs-1"></i>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                                            <h6 class="fs-2 mb-0 text-muted">Class Avg Rating</h6>
-                                            <i class="bi bi-bar-chart-line-fill text-info fs-1"></i>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                                            <h6 class="fs-2 mb-0 text-muted">Students on Track</h6>
-                                            <i class="bi bi-check-circle-fill text-success fs-1"></i>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="card shadow-sm h-100 border border-danger">
-                                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                                            <h6 class="fs-2 mb-0 text-muted">Needs Attention</h6>
-                                            <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -833,7 +810,7 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4">
                     <!-- Selected Student Details Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">{{ selectedStudent.name }}'s Details</div>
+                        <div class="fw-bold" style="font-size: 3.25rem;">{{ selectedStudent.name }}'s Participation Report</div>
                     </div>
 
                     <!-- Selected Student Details Body -->
