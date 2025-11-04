@@ -705,46 +705,13 @@ onBeforeUnmount(() => {
                     <!-- Submit Class Participation Body -->
                     <div class="px-4 py-4 flex-grow-1">
                         <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
-                        <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New CP</button>
+                        <button @click="showSubmitModal = true" class="btn btn-primary btn-sm mb-4 ms-1">Submit New
+                            CP</button>
                     </div>
                 </div>
             </div>
         </div>
 
-
-
-        <!-- Class Participation Report -->
-        <div class="col-12 mb-5">
-            <div class="section-elev rounded-4 h-100 d-flex flex-column overflow-hidden">
-                <!-- Class Participation Report Header -->
-                <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                    <div class="fw-bold" style="font-size: 3.25rem;">Class Participation Report</div>
-                </div>
-                <!-- Body -->
-                <div class="row g-0 align-items-start">
-                    <!-- Left Side -->
-                    <div class="col-12 col-lg-6">
-                        <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
-                            <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{
-                                selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
-                            <div class="d-flex align-items-center gap-3 mb-4 fw-bold fs-3">
-                                <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
-                                <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
-                                    style="width: auto;" @change="changeWeek()" :value="selectedWeek">
-                                    <option v-for="week in currentWeek" :key="week" :value="week">{{ week }}</option>
-                                </select>
-                            </div>
-                            <button @click="selectedWeek = currentWeek" class="btn btn-secondary mb-4">Current
-                                Week</button>
-                        </div>
-                    </div>
-
-                    <!-- Right Side -->
-
-                </div>
-            </div>
-        </div>
-        <!-- End of Class Participation Report -->
 
         <!-- Select Student to View Details -->
         <div class="col-12 mb-5">
@@ -781,24 +748,35 @@ onBeforeUnmount(() => {
 
 
                 <span class="text-muted text-center">Press any name in the table below or search for a name above to
-                    open
-                    dashboard
+                    open dashboard
                 </span>
-                <table class="table table-bordered table-hover align-middle mb-0 text-start">
-                    <thead>
-                        <tr class="table-secondary">
-                            <th class="col-1">No.</th>
-                            <th class="col ms-3">Student Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(student, index) in allStudents" :key="student.student_id"
-                            @click="selectedStudentId = student.student_id" style="cursor: pointer">
-                            <td>{{ index + 1 }}</td>
-                            <td class="ms-3">{{ student.student.full_name }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <!-- Select Student Table -->
+                <div class="px-4 py-4">
+                    <div class="table-responsive rounded-3 border">
+                        <div v-if="allStudents">
+                            <table class="table align-middle mb-0">
+                                <thead class="table-light sticky-top fs-3">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Student Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(student, index) in allStudents" :key="student.student_id"
+                                        @click="selectedStudentId = student.student_id" style="cursor: pointer">
+                                        <td class="fs-3">{{ index + 1 }}</td>
+                                        <td class="fs-3">{{ student.student.full_name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-else class="text-center py-4 text-muted">
+                            <i class="bi bi-person fs-1 fw-bold mb-3"></i>
+                            <p class="fs-1 fw-bold">No students found for this section.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- End of Select Students to View Details -->
@@ -810,10 +788,25 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4">
                     <!-- Selected Student Details Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">{{ selectedStudent.name }}'s Participation Report</div>
+                        <div class="fw-bold" style="font-size: 3.25rem;">{{ selectedStudent.name }}'s Participation
+                            Report</div>
                     </div>
 
                     <!-- Selected Student Details Body -->
+                    <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
+                        <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{
+                            selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
+                        <div class="d-flex align-items-center gap-3 mb-4 fw-bold fs-3">
+                            <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
+                            <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
+                                style="width: auto;" @change="changeWeek()" :value="selectedWeek">
+                                <option v-for="week in currentWeek" :key="week" :value="week">{{ week }}</option>
+                            </select>
+                        </div>
+                        <button @click="selectedWeek = currentWeek" class="btn btn-secondary mb-4">Current
+                            Week</button>
+                    </div>
+
                     <div class="px-4 py-4">
                         <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4">
                             <!-- Stats -->
