@@ -60,7 +60,6 @@ const handleSubmit = async () => {
 
             if (!error) {
                 showAddingModal.value = false;
-                navigateTo('/courses/' + route.params.course_id);
             }
 
         }
@@ -79,7 +78,6 @@ const handleSubmit = async () => {
         })
         if (!error) {
             showAddingModal.value = false;
-            navigateTo('/courses/' + route.params.course_id);
         }
 
     }

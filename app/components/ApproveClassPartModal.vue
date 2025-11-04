@@ -35,12 +35,12 @@
 
 <script setup>
 const showApproveModal = defineModel("showApproveModal");
-const props = defineProps(['transaction', 'student_name'])
+const props = defineProps(['transaction', 'student_name', 'student_id'])
 const { userID } = useAuthState();
-
 // Reactive data
 const coins_awarded = ref(0);
 const remarks = ref('');
+const route = useRoute();
 
 const handleSubmit = async () => {
 
@@ -51,6 +51,8 @@ const handleSubmit = async () => {
             transaction_id: props.transaction.transaction_id,
             remarks: remarks.value,
             coins_awarded: coins_awarded.value,
+            student_id: props.student_id,
+            course_id: route.params.course_id,
             action: 'approved'
         }
     });

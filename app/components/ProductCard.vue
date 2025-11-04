@@ -23,9 +23,7 @@ const emit = defineEmits([
 function addToCart() {
     emit('add-to-cart',
         {
-            name: props.name,
-            price: props.price,
-            quantity_in_cart: 1,
+            item_id: props.id,
         }
     )
 }
@@ -57,7 +55,7 @@ function deleteItem() {
 </script>
 
 <template>
-    <div class="card shadow-sm h-100 ">
+    <div class="card shadow-sm h-100 rounded-4">
         <!-- Product Image -->
         <img :src="image" alt="Product image" class="card-img-top img-fluid object-fit-contain" />
 
@@ -73,7 +71,7 @@ function deleteItem() {
 
             <!-- Buttons -->
 
-            <div v-if="role == student" class="mt-3 d-flex flex-column gap-2">
+            <div v-if="role == 'student'" class="mt-3 d-flex flex-column gap-2">
 
                 <button class="btn btn-navy btn-sm" @click="addToCart">
                     <i class="bi bi-cart-plus me-1"></i> Add to Cart

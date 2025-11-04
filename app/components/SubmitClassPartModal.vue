@@ -212,14 +212,6 @@ const calculatedWeek = computed(() => {
 });
 
 const handleSubmit = async () => {
-    // console.log({
-    //         course_id: route.params.course_id,
-    //         student_id: selectedStudent.value.student_id,
-    //         week: calculatedWeek.value,
-    //         description: description.value,
-    //         rating: rating.value,
-    //         status: "pending"
-    //     });
     const { error } = await $fetch('/api/submitcp',{
         method: 'POST',
         body: {

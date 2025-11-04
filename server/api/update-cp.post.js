@@ -20,6 +20,19 @@ export default defineEventHandler(async (event) => {
                 })
                 .eq('id', responseBody.transaction_id)
             
+            const result2 = await supabaseClient
+                .from('student_course')
+                .select('coin_balance')
+                .eq('student_id', responseBody.student_id)
+                .eq('course_id', responseBody.course_id)
+                .maybeSingle();
+            
+            const result3 = await supabaseClient
+                .from('student_course')
+                .update({'coin_balance': result2.data.coin_balance + responseBody.coins_awarded})
+                .eq('student_id', responseBody.student_id)
+                .eq('course_id', responseBody.course_id)
+            
             error = result.error
         } else if (responseBody.action == 'rejected') {
             
