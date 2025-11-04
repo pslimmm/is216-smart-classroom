@@ -30,7 +30,7 @@ const route = useRoute();
 /* this applies to desktop screens */
 @media (min-width:768px) {
     .main-content {
-        padding: 0rem 0rem 0rem 30rem;
+        padding: 0rem 0rem 0rem 22.5rem;
         /* background: #f8f9fa; */
         /* background: lightslategrey */
         /* background-color: #f9f8f7; */
