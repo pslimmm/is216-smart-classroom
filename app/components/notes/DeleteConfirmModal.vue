@@ -21,9 +21,9 @@
         <div class="modal-content-custom">
           <!-- Header -->
           <div class="modal-header-custom">
-            <h5 id="deleteModalTitle" class="modal-title">
+            <h3 id="deleteModalTitle" class="modal-title text-navy fs-1">
               Confirm Deletion
-            </h5>
+            </h3>
             <button
               type="button"
               class="btn-close"
@@ -34,12 +34,12 @@
 
           <!-- Body -->
           <div class="modal-body-custom">
-            <p class="mb-3">
+            <p class="mb-3 fs-4 fw-semibold">
               Are you sure you want to delete this transcript?
             </p>
             <div class="alert alert-warning d-flex align-items-start">
-              <i class="bi bi-info-circle me-2 mt-1"></i>
-              <div>
+              <i class="bi bi-info-circle me-2 mt-1 fs-1"></i>
+              <div class="fs-5">
                 <strong>This action cannot be undone.</strong><br>
                 The transcript and its associated audio file will be permanently deleted from storage.
               </div>
@@ -50,17 +50,17 @@
           <div class="modal-footer-custom">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-outline-navy fs-3 fw-semibold"
               @click="cancel"
             >
               Cancel
             </button>
             <button
               type="button"
-              class="btn btn-danger"
+              class="btn btn-danger fs-3 fw-semibold"
               @click="confirm"
             >
-              <i class="bi bi-trash me-2"></i>
+              <i class="bi bi-trash me-2 fs-4"></i>
               Delete Transcript
             </button>
           </div>
@@ -153,8 +153,6 @@ onMounted(() => {
 
 .modal-title {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
   display: flex;
   align-items: center;
 }

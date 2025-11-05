@@ -1,5 +1,8 @@
 <script setup>
 import Chart from 'chart.js/auto';
+import SubmitClassPartModal from './SubmitClassPartModal.vue';
+import ApproveClassPartModal from './ApproveClassPartModal.vue';
+import RejectClassPartModal from './RejectClassPartModal.vue';
 
 const { role } = useAuthState();
 const route = useRoute()
@@ -854,17 +857,8 @@ onBeforeUnmount(() => {
                                     <small class="text-muted fs-4">{{ stat.label }}</small>
                                 </div>
                             </div>
+
                             <!-- Projected Grade -->
-                            <!-- <div class="col">
-                                <div class="d-flex flex-column align-items-center">
-                                    <div
-                                        :class="['badge fs-5 p-3 rounded-4', getGradeBadgeClass(selectedStudent.projectedGrade)]">
-                                        {{ selectedStudent.projectedGrade }}
-                                    </div>
-                                    <h5>Projected Grade:</h5>
-                                </div>
-                            </div> -->
-                            <!-- New Projected Grade -->
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
                                     <i class="bi fs-1 mb-2 bi-calculator"></i>
@@ -982,14 +976,6 @@ onBeforeUnmount(() => {
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- End of v-if selectedStudent -->
-        <div>
-            <!-- <div v-if="isLoading" class="text-center py-4">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div> -->
         </div>
     </div>
 </template>
