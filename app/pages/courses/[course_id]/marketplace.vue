@@ -139,7 +139,7 @@ const deleteItem = async (obj) => {
                         </div>
                     </div>
                     <div v-if="role == 'prof'">
-                        <button class="btn btn-navy" @click="showAddingModal = !showAddingModal">Add new items</button>
+                        <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="showAddingModal = !showAddingModal">Add new items</button>
                     </div>
                 </div>
             </div>
