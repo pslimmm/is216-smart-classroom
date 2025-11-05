@@ -62,31 +62,31 @@ function deleteItem() {
         <!-- Product Details -->
         <div class="card-body d-flex flex-column justify-content-between">
             <div>
-                <h2 class="card-title fw-semibold text-navy mb-1">{{ name }}</h2>
-                <p class="card-text text-muted ">
-                    <i class="bi bi-coin text-warning me-1"></i> {{ price }}
+                <h2 class="card-title fw-semibold text-navy mb-1 text-capitalize">{{ name }}</h2>
+                <p class="card-text text-muted fs-2">
+                    <i class="bi bi-coin text-warning me-1 fs-2"></i> {{ price }}
                 </p>
-                <p>Stock: {{ stock }}</p>
+                <p class="fs-3">Stock: {{ stock }}</p>
             </div>
 
             <!-- Buttons -->
 
             <div v-if="role == 'student'" class="mt-3 d-flex flex-column gap-2">
 
-                <button class="btn btn-navy btn-sm" @click="addToCart">
+                <button class="btn btn-navy fs-3 fw-semibold" @click="addToCart">
                     <i class="bi bi-cart-plus me-1"></i> Add to Cart
                 </button>
-                <button class="btn btn-outline-danger btn-sm" @click="removeFromCart">
+                <button class="btn btn-outline-danger fs-3 fw-semibold" @click="removeFromCart">
                     <i class="bi bi-trash me-1"></i> Remove
                 </button>
             </div>
 
             <div v-if="role == 'prof'" class="mt-3 d-flex flex-column gap-2">
-                <button class="btn btn-navy btn-sm" @click="addStock">
+                <button class="btn btn-navy fs-3 fw-semibold" @click="addStock">
                     <i class="bi bi-plus me-1"></i> Add Stock
                 </button>
 
-                <button class="btn btn-outline-danger btn-sm" @click="deleteItem">
+                <button class="btn btn-outline-danger fs-3 fw-semibold" @click="deleteItem">
                     <i class="bi bi-trash me-1"></i> Delete Item
                 </button>
             </div>
