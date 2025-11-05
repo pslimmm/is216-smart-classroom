@@ -3,11 +3,11 @@
     <div class="overlay">
         <div class="modal-wrapper bg-white rounded-5 p-4 m-3">
             <div class="d-flex flex-row justify-content-between align-items-center mb-3">
-                <h3>Your Cart</h3>
+                <h3 class="text-navy fs-1">Your Cart</h3>
                 <button class="btn btn-close" @click="showCartModal = false"></button>
             </div>
             <div class="table-responsive" style="max-height: 350px; overflow-y: scroll;">
-                <table class="table">
+                <table class="table fs-5">
                     <thead class="sticky-top">
                         <tr>
                             <th>Item</th>
@@ -19,10 +19,16 @@
                     </thead>
                     <tbody class="table-group-divider">
                         <tr v-if="cart.length != 0" v-for="item in cart">
-                            <td>{{ item.item.item_name }}</td>
-                            <td>{{ item.item.item_price }} <i class="bi bi-coin text-warning ms-1"></i></td>
+                            <td class="text-capitalize">{{ item.item.item_name }}</td>
+                            <td>
+                                <i class="bi bi-coin text-warning ms-1"></i>
+                                {{ item.item.item_price }}
+                            </td>
                             <td>{{ item.qty }}</td>
-                            <td>{{ item.item.item_price * item.qty }} <i class="bi bi-coin text-warning ms-1"></i></td>
+                            <td>
+                                <i class="bi bi-coin text-warning ms-1"></i>
+                                {{ item.item.item_price * item.qty }}
+                            </td>
                             <td>
                                 <i class="bi bi-trash text-danger" style="cursor: pointer;"
                                     @click="props.removeFromCart({ item_id: item.item.id }); loadCart()"></i>
@@ -35,13 +41,16 @@
                     <tfoot class="sticky-bottom">
                         <tr v-if="cart.length != 0">
                             <th colspan="3" class="text-center">Total</th>
-                            <th>{{ totalPrice }}</th>
+                            <th>
+                                <i class="bi bi-coin text-warning ms-1"></i>
+                                {{ totalPrice }}
+                            </th>
                             <th></th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
-            <button type="submit" class="btn btn-navy w-100 fs-3 mt-4" @click="handleSubmit"
+            <button type="submit" class="btn btn-navy fw-semibold w-100 fs-3 mt-4" @click="handleSubmit"
                 :disabled="cart.length == 0">
 
                 Checkout Cart
@@ -148,7 +157,7 @@ const handleSubmit = async () => {
 }
 
 .modal-wrapper {
-    width: min(90vw, 500px);
+    width: min(90vw, 750px);
     max-height: 65vh;
     overflow-y: auto;
 }

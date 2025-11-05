@@ -583,7 +583,7 @@ const studentStats = computed(() => {
     if (!selectedStudent.value) return [];
     return [
         { label: 'Total Participations', value: selectedStudent.value.totalParticipations, icon: 'bi-card-list', color: 'text-primary' },
-        { label: 'Overall CP Rating (out of 5)', value: selectedStudent.value.avgRating.toFixed(2), icon: 'bi-star-fill', color: 'text-info' },
+        { label: 'Overall CP Rating (Out of 5)', value: selectedStudent.value.avgRating.toFixed(2), icon: 'bi-star-fill', color: 'text-info' },
         { label: 'Avg CP Per Week', value: selectedStudent.value.avgPerWeek.toFixed(2), icon: 'bi-calendar-week', color: 'text-warning' },
         { label: `Week ${selectedWeek.value} Participations`, value: selectedStudent.value.currentWeekCount, icon: 'bi-calendar-check', color: 'text-success' }
     ];
@@ -633,7 +633,7 @@ onBeforeUnmount(() => {
 <template>
     <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
     <ApproveClassPartModal v-if="showApproveModal" v-model:showApproveModal="showApproveModal"
-        :transaction="selectedTransaction" :student_name="selectedStudent.name" :student_id="selectedStudentId"/>
+        :transaction="selectedTransaction" :student_name="selectedStudent.name" :student_id="selectedStudentId" />
     <RejectClassPartModal v-if="showRejectModal" v-model:showRejectModal="showRejectModal"
         :transaction="selectedTransaction" :student_name="selectedStudent.name" />
 
@@ -664,7 +664,7 @@ onBeforeUnmount(() => {
             </div>
 
             <!-- Section Statistics -->
-            
+
 
             <!-- Submit Class Participation -->
             <div class="col-12 col-lg-4">
@@ -674,12 +674,12 @@ onBeforeUnmount(() => {
                         <div class="fw-bold" style="font-size: 3.25rem;">Actions</div>
                     </div>
                     <!-- Submit Class Participation Body -->
-                    <div class="px-4 py-4 flex-grow-1 d-flex flex-column justify-content-start ">
+                    <div class="px-4 py-4 flex-grow-1 d-flex flex-column justify-content-start gap-3">
                         <button v-if="role == 'ta'" @click="showSubmitModal = true"
-                            class="btn btn-navy btn-sm mb-4 ms-1 p-2">Submit New CP</button>
-                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/approved'" class="btn btn-navy mb-3">Review
+                            class="btn btn-navy fs-2 fw-semibold">Submit New CP</button>
+                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/approved'" class="btn btn-navy fs-2 fw-semibold">Review
                             Approved CP</NuxtLink>
-                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/rejected'" class="btn btn-navy">Review
+                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/rejected'" class="btn btn-navy fs-2 fw-semibold">Review
                             Rejected CP</NuxtLink>
                     </div>
                     <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
@@ -688,90 +688,51 @@ onBeforeUnmount(() => {
         </div>
 
 
-
         <!-- Class Participation Report -->
         <div class="col-12 mb-5">
-            <div class="section-elev rounded-4 h-100 d-flex flex-column overflow-hidden">
-                <!-- Class Participation Report Header -->
-                <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                    <div class="fw-bold" style="font-size: 3.25rem;">Class Participation Report</div>
+            <div class="section-elev rounded-4 d-flex align-items-center">
+
+                <!-- Left Side: Title -->
+                <div class="fw-bold bg-navy text-white px-4 py-4 flex-shrink-0 rounded-start-4"
+                    style="font-size: 3.25rem;">
+                    Class Participation Report:
                 </div>
-                <!-- Body -->
-                <div class="row g-0 align-items-start">
-                    <!-- Left Side -->
-                    <div class="col-12 col-lg-6">
-                        <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
-                            <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{
-                                selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
-                            <div class="d-flex align-items-center gap-3 mb-4 fw-bold fs-3">
-                                <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
-                                <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
-                                    style="width: auto;" @change="changeWeek()" :value="selectedWeek">
-                                    <option v-for="week in currentWeek" :key="week" :value="week">{{ week }}</option>
-                                </select>
-                            <button @click="selectedWeek = currentWeek" class="btn btn-navy">Current Week</button>
+
+                <!-- Right Side: Class Statistics -->
+                <div class="flex-grow-1 mx-3">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 mb-0 text-center">
+                        <div class="col">
+                            <div class="d-flex flex-column align-items-center">
+                                <h6 class="fs-3 mb-0 text-muted">Total Students</h6>
+                                <i class="bi bi-people-fill text-primary fs-2"></i>
+                                <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Right Side -->
-                    <div class="col-12 col-lg-6">
-                        <div class="px-4 py-3 flex-grow-1 rounded-end-4 w-100">
-                            <div class="row row-cols-2 g-3">
-                                <div class="col">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                                            <h6 class="fs-2 mb-0 text-muted">Total Students</h6>
-                                            <i class="bi bi-people-fill text-primary fs-1"></i>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                                            <h6 class="fs-2 mb-0 text-muted">Class Avg Rating</h6>
-                                            <i class="bi bi-bar-chart-line-fill text-info fs-1"></i>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                                            <h6 class="fs-2 mb-0 text-muted">Students on Track</h6>
-                                            <i class="bi bi-check-circle-fill text-success fs-1"></i>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="card shadow-sm h-100 border border-danger">
-                                        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-                                            <h6 class="fs-2 mb-0 text-muted">Needs Attention</h6>
-                                            <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col">
+                            <div class="d-flex flex-column align-items-center">
+                                <h6 class="fs-3 mb-0 text-muted">Class Avg Rating</h6>
+                                <i class="bi bi-bar-chart-line-fill text-info fs-2"></i>
+                                <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex flex-column align-items-center">
+                                <h6 class="fs-3 mb-0 text-muted">Students on Track</h6>
+                                <i class="bi bi-check-circle-fill text-success fs-2"></i>
+                                <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex flex-column align-items-center">
+                                <h6 class="fs-3 mb-0 text-muted">Needs Attention</h6>
+                                <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
+                                <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <!-- Select Student to View Details -->
         <div class="col-12 mb-5">
@@ -868,17 +829,17 @@ onBeforeUnmount(() => {
                     </div>
 
                     <div class="px-4 py-4">
-                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4">
+                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4 align-items-center">
                             <!-- Stats -->
                             <div class="col" v-for="stat in studentStats" :key="stat.label">
                                 <div class="d-flex flex-column align-items-center">
-                                    <i :class="['bo fs-1 mb-2', stat.icon, stat.color]"></i>
-                                    <h5 class="fw-bold fs-3">{{ stat.value }}</h5>
-                                    <small class="text-muted">{{ stat.label }}</small>
+                                    <i :class="['bi fs-1 mb-2', stat.icon, stat.color]"></i>
+                                    <h5 class="fw-bold fs-2">{{ stat.value }}</h5>
+                                    <small class="text-muted fs-4">{{ stat.label }}</small>
                                 </div>
                             </div>
                             <!-- Projected Grade -->
-                            <div class="col">
+                            <!-- <div class="col">
                                 <div class="d-flex flex-column align-items-center">
                                     <div
                                         :class="['badge fs-5 p-3 rounded-4', getGradeBadgeClass(selectedStudent.projectedGrade)]">
@@ -886,12 +847,20 @@ onBeforeUnmount(() => {
                                     </div>
                                     <h5>Projected Grade:</h5>
                                 </div>
+                            </div> -->
+                            <!-- New Projected Grade -->
+                            <div class="col">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi fs-1 mb-2 bi-calculator"></i>
+                                    <h5 class="fw-bold fs-2 text-white p-1 rounded-3" :class="getGradeBadgeClass(selectedStudent.projectedGrade)">{{ selectedStudent.projectedGrade }}</h5>
+                                    <small class="text-muted fs-4">Projected Graded:</small>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Warning to Appear if participation below 3 -->
-                    <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning">
+                    <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning fs-4">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
                         This student is below 3 participations/week: <strong>{{
                             selectedStudent.avgPerWeek.toFixed(2) }}
