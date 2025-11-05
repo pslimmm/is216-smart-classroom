@@ -1,4 +1,6 @@
 <script setup>
+import AlertBox from './AlertBox.vue';
+
 // for dynamic updates/toggling
 const isSignUp = defineModel("is-sign-up");
 
@@ -147,7 +149,7 @@ const handleSubmit = async () => {
 
     <AlertBox v-if="showAlert" v-model:show-alert="showAlert" :alert-type="alertType">
         <template v-slot:msg>
-            {{ errorMsg || successMsg }}
+            <div class="fs-4">{{ errorMsg || successMsg }}</div>
         </template>
     </AlertBox>
 

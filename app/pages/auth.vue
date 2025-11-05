@@ -16,6 +16,8 @@ If you want to LOGIN as
  FEEDBACK: I've combined Login and Sign Up together, cause UI-wise I think it is cool. What do yall think? -->
 
 <script setup>
+import LoginCard from '~/components/auth/LoginCard.vue';
+import RegisterCard from '~/components/auth/RegisterCard.vue';
 
 const isSignUp = ref(false) // Default to "Login" tab instead of "Sign Up"
 </script>
@@ -25,8 +27,8 @@ const isSignUp = ref(false) // Default to "Login" tab instead of "Sign Up"
         <div class="card shadow-lg rounded-5 p-0" style="width: 80%">
             <div class="row g-0">
                 <div class="col-md-6 col-sm-12 mx-0 p-5">
-                            <AuthLoginCard v-if="!isSignUp" v-model:is-sign-up="isSignUp"/>
-                            <AuthRegisterCard v-else v-model:is-sign-up="isSignUp"/>
+                            <LoginCard v-if="!isSignUp" v-model:is-sign-up="isSignUp"/>
+                            <RegisterCard v-else v-model:is-sign-up="isSignUp"/>
                 </div>
                 <div class="col-6 d-md-block d-none mx-0 position-relative">
                     <img src="/img/auth-picture.png"
