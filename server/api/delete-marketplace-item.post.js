@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
             .from('marketplace')
             .delete()
             .eq('id', responseBody.item_id)
-            .eq('prof_id', responseBody.prof_id)
+        
         if (error) {
             throw new Error(error.message);
         }

@@ -39,6 +39,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="t of transactionHist">
+                        {{ t }}
                         <td>{{ t.date }}</td>
                         <td>{{ t.student.full_name }}</td>
                         <td>{{ t.course.course_name }}</td>
@@ -81,5 +82,4 @@ if (role.value == 'student') {
     transactionHist.value = data;
 
 }
-
 </script>

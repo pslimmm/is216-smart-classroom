@@ -564,6 +564,20 @@ const getGradeBadgeClass = (grade) => {
     return 'bg-danger';
 };
 
+const getRatingBadgeClass = (rating) => {
+    if (rating >= 4) return 'bg-success';
+    if (rating >= 3) return 'bg-warning';
+    return 'bg-danger';
+};
+
+const getStatusBadgeClass = (status) => {
+    switch (status) {
+        case 'approved': return 'bg-success';
+        case 'pending': return 'bg-warning';
+        case 'rejected': return 'bg-danger';
+        default: return 'bg-secondary';
+    }
+};
 
 const studentStats = computed(() => {
     if (!selectedStudent.value) return [];
@@ -590,15 +604,6 @@ watch(showApproveModal, async (newVal, oldVal) => {
 });
 
 watch(showRejectModal, async (newVal, oldVal) => {
-    if (oldVal === true && newVal === false) {
-        await fetchCourseReport(selectedWeek.value);
-        if (selectedStudentId.value) {
-            loadStudentData();
-        }
-    }
-});
-
-watch(showSubmitModal, async (newVal, oldVal) => {
     if (oldVal === true && newVal === false) {
         await fetchCourseReport(selectedWeek.value);
         if (selectedStudentId.value) {
