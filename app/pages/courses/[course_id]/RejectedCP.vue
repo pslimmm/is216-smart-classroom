@@ -4,9 +4,9 @@
     <div class="bg-white p-4 rounded-4 shadow-sm mb-5">
       <!-- Page Header -->
       <div class="mb-4 text-center">
-        <h2 class="text-danger fw-bold mb-3" style="font-size: 3.5rem;">Rejected Class Participation Logs</h2>
+        <div class="text-danger fw-bold mb-3" style="font-size: 3.5rem;">Rejected Class Participation Logs</div>
       </div>
-      <h4 class="mb-3 text-navy text-center fs-3 mb-5">Search Students</h4>
+      <h4 class="mb-3 text-navy text-center fs-3 mb-5">Search Rejected Students</h4>
       <div class="row g-3 justify-content-center">
         <div class="col-md-8">
           <div class="input-group position-relative">
@@ -14,7 +14,7 @@
             <input v-model="searchQuery" @focus="showSuggestions = searchQuery.length > 0"
               @input="showSuggestions = searchQuery.length > 0" @blur="setTimeout(() => showSuggestions = false, 200)"
               @keyup.enter="handleSearch" type="text" class="form-control fs-2"
-              placeholder="Press Enter to search (e.g., Alice)" />
+              placeholder="Enter Student Name (e.g. Alice)" />
 
             <!-- Suggestions dropdown -->
             <div v-if="showSuggestions && searchSuggestions.length > 0"
@@ -34,11 +34,11 @@
       <!-- Selected Student Label -->
       <div v-if="filteredStudents.length > 0" class="mt-4 text-center">
         <p class="mb-1 text-muted fs-3">Showing rejected logs for:</p>
-        <div v-for="s in filteredStudents" :key="s.student_id" class="fw-bold fs-3">{{ s.student.full_name }}</div>
+        <div v-for="s in filteredStudents" :key="s.student_id" class="fw-semibold fs-3">{{ s.student.full_name }}</div>
       </div>
-      <div class="text-center mt-3">
+      <div class="text-center mt-4">
         <NuxtLink :to="'/courses/' + course_id" class="btn btn-navy fs-3 fw-semibold mb-3">
-          ← Back to Course
+          Back to Course
         </NuxtLink>
       </div>
 
@@ -53,14 +53,15 @@
         <div class="card-body">
           <!-- rejected Badge -->
           <div class="mb-2">
-            <span class="badge bg-danger text- fs-4">REJECTED</span>
+            <span class="badge bg-danger text-white fs-4">REJECTED</span>
           </div>
 
           <!-- Student Name -->
           <h5 class="card-title mb-2 fs-2">{{ log.student.full_name }}</h5>
 
           <!-- Description -->
-          <p class="card-text fs-3">{{ log.description }}</p>
+          <p class="card-text fs-3"> <strong>Description: </strong>
+            {{ log.description }}</p>
 
           <!-- Rating Centered -->
           <div class="text-start mt-2">

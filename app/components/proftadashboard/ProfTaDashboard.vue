@@ -677,10 +677,10 @@ onBeforeUnmount(() => {
                     <div class="px-4 py-4 flex-grow-1 d-flex flex-column justify-content-start gap-3">
                         <button v-if="role == 'ta'" @click="showSubmitModal = true"
                             class="btn btn-navy fs-2 fw-semibold">Submit New CP</button>
-                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/approved'"
+                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/ApprovedCP'"
                             class="btn btn-navy fs-2 fw-semibold">Review
                             Approved CP</NuxtLink>
-                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/rejected'"
+                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/RejectedCP'"
                             class="btn btn-navy fs-2 fw-semibold">Review
                             Rejected CP</NuxtLink>
                     </div>
@@ -976,7 +976,7 @@ onBeforeUnmount(() => {
                             </div>
                             <div v-else class="text-center py-4 text-muted">
                                 <i class="bi bi-clipboard-x fs-1 mb-3"></i>
-                                <p>No participation history found for this student.</p>
+                                <p class="fs-2">No participation history found for this student.</p>
                             </div>
                         </div>
                     </div>

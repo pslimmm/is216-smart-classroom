@@ -14,7 +14,7 @@
             <input v-model="searchQuery" @focus="showSuggestions = searchQuery.length > 0"
               @input="showSuggestions = searchQuery.length > 0" @blur="setTimeout(() => showSuggestions = false, 200)"
               @keyup.enter="handleSearch" type="text" class="form-control fs-2"
-              placeholder="Press Enter to search (e.g., Alice)" />
+              placeholder="Enter Student Name (e.g. Alice)" />
 
             <!-- Suggestions dropdown -->
             <div v-if="showSuggestions && searchSuggestions.length > 0"
@@ -36,9 +36,9 @@
         <p class="mb-1 text-muted fs-3">Showing approved logs for:</p>
         <div v-for="s in filteredStudents" :key="s.student_id" class="fw-semibold fs-3">{{ s.student.full_name }}</div>
       </div>
-      <div class="text-center mt-5">
+      <div class="text-center mt-4">
         <NuxtLink :to="'/courses/' + course_id" class="btn btn-navy fs-3 fw-semibold mb-3">
-          ← Back to Course
+          Back to Course
         </NuxtLink>
       </div>
 
