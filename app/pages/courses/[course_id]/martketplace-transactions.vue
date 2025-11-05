@@ -7,7 +7,7 @@
             </h1>
             <table class="table" v-if="role == 'student'">
                 <thead>
-                    <tr>
+                    <tr class="fs-4 text-navy">
                         <th>Date</th>
                         <th>Item Name</th>
                         <th>Item Amount</th>
@@ -15,19 +15,25 @@
                         <th>Subtotal</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="fs-4">
                     <tr v-for="t of transactionHist">
-                        <td>{{ t.date }}</td>
-                        <td>{{ t.item.item_name }}</td>
-                        <td>{{ t.qty }}</td>
-                        <td>{{ t.item.item_price }}</td>
-                        <td>{{ t.qty * t.item.item_price }}</td>
+                        <td class="py-3">{{ t.date }}</td>
+                        <td class="py-3">{{ t.item.item_name }}</td>
+                        <td class="py-3">{{ t.qty }}</td>
+                        <td class="py-3">
+                            <i class="bi bi-coin text-warning"></i>
+                            {{ t.item.item_price }}
+                        </td>
+                        <td class="py-3">
+                            <i class="bi bi-coin text-warning"></i>
+                            {{ t.qty * t.item.item_price }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
                 <table class="table" v-if="role == 'prof'">
                 <thead>
-                    <tr>
+                    <tr class="fs-3 text-navy">
                         <th>Date</th>
                         <th>Student</th>
                         <th>Course</th>
@@ -37,16 +43,21 @@
                         <th>Subtotal</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="fs-4">
                     <tr v-for="t of transactionHist">
-                        {{ t }}
-                        <td>{{ t.date }}</td>
-                        <td>{{ t.student.full_name }}</td>
-                        <td>{{ t.course.course_name }}</td>
-                        <td>{{ t.item.item_name }}</td>
-                        <td>{{ t.qty }}</td>
-                        <td>{{ t.item.item_price }}</td>
-                        <td>{{ t.qty * t.item.item_price }}</td>
+                        <td class="py-3">{{ t.date }}</td>
+                        <td class="py-3">{{ t.student.full_name }}</td>
+                        <td class="py-3">{{ t.course.course_name }}</td>
+                        <td class="py-3">{{ t.item.item_name }}</td>
+                        <td class="py-3">{{ t.qty }}</td>
+                        <td class="py-3">
+                            <i class="bi bi-coin text-warning"></i>
+                            {{ t.item.item_price }}
+                        </td>
+                        <td class="py-3">
+                            <i class="bi bi-coin text-warning"></i>
+                            {{ t.qty * t.item.item_price }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
