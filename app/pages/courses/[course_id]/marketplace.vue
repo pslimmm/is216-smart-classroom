@@ -120,22 +120,22 @@ const deleteItem = async (obj) => {
     <main class="container flex-grow-1">
         <div class="marketplace container py-5">
 
-            <div class="mb-4 row">
+            <div class="mb-4 row bg-white rounded-3 py-3">
                 <h1 class="display-1 fw-bold gap-2 text-navy col-lg-6 col-sm-12">
                     <i class="bi bi-shop-window me-2"></i>
                     Marketplace
                 </h1>
                 <div class="col-sm-12 col-lg-6 d-flex flex-row align-items-center justify-content-lg-end">
-                    <button class="btn btn-navy me-3" @click="navigateTo('martketplace-transactions')">Transaction History</button>
+                    <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="navigateTo('martketplace-transactions')">Transaction History</button>
                     <div v-if="role == 'student'" class="d-flex flex-row align-items-center">
-                        <button class="btn btn-navy me-3" @click="navigateTo('/courses/' + course_id)">Course Dashboard</button>
-                        <button class="btn btn-navy me-3" @click="showCartModal = !showCartModal">
+                        <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="navigateTo('/courses/' + course_id)">Course Dashboard</button>
+                        <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="showCartModal = !showCartModal">
                             <i class="bi bi-cart me-1"></i>
                             View Cart
                         </button>
-                        <div class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box">
+                        <div class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold">
                             <i class="bi bi-coin text-warning me-1"></i>
-                            {{ coins }}
+                                {{ coins }}
                         </div>
                     </div>
                     <div v-if="role == 'prof'">
