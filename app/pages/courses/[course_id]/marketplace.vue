@@ -119,16 +119,14 @@ watch(showCartModal, (newVal) => {
 </script>
 
 <template>
-    <!-- <SuccessAlert :message="successMsg" v-model:showSuccessAlert="showSuccessAlert" /> -->
+    <SuccessAlert :message="successMsg" v-model:showSuccessAlert="showSuccessAlert" />
     <AddItemsModal v-if="showAddingModal" v-model:showAddingModal="showAddingModal" />
     <AddItemStockModal v-if="showAddItemModal" v-model:showAddItemModal="showAddItemModal"
         v-model:selectedItem="selectedItem" />
     <CartModal v-if="showCartModal" v-model:showCartModal="showCartModal" :removeFromCart="removeFromCart"
         :products="products" :coins="coins" />
     <main class="container flex-grow-1">
-        <div class="marketplace container py-5">
-
-            <div class="mb-4 row bg-white rounded-3 py-3">
+            <div class=" mt-4 mb-4 row bg-white rounded-3 py-3">
                 <h1 class="display-1 fw-bold gap-2 text-navy col-lg-6 col-sm-12">
                     <i class="bi bi-shop-window me-2"></i>
                     Marketplace
@@ -163,7 +161,6 @@ watch(showCartModal, (newVal) => {
                         @delete-item="deleteItem" @add-item-stock="addItemStock" />
                 </div>
             </div>
-        </div>
     </main>
 </template>
 

@@ -25,8 +25,8 @@ const isSignUp = ref(false) // Default to "Login" tab instead of "Sign Up"
         <div class="card shadow-lg rounded-5 p-0" style="width: 80%">
             <div class="row g-0">
                 <div class="col-md-6 col-sm-12 mx-0 p-5">
-                            <LoginCard v-if="!isSignUp" v-model:is-sign-up="isSignUp"/>
-                            <RegisterCard v-else v-model:is-sign-up="isSignUp"/>
+                            <AuthLoginCard v-if="!isSignUp" v-model:is-sign-up="isSignUp"/>
+                            <AuthRegisterCard v-else v-model:is-sign-up="isSignUp"/>
                 </div>
                 <div class="col-6 d-md-block d-none mx-0 position-relative">
                     <img src="/img/auth-picture.png"

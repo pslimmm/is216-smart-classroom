@@ -2,28 +2,28 @@
     <div class="overlay">
         <div class="modal-wrapper bg-white rounded-5 p-4 m-3">
             <div class="d-flex flex-row justify-content-between align-items-center">
-                <h3>Approve class participation</h3>
+                <h3 class="text-navy fs-1">Reject Class Participation</h3>
                 <button class="btn btn-close" @click="showRejectModal = false"></button>
             </div>
 
             <!-- Student Name with Dropdown -->
-            <label for="student" class="form-label">Student Name:</label>
-            <input type="text" disabled class="form-control" :value="props.student_name">
+            <label for="student" class="form-label fs-2 fw-semibold">Student Name:</label>
+            <input type="text" disabled class="form-control fs-4" :value="props.student_name">
 
-            <label for="description" class="form-label mt-3">Description:</label>
-            <textarea id="description" :value="props.transaction.contribution" class="form-control" rows="5"
+            <label for="description" class="form-label mt-3 fs-2 fw-semibold">Description:</label>
+            <textarea id="description" :value="props.transaction.contribution" class="form-control fs-4" rows="5"
                 disabled></textarea>
 
-            <label class="form-label mt-3 d-block">Rating</label>
+            <label class="form-label mt-3 d-block fs-2 fw-semibold">Rating</label>
             <div>
                 <i v-for="n in 5" :key="n" class="bi star-rating" :class="[
                     n <= (props.transaction.rating) ? 'bi-star-fill text-warning bounce' : 'bi-star text-secondary'
-                ]" style="font-size: 2rem; "></i>
+                ]" style="font-size: 2rem; margin: 3px; "></i>
             </div>
 
-            <label for="remarks" class="mt-3">Additional Remarks</label>
+            <label for="remarks" class="mt-3 fs-2 fw-semibold">Additional Remarks</label>
             <textarea name="remarks" id="remarks" class="form-control" rows="5" v-model="remarks"></textarea>
-            <button type="submit" class="btn btn-danger w-100 fs-3 mt-4" @click="handleSubmit()">
+            <button type="submit" class="btn btn-danger w-100 fs-3 mt-4 fw-semibold" @click="handleSubmit()">
                 Reject
             </button>
         </div>

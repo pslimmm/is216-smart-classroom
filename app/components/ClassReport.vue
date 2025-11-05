@@ -954,18 +954,18 @@ onBeforeUnmount(() => {
                                                 'bg-warning': p.status === 'pending',
                                                 'bg-success': p.status === 'approved'
                                             }" class="border-bottom-0 text-center">
-                                                <span class="text-white fw-semibold fs-3"> {{ p.status }}
+                                                <span class="text-white fw-semibold fs-3 text-capitalize"> {{ p.status }}
                                                 </span>
                                             </td>
                                             <td class="text-muted text-truncate fs-3">
                                                 {{ p.remarks }}
                                             </td>
                                             <td v-if="role == 'prof'">
-                                                <button @click="approveCP(p)" class="btn btn-success fs-3"
+                                                <button @click="approveCP(p)" class="btn btn-success fs-3 fw-semibold"
                                                     v-if="['rejected', 'pending'].includes(p.status)">
                                                     Approve
                                                 </button>
-                                                <button @click="rejectCP(p)" class="btn btn-danger fs-3"
+                                                <button @click="rejectCP(p)" class="btn btn-danger fs-3 fw-semibold"
                                                     v-if="['approved', 'pending'].includes(p.status)">
                                                     Reject
                                                 </button>
