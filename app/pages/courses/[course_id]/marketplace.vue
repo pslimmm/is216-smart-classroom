@@ -3,8 +3,6 @@ const route = useRoute();
 const course_id = route.params.course_id;
 const { role, userID } = useAuthState();
 
-// cart
-const showCartModal = ref(false);
 
 // course info
 const { courseData } = await $fetch('/api/course-info', {
@@ -24,10 +22,11 @@ const loadProducts = async () => {
         }
 
     })
-    products.value = productResults.products;
+    products.value = [...productResults.products];
 }
 
 loadProducts();
+
 
 // prof actions
 // add new items
@@ -38,7 +37,7 @@ watch(showAddingModal, (newVal) => {
 
 // load coins for student
 const coins = ref(0);
-if (role.value == 'student') {
+const loadCoins = async () => {
     const { coin_balance } = await $fetch('/api/course-student', {
         method: 'POST',
         body: {
@@ -48,7 +47,9 @@ if (role.value == 'student') {
     })
     coins.value = coin_balance;
 }
-
+if (role.value == 'student') {
+    loadCoins()
+}
 // handle emit events
 const successMsg = ref('');
 const showSuccessAlert = ref(false);
@@ -64,7 +65,6 @@ const addToCart = async (obj) => {
     })
     successMsg.value = 'Added items to cart';
     showSuccessAlert.value = true;
-
     setTimeout(() => showSuccessAlert.value = false, 2000)
 };
 
@@ -106,12 +106,20 @@ const deleteItem = async (obj) => {
     loadProducts()
 }
 
+// cart
+const showCartModal = ref(false);
+watch(showCartModal, (newVal) => {
+    loadProducts();
+    if (role.value == 'student') {
+        loadCoins();
+    }
 
+})
 
 </script>
 
 <template>
-    <SuccessAlert :message="successMsg" v-model:showSuccessAlert="showSuccessAlert" />
+    <!-- <SuccessAlert :message="successMsg" v-model:showSuccessAlert="showSuccessAlert" /> -->
     <AddItemsModal v-if="showAddingModal" v-model:showAddingModal="showAddingModal" />
     <AddItemStockModal v-if="showAddItemModal" v-model:showAddItemModal="showAddItemModal"
         v-model:selectedItem="selectedItem" />
@@ -126,20 +134,24 @@ const deleteItem = async (obj) => {
                     Marketplace
                 </h1>
                 <div class="col-sm-12 col-lg-6 d-flex flex-row align-items-center justify-content-lg-end">
-                    <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="navigateTo('martketplace-transactions')">Transaction History</button>
+                    <button class="btn btn-navy me-3 fs-4 fw-semibold"
+                        @click="navigateTo('martketplace-transactions')">Transaction History</button>
                     <div v-if="role == 'student'" class="d-flex flex-row align-items-center">
-                        <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="navigateTo('/courses/' + course_id)">Course Dashboard</button>
-                        <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="showCartModal = !showCartModal">
+                        <button class="btn btn-navy me-3 fs-4 fw-semibold"
+                            @click="navigateTo('/courses/' + course_id)">Course Dashboard</button>
+                        <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="showCartModal = true">
                             <i class="bi bi-cart me-1"></i>
                             View Cart
                         </button>
-                        <div class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold">
+                        <div
+                            class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold">
                             <i class="bi bi-coin text-warning me-1"></i>
-                                {{ coins }}
+                            {{ coins }}
                         </div>
                     </div>
                     <div v-if="role == 'prof'">
-                        <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="showAddingModal = !showAddingModal">Add new items</button>
+                        <button class="btn btn-navy me-3 fs-4 fw-semibold"
+                            @click="showAddingModal = !showAddingModal">Add new items</button>
                     </div>
                 </div>
             </div>
