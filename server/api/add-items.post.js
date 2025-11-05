@@ -11,10 +11,13 @@ export default defineEventHandler(async (event) => {
     try {
         let url = null;
         if (responseBody.base64Image) {
-            const fileName = `${Date.now()}-${responseBody.item_name}.jpg`;
-            const base64Data = responseBody.base64Image.replace(/^data:image\/\w+;base64,/, '')
-            const buffer = Buffer.from(base64Data, 'base64')
-            const blob = new Blob([buffer], { type: 'image/jpeg' })
+            const mimeType = responseBody.base64Image.match(/^data:(image\/\w+);base64,/)[1];
+            const extension = mimeType.split('/')[1]; // Get the part after "image/"
+            const fileName = `${Date.now()}-${responseBody.item_name}.${extension}`;
+
+            const base64Data = responseBody.base64Image.replace(/^data:image\/\w+;base64,/, '');
+            const buffer = Buffer.from(base64Data, 'base64');
+            const blob = new Blob([buffer], { type: mimeType });
 
             await supabaseClient
                 .storage
