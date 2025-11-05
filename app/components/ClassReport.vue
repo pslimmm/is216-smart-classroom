@@ -583,7 +583,7 @@ const studentStats = computed(() => {
     if (!selectedStudent.value) return [];
     return [
         { label: 'Total Participations', value: selectedStudent.value.totalParticipations, icon: 'bi-card-list', color: 'text-primary' },
-        { label: 'Overall CP Rating (out of 5)', value: selectedStudent.value.avgRating.toFixed(2), icon: 'bi-star-fill', color: 'text-info' },
+        { label: 'Overall CP Rating (Out of 5)', value: selectedStudent.value.avgRating.toFixed(2), icon: 'bi-star-fill', color: 'text-info' },
         { label: 'Avg CP Per Week', value: selectedStudent.value.avgPerWeek.toFixed(2), icon: 'bi-calendar-week', color: 'text-warning' },
         { label: `Week ${selectedWeek.value} Participations`, value: selectedStudent.value.currentWeekCount, icon: 'bi-calendar-check', color: 'text-success' }
     ];
@@ -829,23 +829,31 @@ onBeforeUnmount(() => {
                     </div>
 
                     <div class="px-4 py-4">
-                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4">
+                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4 align-items-center">
                             <!-- Stats -->
                             <div class="col" v-for="stat in studentStats" :key="stat.label">
                                 <div class="d-flex flex-column align-items-center">
-                                    <i :class="['bo fs-1 mb-2', stat.icon, stat.color]"></i>
-                                    <h5 class="fw-bold fs-3">{{ stat.value }}</h5>
-                                    <small class="text-muted">{{ stat.label }}</small>
+                                    <i :class="['bi fs-1 mb-2', stat.icon, stat.color]"></i>
+                                    <h5 class="fw-bold fs-2">{{ stat.value }}</h5>
+                                    <small class="text-muted fs-4">{{ stat.label }}</small>
                                 </div>
                             </div>
                             <!-- Projected Grade -->
-                            <div class="col">
+                            <!-- <div class="col">
                                 <div class="d-flex flex-column align-items-center">
                                     <div
                                         :class="['badge fs-5 p-3 rounded-4', getGradeBadgeClass(selectedStudent.projectedGrade)]">
                                         {{ selectedStudent.projectedGrade }}
                                     </div>
                                     <h5>Projected Grade:</h5>
+                                </div>
+                            </div> -->
+                            <!-- New Projected Grade -->
+                            <div class="col">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi fs-1 mb-2 bi-calculator"></i>
+                                    <h5 class="fw-bold fs-2 text-white p-1 rounded-3" :class="getGradeBadgeClass(selectedStudent.projectedGrade)">{{ selectedStudent.projectedGrade }}</h5>
+                                    <small class="text-muted fs-4">Projected Graded:</small>
                                 </div>
                             </div>
                         </div>
