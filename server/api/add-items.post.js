@@ -19,11 +19,12 @@ export default defineEventHandler(async (event) => {
             const buffer = Buffer.from(base64Data, 'base64');
             const blob = new Blob([buffer], { type: mimeType });
 
-            await supabaseClient
+            const { error: er3} = await supabaseClient
                 .storage
                 .from('marketplace')
                 .upload(fileName, blob);
-
+            console.log(er3);
+            
             const { data, error } = supabaseClient
                 .storage
                 .from('marketplace')
