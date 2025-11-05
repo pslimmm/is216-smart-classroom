@@ -35,17 +35,17 @@ const currentWeek = computed(() => {
 });
 
 const selectedWeek = ref(1);
-const weekInput = ref('')
+// const weekInput = ref('')
 
-const changeWeek = () => {
-    const weekValue = parseInt(weekInput.value);
-    if (isNaN(weekValue) || weekValue < 1 || weekValue > 14) {
-        weekInput.value = "";
-        return;
-    }
-    selectedWeek.value = weekValue;
-    weekInput.value = "";
-}
+// const changeWeek = () => {
+//     const weekValue = parseInt(weekInput.value);
+//     if (isNaN(weekValue) || weekValue < 1 || weekValue > 14) {
+//         weekInput.value = "";
+//         return;
+//     }
+//     selectedWeek.value = weekValue;
+//     weekInput.value = "";
+// }
 
 watchEffect(() => {
     if (currentWeek.value && !isNaN(currentWeek.value)) {
@@ -672,9 +672,11 @@ onBeforeUnmount(() => {
                     <div class="px-4 py-4 flex-grow-1 d-flex flex-column justify-content-start gap-3">
                         <button v-if="role == 'ta'" @click="showSubmitModal = true"
                             class="btn btn-navy fs-2 fw-semibold">Submit New CP</button>
-                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/approved'" class="btn btn-navy fs-2 fw-semibold">Review
+                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/approved'"
+                            class="btn btn-navy fs-2 fw-semibold">Review
                             Approved CP</NuxtLink>
-                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/rejected'" class="btn btn-navy fs-2 fw-semibold">Review
+                        <NuxtLink v-if="role == 'prof'" :to="course_id + '/rejected'"
+                            class="btn btn-navy fs-2 fw-semibold">Review
                             Rejected CP</NuxtLink>
                     </div>
                     <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
@@ -811,20 +813,34 @@ onBeforeUnmount(() => {
 
                     <!-- Selected Student Details Body -->
                     <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
-                        <div class="text-navy fw-semibold" style="font-size: 2.75rem;">Currently on Week {{
+                        <div class="text-navy fw-semibold mb-3" style="font-size: 2.75rem;">Currently on Week {{
                             selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
                         <div class="d-flex flex-row align-items-center gap-3 mb-4 fw-bold fs-3">
                             <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
-                            <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
+                            <!-- <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
                                 style="width: auto;" @change="changeWeek()" :value="selectedWeek">
                                 <option v-for="week in currentWeek" :key="week" :value="week">{{ week }}</option>
+                            </select> -->
+                            <select id="weekSelect" v-model.number="selectedWeek" class="form-select form-select-sm fs-4"
+                                style="width: auto;">
+                                <!-- Cap options to 14 to match your watcher validation -->
+                                <option v-for="week in Math.min(currentWeek, 14)" :key="week" :value="week">
+                                    {{ week }}
+                                </option>
                             </select>
-                            <button @click="selectedWeek = currentWeek" class="btn btn-navy">Current Week</button>
+
+                            <!-- Clicking this will jump the dropdown to the current week (also capped to 14) -->
+                            <button @click="selectedWeek = Math.min(currentWeek, 14)" class="btn btn-navy fs-4 fw-semibold">
+                                Current Week
+                            </button>
+
+                            <!-- <button @click="selectedWeek = currentWeek" class="btn btn-navy">Current Week</button> -->
                         </div>
                     </div>
 
                     <div class="px-4 py-4">
-                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4 align-items-center">
+                        <div
+                            class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4 align-items-center">
                             <!-- Stats -->
                             <div class="col" v-for="stat in studentStats" :key="stat.label">
                                 <div class="d-flex flex-column align-items-center">
@@ -847,7 +863,9 @@ onBeforeUnmount(() => {
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
                                     <i class="bi fs-1 mb-2 bi-calculator"></i>
-                                    <h5 class="fw-bold fs-2 text-white p-1 rounded-3" :class="getGradeBadgeClass(selectedStudent.projectedGrade)">{{ selectedStudent.projectedGrade }}</h5>
+                                    <h5 class="fw-bold fs-2 text-white p-1 rounded-3"
+                                        :class="getGradeBadgeClass(selectedStudent.projectedGrade)">{{
+                                        selectedStudent.projectedGrade }}</h5>
                                     <small class="text-muted fs-4">Projected Graded:</small>
                                 </div>
                             </div>

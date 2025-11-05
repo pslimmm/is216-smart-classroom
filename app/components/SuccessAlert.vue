@@ -1,7 +1,8 @@
 <template>
     <div>
 
-        <transition enter-active-class="slide-in" leave-active-class="slide-out" @after-leave="afterLeave">
+        <!-- <transition enter-active-class="slide-in" leave-active-class="slide-out" @after-leave="afterLeave"> -->
+        <transition enter-active-class="slide-in" leave-active-class="slide-out">
             <div v-if="showSuccessAlert" class="position-fixed top-0 end-0 m-3 alert alert-success"
                 style="z-index: 1050;">
                 <div class="d-flex justify-content-between align-items-center">
@@ -14,11 +15,16 @@
 </template>
 
 <script setup>
-const showSuccessAlert = defineModel('showSuccessAlert');
-const props = defineProps({
-    showSuccessAlert: Boolean,
-    message: String
-})
+// const showSuccessAlert = defineModel('showSuccessAlert');
+// const props = defineProps({
+//     showSuccessAlert: Boolean,
+//     message: String
+// })
+
+const showSuccessAlert = defineModel('showSuccessAlert'); //v-model ref
+const { message } = defineProps({
+    message: { type: String, default: ''}
+});
 </script>
 
 <style scoped>
