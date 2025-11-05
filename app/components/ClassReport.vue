@@ -676,7 +676,7 @@ onBeforeUnmount(() => {
                     <!-- Submit Class Participation Body -->
                     <div class="px-4 py-4 flex-grow-1 d-flex flex-column justify-content-start gap-3">
                         <button v-if="role == 'ta'" @click="showSubmitModal = true"
-                            class="btn btn-navy btn-sm mb-4 ms-1 p-2">Submit New CP</button>
+                            class="btn btn-navy fs-2 fw-semibold">Submit New CP</button>
                         <NuxtLink v-if="role == 'prof'" :to="course_id + '/approved'" class="btn btn-navy fs-2 fw-semibold">Review
                             Approved CP</NuxtLink>
                         <NuxtLink v-if="role == 'prof'" :to="course_id + '/rejected'" class="btn btn-navy fs-2 fw-semibold">Review

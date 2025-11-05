@@ -2,16 +2,16 @@
     <div class="overlay">
         <div class="modal-wrapper bg-white rounded-5 p-4 m-3">
             <div class="d-flex flex-row justify-content-between align-items-center">
-                <h3>Submit new class participation</h3>
+                <h3 class="text-navy fs-1">Submit New Class Participation</h3>
                 <button class="btn btn-close" @click="showSubmitModal = false"></button>
             </div>
 
             <!-- Student Name with Dropdown -->
-            <label for="student" class="form-label">Student Name:</label>
+            <label for="student" class="form-label fs-2 fw-semibold">Student Name:</label>
             <div class="input-group position-relative">
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <span class="input-group-text"><i class="bi bi-search fs-3"></i></span>
                 <input v-model="studentName" @input="filterStudents" @focus="showSuggestions = studentName.length > 0"
-                    @blur="setTimeout(() => showSuggestions = false, 200)" type="text" class="form-control"
+                    @blur="setTimeout(() => showSuggestions = false, 200)" type="text" class="form-control fs-4"
                     placeholder="Search by student name..." @keyup.enter="autoSelectFirstMatch" />
                 <div v-if="showSuggestions && filteredStudents.length > 0"
                     class="suggestions-dropdown position-absolute w-100 bg-white border rounded shadow-sm"
@@ -26,8 +26,8 @@
             </div>
 
             <!-- Date Input with Validation -->
-            <label for="date" class="form-label mt-3">Date:</label>
-            <input id="date" type="date" class="form-control" v-model="formDate"
+            <label for="date" class="form-label mt-3 fs-2 fw-semibold">Date:</label>
+            <input id="date" type="date" class="form-control fs-4" v-model="formDate"
                 :class="{ 'is-invalid': formDate && !isDateValid }" required />
             <div v-if="formDate && !isDateValid" class="invalid-feedback">
                 {{ dateValidationMessage }}
@@ -36,20 +36,20 @@
                 Date is valid!
             </div>
 
-            <label for="description" class="form-label mt-3">Description:</label>
-            <textarea id="description" v-model="description" class="form-control" rows="5" required
+            <label for="description" class="form-label mt-3 fs-2 fw-semibold">Description:</label>
+            <textarea id="description" v-model="description" class="form-control fs-4" rows="5" required
                 placeholder="Describe the student's participation . . ."></textarea>
 
-            <label class="form-label mt-3">Rating</label>
+            <label class="form-label mt-3 fs-2 fw-semibold">Rating</label>
             <br>
-            <div @mouseout="hoverRating = 0">
+            <div @mouseout="hoverRating = 0" >
                 <i v-for="n in 5" :key="n" @click="rating = n" @mouseover="hoverRating = n" class="bi star-rating"
                     :class="[
                         n <= (hoverRating || rating) ? 'bi-star-fill text-warning bounce' : 'bi-star text-secondary'
-                    ]" style="font-size: 2rem; cursor: pointer;"></i>
+                    ]" style="font-size: 2rem; cursor: pointer; margin: 3px;"></i>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 fs-3 mt-4" :disabled="!isFormValid" @click="handleSubmit()">
+            <button type="submit" class="btn btn-navy w-100 fs-3 fw-semibold mt-4" :disabled="!isFormValid" @click="handleSubmit()">
                 Submit
             </button>
         </div>
