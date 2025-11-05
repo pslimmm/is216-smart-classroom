@@ -397,7 +397,7 @@ onBeforeUnmount(() => {
                             <label for="weekSelect" class="form-label fs-2 text-navy fw-semibold">Select Week:</label>
                             <select id="weekSelect" v-model="selectedWeek"
                                 class="form-select form-select-sm w-auto fs-4">
-                                <option v-for="w in processedData.weeks" :key="w" :value="w">
+                                <option v-for="w in 14" :key="w" :value="w">
                                     {{ w }}
                                 </option>
                             </select>
