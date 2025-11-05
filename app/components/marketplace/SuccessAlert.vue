@@ -3,10 +3,10 @@
 
         <!-- <transition enter-active-class="slide-in" leave-active-class="slide-out" @after-leave="afterLeave"> -->
         <transition enter-active-class="slide-in" leave-active-class="slide-out">
-            <div v-if="showSuccessAlert" class="position-fixed top-0 end-0 m-3 alert alert-success"
+            <div v-if="showSuccessAlert" class="position-fixed bottom-0 end-0 m-3 alert alert-success"
                 style="z-index: 1050;">
                 <div class="d-flex justify-content-between align-items-center">
-                    <p class="me-2 mb-0">{{ message }}</p>
+                    <p class="me-2 mb-0 fs-3 fw-semibold">{{ message }}</p>
                     <button class="btn-close" @click="showSuccessAlert = false"></button>
                 </div>
             </div>

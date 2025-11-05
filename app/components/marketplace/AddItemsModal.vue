@@ -2,24 +2,24 @@
     <div class="overlay">
         <div class="modal-wrapper bg-white rounded-5 p-4 m-3">
             <div class="d-flex flex-row justify-content-between align-items-center">
-                <h3>Add new marketplace items</h3>
+                <h3 class="text-navy fs-1 fw-semibold">Add New Item</h3>
                 <button class="btn btn-close" @click="showAddingModal = false"></button>
             </div>
 
-            <label for="item_name">Item name</label>
-            <input type="text" name="item_name" class="form-control" v-model="item_name" required>
+            <label for="item_name" class="fs-2 fw-semibold">Item name</label>
+            <input type="text" name="item_name" class="form-control fs-4" v-model="item_name" required>
 
-            <label for="item_price">Item price</label>
-            <input type="number" class="form-control" name="item_price" v-model="item_price" required>
+            <label for="item_price" class="fs-2 fw-semibold">Item price</label>
+            <input type="number" class="form-control fs-4" name="item_price" v-model="item_price" required>
 
-            <label for="item_stock">Item stock</label>
-            <input type="number" class="form-control" name="item_stock" v-model="item_stock" required>
+            <label for="item_stock" class="fs-2 fw-semibold">Item stock</label>
+            <input type="number" class="form-control fs-4" name="item_stock" v-model="item_stock" required>
 
-            <label for="item_image">Item image</label>
-            <input type="file" name="item_image" @change="handleFileUpload" accept="image/*" class="form-control">
+            <label for="item_image" class="fs-2 fw-semibold">Item image</label>
+            <input type="file" name="item_image" @change="handleFileUpload" accept="image/*" class="form-control fs-4">
 
-            <button type="submit" class="btn btn-primary w-100 fs-3 mt-4" @click="handleSubmit">
-                Submit
+            <button type="submit" class="btn btn-navy fw-semibold w-100 fs-3 mt-4" @click="handleSubmit">
+                Add Item
             </button>
         </div>
     </div>

@@ -297,9 +297,9 @@
 </template>
 
 <script setup>
-import NoteCard from '~/components/NoteCard.vue';
-import TranscriptSlidePanel from '~/components/TranscriptSlidePanel.vue';
-import DeleteConfirmModal from '~/components/DeleteConfirmModal.vue';
+import NoteCard from '~/components/notes/NoteCard.vue';
+import TranscriptSlidePanel from '~/components/notes/TranscriptSlidePanel.vue';
+import DeleteConfirmModal from '~/components/notes/DeleteConfirmModal.vue';
 
 definePageMeta({
     middleware: 'role'

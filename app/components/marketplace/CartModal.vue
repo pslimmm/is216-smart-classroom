@@ -60,6 +60,8 @@
 </template>
 
 <script setup>
+import ErrorAlert from './ErrorAlert.vue';
+
 const showCartModal = defineModel("showCartModal");
 const { userID } = useAuthState();
 const route = useRoute();

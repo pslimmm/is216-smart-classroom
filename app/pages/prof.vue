@@ -2,6 +2,4 @@
 navigateTo('/courses')
 </script>
 
-<template>
-    <NuxtPage />
-</template>
+<template></template>

@@ -13,15 +13,15 @@
   >
     <div class="slide-panel-header">
       <div>
-        <h5 class="mb-1">{{ transcript?.week || 'Transcript' }}</h5>
-        <small class="text-muted">
-          <i class="bi bi-clock me-1"></i>
+        <h5 class="mb-1 fs-1">{{ transcript?.week || 'Transcript' }}</h5>
+        <div class="text-muted fs-3">
+          <i class="bi bi-clock me-1 fs-2"></i>
           {{ transcript?.timestamp }}
           <span class="ms-3">
-            <i class="bi bi-file-text me-1"></i>
-            {{ transcript?.wordCount || 0 }} words
+            <i class="bi bi-file-text me-1 fs-2"></i>
+            {{ transcript?.wordCount || 0 }} Words
           </span>
-        </small>
+        </div>
       </div>
       <button
         class="btn-close"
@@ -34,19 +34,19 @@
       <!-- Tabs -->
       <div class="tabs-container">
         <button
-          class="tab-button"
+          class="tab-button fs-5"
           :class="{ active: activeTab === 'summary' }"
           @click="activeTab = 'summary'"
         >
-          <i class="bi bi-stars me-2"></i>
+          <i class="bi bi-stars me-2 fs-4"></i>
           AI Summary
         </button>
         <button
-          class="tab-button"
+          class="tab-button fs-5"
           :class="{ active: activeTab === 'transcript' }"
           @click="activeTab = 'transcript'"
         >
-          <i class="bi bi-file-text me-2"></i>
+          <i class="bi bi-file-text me-2 fs-4"></i>
           Full Transcript
         </button>
       </div>
@@ -55,33 +55,33 @@
       <div class="tab-content">
         <!-- AI Summary Tab -->
         <div v-if="activeTab === 'summary'" class="summary-content">
-          <div v-if="transcript?.summary" v-html="renderMarkdown(transcript.summary)"></div>
-          <div v-else class="text-muted fst-italic">
-            <i class="bi bi-info-circle me-2"></i>
+          <div v-if="transcript?.summary" v-html="renderMarkdown(transcript.summary)" class="fs-4"></div>
+          <div v-else class="text-muted fst-italic fs-4">
+            <i class="bi bi-info-circle me-2 fs-3"></i>
             No AI summary available for this transcript.
           </div>
         </div>
 
         <!-- Full Transcript Tab -->
-        <div v-if="activeTab === 'transcript'" class="transcript-full-text">
+        <div v-if="activeTab === 'transcript'" class="transcript-full-text fs-4">
           {{ transcript?.content || '' }}
         </div>
       </div>
     </div>
 
-    <div class="slide-panel-footer">
+    <div class="slide-panel-footer gap-3">
       <button
-        class="btn btn-sm btn-outline-secondary"
+        class="btn btn-sm btn-outline-navy fs-4 fw-semibold"
         @click="copyToClipboard"
       >
-        <i class="bi bi-clipboard me-1"></i>
+        <i class="bi bi-clipboard me-1 fs-3"></i>
         Copy
       </button>
       <button
-        class="btn btn-sm btn-outline-primary"
+        class="btn btn-sm btn-navy fs-4 fw-semibold"
         @click="downloadAsText"
       >
-        <i class="bi bi-download me-1"></i>
+        <i class="bi bi-download me-1 fs-3"></i>
         Download
       </button>
     </div>

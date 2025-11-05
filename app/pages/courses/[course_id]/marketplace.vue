@@ -1,4 +1,10 @@
 <script setup>
+import AddItemsModal from '~/components/marketplace/AddItemsModal.vue';
+import AddItemStockModal from '~/components/marketplace/AddItemStockModal.vue';
+import CartModal from '~/components/marketplace/CartModal.vue';
+import ProductCard from '~/components/marketplace/ProductCard.vue';
+import SuccessAlert from '~/components/marketplace/SuccessAlert.vue';
+
 const route = useRoute();
 const course_id = route.params.course_id;
 const { role, userID } = useAuthState();
@@ -63,7 +69,7 @@ const addToCart = async (obj) => {
             action: 'add'
         }
     })
-    successMsg.value = 'Added items to cart';
+    successMsg.value = 'Added to Cart';
     showSuccessAlert.value = true;
     setTimeout(() => showSuccessAlert.value = false, 2000)
 };

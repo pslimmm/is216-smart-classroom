@@ -51,7 +51,7 @@
                         <div class="sidebar-user-text mb-0">
                             <strong class="sidebar-user-name">{{ data.full_name }}</strong>
                             <p class="sidebar-user-role mb-0">
-                                {{ role === 'prof' ? 'Instructor' : role.charAt(0).toUpperCase() + role.slice(1) }}
+                                {{ role === 'prof' ? 'Instructor' : (( role ?? '').charAt(0).toUpperCase() + role.slice(1)) }}
                             </p>
                         </div>
                     </div>

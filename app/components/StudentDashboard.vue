@@ -480,7 +480,7 @@ onBeforeUnmount(() => {
                                             'bg-warning': p.status === 'pending',
                                             'bg-success': p.status === 'approved'
                                         }" class="border-bottom-0">
-                                        <span class="text-white fw-semibold fs-3" >{{ p.status }}
+                                        <span class="text-white fw-semibold fs-3 text-capitalize" >{{ p.status }}
                                         </span>
                                     </td>
                                     <td class="text-muted text-truncate fs-3">
