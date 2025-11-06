@@ -361,13 +361,15 @@ onBeforeUnmount(() => {
 
         <!-- Progress Bar -->
         <div class="col-12 mb-5">
-            <div class="section-elev rounded-4 d-flex align-items-center">
-                <!-- Left Side: Title -->
-                <div class="fw-bold bg-navy text-white px-4 py-3 flex-shrink-0 rounded-start-4 display-heading d-flex align-items-center justify-content-center justify-content-lg-start text-center text-lg-start">
-                    This Week's Progress:
+            <!-- Course Analytics Header -->
+            <div class="section-elev rounded-4">
+                <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                    <div class="fw-bold display-heading">This Week's Progress:</div>
                 </div>
-                <!-- Right Side: Progress Bar -->
-                <div class="progress-wrap flex-grow-1 mx-3 d-flex flex-column">
+
+                <!-- Body -->
+                <div class="progress-wrap flex-grow-1 mx-3 d-flex flex-column py-3">
+                    <!-- Progress Bar -->
                     <div class="progress-track mb-2">
                         <div class="progress-bar progress-gradient text-white fw-bold text-center" :class="{
                             'bg-success': currentWeekProgressPercentage >= 100,
