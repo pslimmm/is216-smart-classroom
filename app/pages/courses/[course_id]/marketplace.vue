@@ -119,8 +119,8 @@ watch(showCartModal, (newVal) => {
     if (role.value == 'student') {
         loadCoins();
     }
-
 })
+
 
 </script>
 

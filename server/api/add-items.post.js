@@ -23,7 +23,6 @@ export default defineEventHandler(async (event) => {
                 .storage
                 .from('marketplace')
                 .upload(fileName, blob);
-            console.log(er3);
             
             const { data, error } = supabaseClient
                 .storage

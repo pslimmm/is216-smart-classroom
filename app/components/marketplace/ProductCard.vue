@@ -14,7 +14,9 @@ const props = defineProps({
 // emits an event
 const emit = defineEmits([
     'add-to-cart',
-    'remove-from-cart'
+    'remove-from-cart',
+    'add-item-stock',
+    'delete-item'
 ]);
 
 

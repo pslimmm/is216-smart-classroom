@@ -7,7 +7,7 @@
                 style="z-index: 1050;">
                 <div class="d-flex justify-content-between align-items-center">
                     <p class="me-2 mb-0 fs-3 fw-semibold">{{ message }}</p>
-                    <button class="btn-close" @click="showSuccessAlert = false"></button>
+                    <button class="btn-close" @click="handleClose"></button>
                 </div>
             </div>
         </transition>
@@ -15,16 +15,14 @@
 </template>
 
 <script setup>
-// const showSuccessAlert = defineModel('showSuccessAlert');
-// const props = defineProps({
-//     showSuccessAlert: Boolean,
-//     message: String
-// })
-
 const showSuccessAlert = defineModel('showSuccessAlert'); //v-model ref
 const { message } = defineProps({
     message: { type: String, default: ''}
 });
+
+const handleClose = () => {
+    showSuccessAlert.value = false;
+}
 </script>
 
 <style scoped>
