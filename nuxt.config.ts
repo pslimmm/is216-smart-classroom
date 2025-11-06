@@ -48,7 +48,7 @@ export default defineNuxtConfig({
             '/api/**': {
                 cors: true,
                 headers: {
-                    'Access-Control-Allow-Origin': 'https://localhost:3000',
+                    'Access-Control-Allow-Origin': 'https://is216-smart-classroom.vercel.app/',
                     'Access-Control-Allow-Methods': 'GET,POST',
                     'Access-Control-Allow-Headers': 'Content-Type,Authorization'
                 }
