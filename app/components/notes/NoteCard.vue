@@ -30,15 +30,15 @@
             class="transcript-item mb-4 pb-3"
             :class="{ 'border-bottom': index < filteredTranscripts.length - 1 }"
           >
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <div class="flex-grow-1">
-                <div class="d-flex align-items-center gap-2 mb-1">
+            <div class="transcript-header d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-start gap-3 mb-2">
+              <div class="transcript-meta flex-grow-1 min-w-0">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                   <i class="bi bi-file-earmark-text me-1 fs-3"></i>
 
                   <!-- View mode -->
                   <h6
                     v-if="editingTranscriptId !== transcript.id"
-                    class="mb-0 transcript-title fs-1"
+                    class="mb-0 transcript-title fs-1 text-break"
                   >
                     {{ transcript.title }}
                   </h6>
@@ -57,22 +57,21 @@
                   />
 
                   <span
-                    class="badge fs-4"
+                    class="badge fs-4 transcript-status-badge mt-2 mt-sm-0 ms-sm-2 ms-lg-3"
                     :class="transcript.status === 'failed' ? 'bg-danger' : 'bg-success'"
-                    style="margin-left: 1rem;"
                   >
                     <span v-if="transcript.status === 'failed'">Failed</span>
                     <span v-else>Completed</span>
                   </span>
                 </div>
-                <div class="fs-4">
+                <div class="fs-4 text-muted text-wrap">
                   <i class="bi bi-clock me-1"></i>
                   {{ transcript.timestamp }}
                 </div>
               </div>
 
               <!-- 3-Dot Menu -->
-              <div class="dropdown-wrapper" style="position: relative;">
+              <div class="dropdown-wrapper position-relative ms-auto">
                 <button
                   class="btn btn-sm btn-link text-muted p-0"
                   type="button"
@@ -138,7 +137,7 @@
             <!-- View Full Button -->
             <button
               v-if="transcript.status !== 'failed'"
-              class="btn btn-sm btn-outline-primary mt-2 fs-5"
+              class="btn btn-sm btn-outline-primary mt-2 fs-5 transcript-view-btn"
               @click="openSlidePanel(transcript)"
             >
               <i class="bi bi-arrows-angle-expand me-1 fs-4"></i>
@@ -356,6 +355,39 @@ const highlightText = (text) => {
   background-color: #f8f9fa;
   padding: 1rem;
   border-radius: 0.5rem;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.transcript-header {
+  gap: 1rem;
+}
+
+.transcript-meta {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.transcript-status-badge {
+  flex-shrink: 0;
+}
+
+.transcript-view-btn {
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .transcript-view-btn {
+    width: auto;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .dropdown-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 
 :deep(.highlight-search) {
@@ -368,6 +400,14 @@ const highlightText = (text) => {
 .badge {
   font-size: 0.7rem;
   padding: 0.25rem 0.5rem;
+}
+
+.dropdown-wrapper {
+  flex-shrink: 0;
+}
+
+.dropdown-wrapper .btn-link {
+  white-space: nowrap;
 }
 
 /* Custom Dropdown Menu */
