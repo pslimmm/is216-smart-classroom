@@ -698,42 +698,45 @@ onBeforeUnmount(() => {
 
         <!-- Class Participation Report -->
         <div class="col-12 mb-5">
-            <div class="section-elev rounded-4 d-flex align-items-center">
+            <div class="col-12">
+                <!-- <div class="col-12 col-lg-"> -->
+                <div class="section-elev rounded-4 h-100 d-flex-column">
+                    <!-- Class Participation Report Header -->
+                    <div class="bg-navy text-white px-4 py-3 rounded-top-4">
+                        <div class="fw-bold" style="font-size: 3.5rem;">Class Participation Report</div>
+                    </div>
 
-                <!-- Left Side: Title -->
-                <div class="fw-bold bg-navy text-white px-4 my-0 flex-shrink-0 rounded-start-4 align-self-stretch d-flex align-items-center justify-content-center justify-content-lg-start display-heading text-center text-lg-start">
-                    Class Participation Report:
-                </div>
+                    <!-- Class Participation Report Body -->
+                    <div class="px-4 py-4 flex-grow-1">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 mb-4 align-items-center">
 
-                <!-- Right Side: Class Statistics -->
-                <div class="flex-grow-1 mx-3">
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 mb-0 text-center">
-                        <div class="col">
-                            <div class="d-flex flex-column align-items-center">
-                                <h6 class="fs-3 mb-0 text-muted">Total Students</h6>
-                                <i class="bi bi-people-fill text-primary fs-2"></i>
-                                <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
+                            <div class="col">
+                                <div class="d-flex flex-column align-items-center">
+                                    <h6 class="fs-3 mb-0 text-muted">Total Students</h6>
+                                    <i class="bi bi-people-fill text-primary fs-2"></i>
+                                    <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex flex-column align-items-center">
-                                <h6 class="fs-3 mb-0 text-muted">Class Avg Rating</h6>
-                                <i class="bi bi-bar-chart-line-fill text-info fs-2"></i>
-                                <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
+                            <div class="col">
+                                <div class="d-flex flex-column align-items-center">
+                                    <h6 class="fs-3 mb-0 text-muted">Class Avg Rating</h6>
+                                    <i class="bi bi-bar-chart-line-fill text-info fs-2"></i>
+                                    <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex flex-column align-items-center">
-                                <h6 class="fs-3 mb-0 text-muted">Students on Track</h6>
-                                <i class="bi bi-check-circle-fill text-success fs-2"></i>
-                                <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
+                            <div class="col">
+                                <div class="d-flex flex-column align-items-center">
+                                    <h6 class="fs-3 mb-0 text-muted">Students on Track</h6>
+                                    <i class="bi bi-check-circle-fill text-success fs-2"></i>
+                                    <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex flex-column align-items-center">
-                                <h6 class="fs-3 mb-0 text-muted">Needs Attention</h6>
-                                <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
-                                <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
+                            <div class="col">
+                                <div class="d-flex flex-column align-items-center">
+                                    <h6 class="fs-3 mb-0 text-muted">Needs Attention</h6>
+                                    <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
+                                    <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -827,12 +830,8 @@ onBeforeUnmount(() => {
                             selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
                         <div class="d-flex flex-row align-items-center gap-3 mb-4 fw-bold fs-3">
                             <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
-                            <!-- <select id="weekSelect" v-model="weekInput" class="form-select form-select-sm"
-                                style="width: auto;" @change="changeWeek()" :value="selectedWeek">
-                                <option v-for="week in currentWeek" :key="week" :value="week">{{ week }}</option>
-                            </select> -->
-                            <select id="weekSelect" v-model.number="selectedWeek" class="form-select form-select-sm fs-4"
-                                style="width: auto;">
+                            <select id="weekSelect" v-model.number="selectedWeek"
+                                class="form-select form-select-sm fs-4" style="width: auto;">
                                 <!-- Cap options to 14 to match your watcher validation -->
                                 <option v-for="week in Math.min(currentWeek, 14)" :key="week" :value="week">
                                     {{ week }}
@@ -840,11 +839,10 @@ onBeforeUnmount(() => {
                             </select>
 
                             <!-- Clicking this will jump the dropdown to the current week (also capped to 14) -->
-                            <button @click="selectedWeek = Math.min(currentWeek, 14)" class="btn btn-navy fs-4 fw-semibold">
+                            <button @click="selectedWeek = Math.min(currentWeek, 14)"
+                                class="btn btn-navy fs-4 fw-semibold">
                                 Current Week
                             </button>
-
-                            <!-- <button @click="selectedWeek = currentWeek" class="btn btn-navy">Current Week</button> -->
                         </div>
                     </div>
 
@@ -866,7 +864,7 @@ onBeforeUnmount(() => {
                                     <i class="bi fs-1 mb-2 bi-calculator"></i>
                                     <h5 class="fw-bold fs-2 text-white p-1 rounded-3"
                                         :class="getGradeBadgeClass(selectedStudent.projectedGrade)">{{
-                                        selectedStudent.projectedGrade }}</h5>
+                                            selectedStudent.projectedGrade }}</h5>
                                     <small class="text-muted fs-4">Projected Graded:</small>
                                 </div>
                             </div>
@@ -950,7 +948,8 @@ onBeforeUnmount(() => {
                                                 'bg-warning': p.status === 'pending',
                                                 'bg-success': p.status === 'approved'
                                             }" class="border-bottom-0 text-center">
-                                                <span class="text-white fw-semibold fs-3 text-capitalize"> {{ p.status }}
+                                                <span class="text-white fw-semibold fs-3 text-capitalize"> {{ p.status
+                                                }}
                                                 </span>
                                             </td>
                                             <td class="text-muted text-truncate fs-3 truncate-md">

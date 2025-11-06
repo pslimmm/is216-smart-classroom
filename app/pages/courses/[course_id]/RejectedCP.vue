@@ -4,7 +4,7 @@
     <div class="bg-white p-4 rounded-4 shadow-sm mb-5">
       <!-- Page Header -->
       <div class="mb-4 text-center">
-        <div class="text-danger fw-bold mb-3" style="font-size: 3.5rem;">Rejected Class Participation Logs</div>
+        <div class="text-danger fw-bold mb-3 fs-1">Rejected Class Participation Logs</div>
       </div>
       <h4 class="mb-3 text-navy text-center fs-3 mb-5">Search Rejected Students</h4>
       <div class="row g-3 justify-content-center">
