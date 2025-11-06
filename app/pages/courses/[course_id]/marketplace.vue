@@ -132,31 +132,33 @@ watch(showCartModal, (newVal) => {
     <CartModal v-if="showCartModal" v-model:showCartModal="showCartModal" :removeFromCart="removeFromCart"
         :products="products" :coins="coins" />
     <main class="container flex-grow-1">
-            <div class=" mt-4 mb-4 row bg-white rounded-3 py-3">
-                <h1 class="display-1 fw-bold gap-2 text-navy col-lg-6 col-sm-12">
+            <div class="mt-4 mb-4 row bg-white rounded-3 py-3 px-4 g-3 g-lg-0 align-items-center">
+                <h1 class="display-1 fw-bold gap-2 text-navy col-12 col-lg-6">
                     <i class="bi bi-shop-window me-2"></i>
                     Marketplace
                 </h1>
-                <div class="col-sm-12 col-lg-6 d-flex flex-row align-items-center justify-content-lg-end">
-                    <button class="btn btn-navy me-3 fs-4 fw-semibold"
+                <div class="col-12 col-lg-6">
+                    <div class="d-flex flex-wrap align-items-center justify-content-lg-end gap-3">
+                        <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-lg-none"
                         @click="navigateTo('martketplace-transactions')">Transaction History</button>
-                    <div v-if="role == 'student'" class="d-flex flex-row align-items-center">
-                        <button class="btn btn-navy me-3 fs-4 fw-semibold"
+                    <div v-if="role == 'student'" class="d-flex flex-wrap align-items-center gap-3 flex-lg-nowrap">
+                        <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-md-none"
                             @click="navigateTo('/courses/' + course_id)">Course Dashboard</button>
-                        <button class="btn btn-navy me-3 fs-4 fw-semibold" @click="showCartModal = true">
+                        <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-md-none" @click="showCartModal = true">
                             <i class="bi bi-cart me-1"></i>
                             View Cart
                         </button>
                         <div
-                            class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold">
+                            class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold text-nowrap">
                             <i class="bi bi-coin text-warning me-1"></i>
                             {{ coins }}
                         </div>
                     </div>
-                    <div v-if="role == 'prof'">
-                        <button class="btn btn-navy me-3 fs-4 fw-semibold"
+                    <div v-if="role == 'prof'" class="d-flex flex-wrap gap-3 justify-content-lg-end flex-fill flex-lg-none">
+                        <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-md-none"
                             @click="showAddingModal = !showAddingModal">Add new items</button>
                     </div>
+                </div>
                 </div>
             </div>
 
