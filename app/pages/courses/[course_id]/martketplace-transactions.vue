@@ -1,7 +1,7 @@
 <template>
     <main class="container flex-grow-1 my-5">
         <div class="bg-white rounded-4 shadow-sm px-3 px-md-4 py-4 py-md-5">
-            <h1 class="display-1 fw-bold text-navy mb-4 text-break">
+            <h1 class="display-3 fw-bold text-navy mb-4 text-break">
                 <i class="bi bi-shop-window me-2"></i>
                 Marketplace Transactions
             </h1>

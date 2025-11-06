@@ -23,7 +23,7 @@ const isSignUp = ref(false) // Default to "Login" tab instead of "Sign Up"
 </script>
 
 <template>
-    <div class="auth-wrapper min-screen d-flex justify-content-center align-items-center px-3 py-5">
+    <div class="auth-wrapper min-screen d-flex justify-content-center align-items-center px-3 py-3">
         <div class="card shadow-lg rounded-5 p-0 auth-card w-100">
             <div class="row g-0 align-items-stretch">
                 <div class="col-12 col-lg-6 mx-0 p-4 p-md-5">

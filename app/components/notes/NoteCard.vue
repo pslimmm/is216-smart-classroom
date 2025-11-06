@@ -10,8 +10,8 @@
         :aria-controls="'collapse' + sanitizedWeek"
         @click="handleAccordionClick"
       >
-        <div class="fw-semibold fs-3">{{ week }}
-          <span v-if="hasNotes" class="badge bg-success ms-2 fs-4">
+        <div class="fw-semibold fs-5">{{ week }}
+          <span v-if="hasNotes" class="badge bg-success ms-2 fs-5">
             {{ transcripts.length }} {{ transcripts.length === 1 ? 'Transcript' : 'Transcripts' }}
           </span>
         </div>
@@ -33,12 +33,12 @@
             <div class="transcript-header d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-start gap-3 mb-2">
               <div class="transcript-meta flex-grow-1 min-w-0">
                 <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                  <i class="bi bi-file-earmark-text me-1 fs-3"></i>
+                  <i class="bi bi-file-earmark-text me-1 fs-5"></i>
 
                   <!-- View mode -->
                   <h6
                     v-if="editingTranscriptId !== transcript.id"
-                    class="mb-0 transcript-title fs-1 text-break"
+                    class="mb-0 transcript-title fs-3 text-break"
                   >
                     {{ transcript.title }}
                   </h6>
@@ -57,14 +57,14 @@
                   />
 
                   <span
-                    class="badge fs-4 transcript-status-badge mt-2 mt-sm-0 ms-sm-2 ms-lg-3"
+                    class="badge fs-5 transcript-status-badge mt-2 mt-sm-0 ms-sm-2 ms-lg-3"
                     :class="transcript.status === 'failed' ? 'bg-danger' : 'bg-success'"
                   >
                     <span v-if="transcript.status === 'failed'">Failed</span>
                     <span v-else>Completed</span>
                   </span>
                 </div>
-                <div class="fs-4 text-muted text-wrap">
+                <div class="fs-5 text-muted text-wrap">
                   <i class="bi bi-clock me-1"></i>
                   {{ transcript.timestamp }}
                 </div>
@@ -78,7 +78,7 @@
                   @click.stop="toggleDropdown(transcript.id)"
                   style="font-size: 1.2rem;"
                 >
-                  <i class="bi bi-three-dots-vertical fs-3"></i>
+                  <i class="bi bi-three-dots-vertical fs-5"></i>
                 </button>
                 <ul
                   v-if="openDropdownId === transcript.id"
@@ -90,7 +90,7 @@
                       class="dropdown-item fs-5"
                       @click="handleRename(transcript)"
                     >
-                      <i class="bi bi-pencil me-2 fs-4"></i>
+                      <i class="bi bi-pencil me-2 fs-5"></i>
                       Rename
                     </button>
                   </li>
@@ -99,7 +99,7 @@
                       class="dropdown-item text-warning fs-5"
                       @click="handleRetry(transcript.id)"
                     >
-                      <i class="bi bi-arrow-clockwise me-2 fs-4"></i>
+                      <i class="bi bi-arrow-clockwise me-2 fs-5"></i>
                       Retry Processing
                     </button>
                   </li>
@@ -108,7 +108,7 @@
                       class="dropdown-item text-danger fs-5"
                       @click="handleDelete(transcript.id)"
                     >
-                      <i class="bi bi-trash me-2 fs-4"></i>
+                      <i class="bi bi-trash me-2 fs-5"></i>
                       Delete
                     </button>
                   </li>
@@ -118,7 +118,7 @@
 
             <!-- Failed Status Alert -->
             <div v-if="transcript.status === 'failed'" class="alert alert-danger mb-3 fs-5" role="alert">
-              <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+              <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
               <strong>Processing Failed:</strong> {{ transcript.errorMessage || 'Unknown error occurred' }}
               <br>
               <small class="text-muted">Click "Retry Processing" in the menu above to try again.</small>
@@ -127,7 +127,7 @@
             <!-- Transcript Preview (clickable) -->
             <div
               v-if="transcript.status !== 'failed'"
-              class="transcript-content fs-3 py-4"
+              class="transcript-content fs-5 py-4"
               v-html="highlightText(transcript.content)"
               @click="openSlidePanel(transcript)"
               style="cursor: pointer;"
@@ -140,13 +140,13 @@
               class="btn btn-sm btn-outline-primary mt-2 fs-5 transcript-view-btn"
               @click="openSlidePanel(transcript)"
             >
-              <i class="bi bi-arrows-angle-expand me-1 fs-4"></i>
+              <i class="bi bi-arrows-angle-expand me-1 fs-5"></i>
               View Full Transcript
             </button>
           </div>
         </div>
         <div v-else class="text-muted fst-italic fs-5">
-          <i class="bi bi-journal-x me-2 fs-4"></i>
+          <i class="bi bi-journal-x me-2 fs-5"></i>
           No transcripts available for this week
         </div>
       </div>

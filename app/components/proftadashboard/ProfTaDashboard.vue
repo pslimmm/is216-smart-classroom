@@ -651,19 +651,19 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4 h-100 d-flex-column">
                     <!-- Course Info Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.5rem;">Course Information</div>
+                        <div class="fw-bold fs-2">Course Information</div>
                     </div>
 
                     <!-- Course Info Body -->
                     <div class="px-4 py-4 flex-grow-1">
-                        <div class="fw-bold text-navy" style="font-size: 3rem;">
+                        <div class="fw-bold text-navy fs-2">
                             {{ courseData.course_name }}
                         </div>
                         <div>
-                            <div class="fs-1"><strong>Code:</strong> {{ courseData.course_code }}</div>
-                            <div class="fs-1"><strong>Section:</strong> G{{ courseData.course_section }}</div>
-                            <div class="fs-1"><strong>Time:</strong> {{ courseData.course_time }}</div>
-                            <div class="fs-1"><strong>Location:</strong> {{ courseData.course_location }}</div>
+                            <div class="fs-2"><strong>Code:</strong> {{ courseData.course_code }}</div>
+                            <div class="fs-2"><strong>Section:</strong> G{{ courseData.course_section }}</div>
+                            <div class="fs-2"><strong>Time:</strong> {{ courseData.course_time }}</div>
+                            <div class="fs-2"><strong>Location:</strong> {{ courseData.course_location }}</div>
                         </div>
                     </div>
                 </div>
@@ -682,12 +682,12 @@ onBeforeUnmount(() => {
                     <!-- Submit Class Participation Body -->
                     <div class="px-4 py-4 flex-grow-1 d-flex flex-column justify-content-start gap-3">
                         <button v-if="role == 'ta'" @click="showSubmitModal = true"
-                            class="btn btn-navy fs-2 fw-semibold">Submit New CP</button>
+                            class="btn btn-navy fs-3 fw-semibold">Submit New CP</button>
                         <NuxtLink v-if="role == 'prof'" :to="course_id + '/ApprovedCP'"
-                            class="btn btn-navy fs-2 fw-semibold">Review
+                            class="btn btn-navy fs-3 fw-semibold">Review
                             Approved CP</NuxtLink>
                         <NuxtLink v-if="role == 'prof'" :to="course_id + '/RejectedCP'"
-                            class="btn btn-navy fs-2 fw-semibold">Review
+                            class="btn btn-navy fs-3 fw-semibold">Review
                             Rejected CP</NuxtLink>
                     </div>
                     <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
@@ -703,39 +703,40 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4 h-100 d-flex-column">
                     <!-- Class Participation Report Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.5rem;">Class Participation Report</div>
+                        <div class="fw-bold fs-2">Class Participation Report</div>
                     </div>
 
                     <!-- Class Participation Report Body -->
                     <div class="px-4 py-4 flex-grow-1">
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 mb-4 align-items-center">
+                        <div
+                            class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 mb-4 align-items-center">
 
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
-                                    <h6 class="fs-3 mb-0 text-muted">Total Students</h6>
-                                    <i class="bi bi-people-fill text-primary fs-2"></i>
-                                    <h4 class="fs-3 fw-bold">{{ classStats.totalStudents }}</h4>
+                                    <h6 class="fs-4 mb-0 text-muted">Total Students</h6>
+                                    <i class="bi bi-people-fill text-primary fs-3"></i>
+                                    <h4 class="fs-4 fw-bold">{{ classStats.totalStudents }}</h4>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
-                                    <h6 class="fs-3 mb-0 text-muted">Class Avg Rating</h6>
-                                    <i class="bi bi-bar-chart-line-fill text-info fs-2"></i>
-                                    <h4 class="fs-3 fw-bold">{{ classStats.classAvgRating }}</h4>
+                                    <h6 class="fs-4 mb-0 text-muted">Class Avg Rating</h6>
+                                    <i class="bi bi-bar-chart-line-fill text-info fs-3"></i>
+                                    <h4 class="fs-4 fw-bold">{{ classStats.classAvgRating }}</h4>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
-                                    <h6 class="fs-3 mb-0 text-muted">Students on Track</h6>
-                                    <i class="bi bi-check-circle-fill text-success fs-2"></i>
-                                    <h4 class="fs-3 fw-bold">{{ classStats.studentsOnTrack }}</h4>
+                                    <h6 class="fs-4 mb-0 text-muted">Students on Track</h6>
+                                    <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                                    <h4 class="fs-4 fw-bold">{{ classStats.studentsOnTrack }}</h4>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
-                                    <h6 class="fs-3 mb-0 text-muted">Needs Attention</h6>
-                                    <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
-                                    <h4 class="fs-3 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
+                                    <h6 class="fs-4 mb-0 text-muted">Needs Attention</h6>
+                                    <i class="bi bi-exclamation-triangle-fill text-danger fs-3"></i>
+                                    <h4 class="fs-4 fw-bold">{{ classStats.studentsNeedHelp }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -756,16 +757,16 @@ onBeforeUnmount(() => {
                 <div class="px-4 py-4 flex-grow-1">
                     <div class="d-flex justify-content-between">
                         <div class="input-group position-relative">
-                            <span class="input-group-text"><i class="bi bi-search fs-2"></i></span>
+                            <span class="input-group-text"><i class="bi bi-search fs-3"></i></span>
                             <input v-model="searchQuery" @input="filterStudents"
                                 @focus="showSuggestions = searchQuery.length > 0"
                                 @blur="setTimeout(() => showSuggestions = false, 200)" type="text"
-                                class="form-control fs-2" placeholder="Search by student name..." />
+                                class="form-control fs-3" placeholder="Search by student name..." />
                             <div v-if="showSuggestions && searchSuggestions.length > 0"
                                 class="suggestions-dropdown position-absolute w-100 bg-white border rounded shadow-sm"
                                 style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto;">
                                 <div v-for="student in searchSuggestions" :key="student.student_id"
-                                    @click="selectSuggestion(student)" class="suggestion-item p-2 border-bottom fs-3"
+                                    @click="selectSuggestion(student)" class="suggestion-item p-2 border-bottom fs-4"
                                     style="cursor: pointer;"
                                     @mouseenter="$event.target.style.backgroundColor = '#f8f9fa'"
                                     @mouseleave="$event.target.style.backgroundColor = 'white'">
@@ -773,7 +774,7 @@ onBeforeUnmount(() => {
                                 </div>
                             </div>
                         </div>
-                        <button class="btn bg-navy text-white ms-3 fs-2 fw-semibold"
+                        <button class="btn bg-navy text-white ms-3 fs-3 fw-semibold"
                             @click="selectedStudentId = ''">Reset</button>
                     </div>
                 </div>
@@ -788,7 +789,7 @@ onBeforeUnmount(() => {
                     <div class="table-responsive rounded-3 border">
                         <div v-if="allStudents">
                             <table class="table align-middle mb-0 table-hover">
-                                <thead class="table-light sticky-top fs-3">
+                                <thead class="table-light sticky-top fs-4">
                                     <tr>
                                         <th>No.</th>
                                         <th>Student Name</th>
@@ -797,15 +798,15 @@ onBeforeUnmount(() => {
                                 <tbody>
                                     <tr v-for="(student, index) in allStudents" :key="student.student_id"
                                         @click="selectedStudentId = student.student_id" style="cursor: pointer">
-                                        <td class="fs-3">{{ index + 1 }}</td>
-                                        <td class="fs-3">{{ student.student.full_name }}</td>
+                                        <td class="fs-4">{{ index + 1 }}</td>
+                                        <td class="fs-4">{{ student.student.full_name }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div v-else class="text-center py-4 text-muted">
-                            <i class="bi bi-person fs-1 fw-bold mb-3"></i>
-                            <p class="fs-1 fw-bold">No students found for this section.</p>
+                            <i class="bi bi-person fs-2 fw-bold mb-3"></i>
+                            <p class="fs-2 fw-bold">No students found for this section.</p>
                         </div>
                     </div>
                 </div>
@@ -826,12 +827,12 @@ onBeforeUnmount(() => {
 
                     <!-- Selected Student Details Body -->
                     <div class="px-4 py-3 flex-shrink-0 rounded-start-4">
-                        <div class="text-navy fw-semibold mb-3" style="font-size: 2.75rem;">Currently on Week {{
+                        <div class="text-navy fw-semibold mb-3 fs-3">Currently on Week {{
                             selectedWeek }} (Total weeks so far: {{ currentWeek }})</div>
-                        <div class="d-flex flex-row align-items-center gap-3 mb-4 fw-bold fs-3">
+                        <div class="d-flex flex-row align-items-center gap-3 mb-4 fw-bold fs-4">
                             <label for="weekSelect" class="form-label mb-0">Change to Week:</label>
                             <select id="weekSelect" v-model.number="selectedWeek"
-                                class="form-select form-select-sm fs-4" style="width: auto;">
+                                class="form-select form-select-sm fs-5" style="width: auto;">
                                 <!-- Cap options to 14 to match your watcher validation -->
                                 <option v-for="week in Math.min(currentWeek, 14)" :key="week" :value="week">
                                     {{ week }}
@@ -840,7 +841,7 @@ onBeforeUnmount(() => {
 
                             <!-- Clicking this will jump the dropdown to the current week (also capped to 14) -->
                             <button @click="selectedWeek = Math.min(currentWeek, 14)"
-                                class="btn btn-navy fs-4 fw-semibold">
+                                class="btn btn-navy fs-5 fw-semibold">
                                 Current Week
                             </button>
                         </div>
@@ -852,27 +853,27 @@ onBeforeUnmount(() => {
                             <!-- Stats -->
                             <div class="col" v-for="stat in studentStats" :key="stat.label">
                                 <div class="d-flex flex-column align-items-center">
-                                    <i :class="['bi fs-1 mb-2', stat.icon, stat.color]"></i>
-                                    <h5 class="fw-bold fs-2">{{ stat.value }}</h5>
-                                    <small class="text-muted fs-4">{{ stat.label }}</small>
+                                    <i :class="['bi fs-2 mb-2', stat.icon, stat.color]"></i>
+                                    <h5 class="fw-bold fs-3">{{ stat.value }}</h5>
+                                    <small class="text-muted fs-5">{{ stat.label }}</small>
                                 </div>
                             </div>
 
                             <!-- Projected Grade -->
                             <div class="col">
                                 <div class="d-flex flex-column align-items-center">
-                                    <i class="bi fs-1 mb-2 bi-calculator"></i>
-                                    <h5 class="fw-bold fs-2 text-white p-1 rounded-3"
+                                    <i class="bi fs-2 mb-2 bi-calculator"></i>
+                                    <h5 class="fw-bold fs-3 text-white px-3 py-2 rounded-3"
                                         :class="getGradeBadgeClass(selectedStudent.projectedGrade)">{{
                                             selectedStudent.projectedGrade }}</h5>
-                                    <small class="text-muted fs-4">Projected Graded:</small>
+                                    <small class="text-muted fs-5">Projected Graded:</small>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Warning to Appear if participation below 3 -->
-                    <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning fs-4">
+                    <div v-if="selectedStudent.avgPerWeek < 3" class="alert alert-warning fs-5">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
                         This student is below 3 participations/week: <strong>{{
                             selectedStudent.avgPerWeek.toFixed(2) }}
@@ -919,7 +920,7 @@ onBeforeUnmount(() => {
                         <div class="table-responsive rounded-3 border">
                             <div v-if="selectedStudent.recentParticipations.length > 0">
                                 <table class="table align-middle mb-0">
-                                    <thead class="table-light sticky-top fs-3">
+                                    <thead class="table-light sticky-top fs-4">
                                         <tr class="text-center">
                                             <th>Week</th>
                                             <th>Contribution</th>
@@ -933,13 +934,13 @@ onBeforeUnmount(() => {
                                         <tr v-for="p in selectedStudent.recentParticipations"
                                             :key="p.date + p.contribution">
                                             <td>
-                                                <span class="fs-3">{{ p.week }}</span>
+                                                <span class="fs-4">{{ p.week }}</span>
                                             </td>
-                                            <td class="text-truncate fs-3 truncate-md">
+                                            <td class="text-truncate fs-4 truncate-md">
                                                 {{ p.contribution }}
                                             </td>
                                             <td>
-                                                <span class="text-navy fw-semibold fs-3"> {{ p.rating.toFixed(0) }}
+                                                <span class="text-navy fw-semibold fs-4"> {{ p.rating.toFixed(0) }}
                                                     <i class="bi bi-star-fill text-warning"></i>
                                                 </span>
                                             </td>
@@ -948,30 +949,41 @@ onBeforeUnmount(() => {
                                                 'bg-warning': p.status === 'pending',
                                                 'bg-success': p.status === 'approved'
                                             }" class="border-bottom-0 text-center">
-                                                <span class="text-white fw-semibold fs-3 text-capitalize"> {{ p.status
-                                                }}
+                                                <span class="text-white fw-semibold fs-4 text-capitalize"> {{ p.status
+                                                    }}
                                                 </span>
                                             </td>
-                                            <td class="text-muted text-truncate fs-3 truncate-md">
+                                            <td class="text-muted text-truncate fs-4 truncate-md">
                                                 {{ p.remarks }}
                                             </td>
                                             <td v-if="role == 'prof'">
-                                                <button @click="approveCP(p)" class="btn btn-success fs-3 fw-semibold"
-                                                    v-if="['rejected', 'pending'].includes(p.status)">
-                                                    Approve
-                                                </button>
-                                                <button @click="rejectCP(p)" class="btn btn-danger fs-3 fw-semibold"
-                                                    v-if="['approved', 'pending'].includes(p.status)">
-                                                    Reject
-                                                </button>
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-12">
+                                                        <button @click="approveCP(p)"
+                                                            class="btn btn-success fs-4 fw-semibold w-100"
+                                                            
+                                                            :disabled="!['rejected', 'pending'].includes(p.status)">
+                                                            Approve
+                                                        </button>
+
+                                                    </div>
+                                                    <div class="col-lg-6 col-12 mt-lg-0 mt-3">
+                                                        <button @click="rejectCP(p)"
+                                                            class="btn btn-danger fs-4 fw-semibold w-100"
+                                                            :disabled="!['approved', 'pending'].includes(p.status)">
+                                                            {{ p.status == 'approved' ? 'Retract' : 'Reject' }}
+                                                        </button>
+
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div v-else class="text-center py-4 text-muted">
-                                <i class="bi bi-clipboard-x fs-1 mb-3"></i>
-                                <p class="fs-2">No participation history found for this student.</p>
+                                <i class="bi bi-clipboard-x fs-2 mb-3"></i>
+                                <p class="fs-3">No participation history found for this student.</p>
                             </div>
                         </div>
                     </div>
@@ -987,7 +999,7 @@ onBeforeUnmount(() => {
 }
 
 .display-heading {
-    font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+    font-size: 2rem;
     text-wrap: balance;
 }
 

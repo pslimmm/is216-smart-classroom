@@ -133,7 +133,7 @@ watch(showCartModal, (newVal) => {
         :products="products" :coins="coins" />
     <main class="container flex-grow-1">
         <div class="mt-4 mb-4 row bg-white rounded-3 py-3 px-4 g-3 g-lg-0 align-items-center">
-            <h1 class="display-1 fw-bold gap-2 text-navy col-12 col-lg-7">
+            <h1 class="display-3 fw-bold gap-2 text-navy col-12 col-lg-7">
                 <i class="bi bi-shop-window me-2"></i>
                 Marketplace
             </h1>
@@ -159,7 +159,7 @@ watch(showCartModal, (newVal) => {
                     </div>
                     <div class="col-lg-4 col-md-2 col-12 mb-3 mb-lg-0">
                         <div
-                            class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold d-flex flex-row align-items-center w-100 h-100">
+                            class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold d-flex flex-row align-items-center justify-content-center w-100 h-100">
                             <i class="bi bi-coin text-warning me-2"></i>
                             {{ coins }}
                         </div>

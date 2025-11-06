@@ -3,7 +3,7 @@
         <!-- Top Row -->
         <div class="row mb-5 g-4 align-items-stretch">
             <!-- Record -->
-            <div v-if="canRecord" class="col-12 col-lg-3">
+            <div v-if="canRecord" class="col-12">
                 <div class="section-elev rounded-4 h-100 d-flex flex-column">
                     <!-- Record Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
@@ -27,33 +27,11 @@
                                 </div>
                                 <h5 class="text-primary mt-2">Transcribing audio...</h5>
                             </div>
-
-                            <!-- Control Buttons -->
-                            <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
-                                <button v-if="!isRecording" @click="startRecording" class="btn btn-danger btn-lg fs-4 btn-fluid"
-                                    :disabled="isTranscribing">
-                                    <i class="bi bi-mic-fill me-2"></i>
-                                    Start Recording
-                                </button>
-
-                                <button v-if="isRecording" @click="stopRecording" class="btn btn-secondary btn-lg fs-4 btn-fluid">
-                                    <i class="bi bi-stop-fill me-2"></i>
-                                    Stop Recording
-                                </button>
-
-                                <button v-if="audioBlob && !isRecording && !isPlaying" @click="playRecording"
-                                    class="btn btn-info btn-lg fs-4 btn-fluid" :disabled="isTranscribing">
-                                    <i class="bi bi-play-fill me-2"></i>
-                                    Play Recording
-                                </button>
-
-                                <button v-if="audioBlob && !isRecording && isPlaying" @click="stopPlayback"
-                                    class="btn btn-warning btn-lg fs-4 btn-fluid">
-                                    <i class="bi bi-stop-fill me-2"></i>
-                                    Stop Playback
-                                </button>
+                            
+                            <div v-if="audioBlob && !isRecording && !recordingTitle.trim()"
+                                class="text-muted small mb-2">
+                                Please enter a title for your recording
                             </div>
-
                             <!-- Recording Details -->
                             <div v-if="audioBlob && !isRecording" class="mb-3">
                                 <div class="row justify-content-center">
@@ -73,23 +51,56 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Control Buttons -->
+                            <div class="row">
+                                <div class="col-12 mt-3">
+                                    <button v-if="!isRecording" @click="startRecording"
+                                        class="btn btn-danger btn-lg fs-5 btn-fluid w-100" :disabled="isTranscribing">
+                                        <i class="bi bi-mic-fill me-2"></i>
+                                        Start Recording
+                                    </button>
+
+                                    <button v-if="isRecording" @click="stopRecording"
+                                        class="btn btn-secondary btn-lg fs-5 btn-fluid w-100">
+                                        <i class="bi bi-stop-fill me-2"></i>
+                                        Stop Recording
+                                    </button>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <button v-if="audioBlob && !isRecording && !isPlaying" @click="playRecording"
+                                        class="btn btn-info btn-lg fs-5 btn-fluid w-100" :disabled="isTranscribing">
+                                        <i class="bi bi-play-fill me-2"></i>
+                                        Play Recording
+                                    </button>
+
+                                    <button v-if="audioBlob && !isRecording && isPlaying" @click="stopPlayback"
+                                        class="btn btn-warning btn-lg fs-5 btn-fluid w-100">
+                                        <i class="bi bi-stop-fill me-2"></i>
+                                        Stop Playback
+                                    </button>
+                                </div>
+                            </div>
+
+
 
                             <!-- Transcribe & Discard Buttons -->
-                            <div v-if="audioBlob && !isRecording" class="d-flex flex-wrap gap-3 justify-content-center">
-                                <button @click="transcribeAudio" class="btn btn-success btn-lg btn-fluid"
-                                    :disabled="isTranscribing || !recordingTitle.trim()">
-                                    <i class="bi bi-file-text me-2"></i>
-                                    {{ isTranscribing ? 'Transcribing...' : 'Transcribe & Save' }}
-                                </button>
-                                <button @click="discardRecording" class="btn btn-outline-danger btn-lg btn-fluid"
-                                    :disabled="isTranscribing">
-                                    <i class="bi bi-trash me-2"></i>
-                                    Discard
-                                </button>
-                            </div>
-                            <div v-if="audioBlob && !isRecording && !recordingTitle.trim()"
-                                class="text-muted small mt-2">
-                                Please enter a title for your recording
+                            <div v-if="audioBlob && !isRecording" class="row">
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <button @click="transcribeAudio" class="btn btn-success w-100 btn-lg"
+                                        :disabled="isTranscribing || !recordingTitle.trim()">
+                                        <i class="bi bi-file-text me-2"></i>
+                                        {{ isTranscribing ? 'Transcribing...' : 'Transcribe & Save' }}
+                                    </button>
+
+                                </div>
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <button @click="discardRecording" class="btn btn-outline-danger btn-lg w-100"
+                                        :disabled="isTranscribing">
+                                        <i class="bi bi-trash me-2"></i>
+                                        Discard
+                                    </button>
+
+                                </div>
                             </div>
 
                             <!-- Error Message -->
@@ -107,7 +118,7 @@
             </div>
 
             <!-- Search and Notes Section (Visible to All) -->
-            <div :class="['col-12', canRecord ? 'col-lg-9' : 'col-lg-12']">
+            <div class="col-12">
                 <div class="section-elev rounded-4 h-100 d-flex flex-column">
                     <!-- Search and Notes Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
@@ -676,12 +687,12 @@ const confirmDelete = async () => {
 }
 
 .display-heading {
-    font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+    font-size: 2rem;
     text-wrap: balance;
 }
 
 .note-search {
-    font-size: clamp(1.2rem, 1rem + 1vw, 1.75rem);
+    font-size: 1.5rem;
     padding: 0.85rem 1rem;
 }
 

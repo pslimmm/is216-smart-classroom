@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar-wrapper">
-        <div class="sidebar transition-delay" :class="{ 'sidebar-open': isOpen }">
+        <div class="sidebar transition-delay" :class=" isOpen ? 'sidebar-open' : '' ">
 
             <div class="sidebar-header">
                 <NuxtLink to="/" class="app-logo">
@@ -11,10 +11,10 @@
                 </NuxtLink>
 
                 <!-- Toggle button (For mobile only; hidden on desktop via CSS)-->
-                <div class="toggle-btn-container rounded-5">
+                <div class="toggle-btn-container">
                     <button
                         @click="toggleSidebar"
-                        class="toggle-btn"
+                        class="toggle-btn d-flex align-item-center"
                         type="button"
                         :aria-expanded="isOpen"
                         aria-controls="sidebar-nav"
@@ -130,7 +130,7 @@ const toggleSidebar = () => {
     width: 3.5rem;
     /* Mobile width */
     height: 3.5rem;
-
+    border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
