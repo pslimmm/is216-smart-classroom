@@ -1,25 +1,28 @@
 <template>
     <div>
 
-        <transition enter-active-class="slide-in" leave-active-class="slide-out" @after-leave="afterLeave">
+        <!-- <transition enter-active-class="slide-in" leave-active-class="slide-out" @after-leave="afterLeave"> -->
+        <transition enter-active-class="slide-in" leave-active-class="slide-out">
             <div v-if="showErrorAlert" class="position-fixed bottom-0 end-0 m-3 alert alert-danger"
                 style="z-index: 1050;">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0 fs-3 fw-semibold">Error</h6>
-                    <button class="btn-close fs-4" @click="showErrorAlert = false"></button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="me-2 mb-0 fs-3 fw-semibold">{{ message }}</p>
+                    <button class="btn-close" @click="handleClose"></button>
                 </div>
-                <p class="mb-0">{{ message }}</p>
             </div>
         </transition>
     </div>
 </template>
 
 <script setup>
-const showErrorAlert = defineModel('showErrorAlert');
-const props = defineProps({
-    showErrorAlert: Boolean,
-    message: String
-})
+const showErrorAlert = defineModel('showErrorAlert'); //v-model ref
+const { message } = defineProps({
+    message: { type: String, default: ''}
+});
+
+const handleClose = () => {
+    showErrorAlert.value = false;
+}
 </script>
 
 <style scoped>

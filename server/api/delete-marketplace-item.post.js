@@ -21,6 +21,19 @@ export default defineEventHandler(async (event) => {
         if (error) {
             throw new Error(error.message);
         }
+
+        let imgPathParts = responseBody.image.split('/');
+        const imgPath = imgPathParts[imgPathParts.length - 1];
+
+        const { error: er2 } = await supabaseClient
+            .storage
+            .from('marketplace')
+            .remove([imgPath]);
+
+        if(er2){
+            throw new Error(er2.message)
+        }
+        
         return {
             ok: true,
         }

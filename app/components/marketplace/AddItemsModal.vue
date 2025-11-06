@@ -1,4 +1,5 @@
 <template>
+    <ErrorAlert :message="errorMsg" v-model:showErrorAlert="showErrorAlert" />
     <div class="overlay">
         <div class="modal-wrapper bg-white rounded-5 p-4 m-3">
             <div class="d-flex flex-row justify-content-between align-items-center">
@@ -32,6 +33,9 @@ const { userID } = useAuthState();
 
 const emit = defineEmits(['add-item']);
 
+const errorMsg = ref('');
+const showErrorAlert = ref(false)
+
 const item_name = ref('');
 const item_price = ref(0);
 const item_stock = ref(0);
@@ -60,9 +64,12 @@ const handleSubmit = async () => {
             })
 
             if (!error) {
+                emit('add-item', '');
                 showAddingModal.value = false;
+            } else {
+                errorMsg.value = error.statusMessage;
+                showErrorAlert.value = true;
             }
-
         }
         reader.readAsDataURL(item_image.value)
 
@@ -78,8 +85,11 @@ const handleSubmit = async () => {
             }
         })
         if (!error) {
-            emit('add-item');
+            emit('add-item', '');
             showAddingModal.value = false;
+        } else {
+            errorMsg.value = error.statusMessage;
+            showErrorAlert.value = true;
         }
 
     }

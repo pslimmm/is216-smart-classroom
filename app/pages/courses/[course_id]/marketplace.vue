@@ -106,7 +106,8 @@ const deleteItem = async (obj) => {
         method: 'POST',
         body: {
             item_id: obj.item_id,
-            prof_id: userID.value
+            prof_id: userID.value,
+            image: obj.image
         }
     })
 
@@ -132,7 +133,7 @@ const successAlert = (msg) => {
 
 <template>
     <SuccessAlert :message="successMsg" v-model:showSuccessAlert="showSuccessAlert" />
-    <AddItemsModal v-if="showAddingModal" v-model:showAddingModal="showAddingModal" @add-item="showSuccessAlert('Added new item successfully')"/>
+    <AddItemsModal v-if="showAddingModal" v-model:showAddingModal="showAddingModal" @add-item="successAlert('Added new item successfully')"/>
     <AddItemStockModal v-if="showAddItemModal" v-model:showAddItemModal="showAddItemModal"
         v-model:selectedItem="selectedItem"  @add-stock="successAlert('Stock added')"/>
     <CartModal v-if="showCartModal" v-model:showCartModal="showCartModal" :removeFromCart="removeFromCart"

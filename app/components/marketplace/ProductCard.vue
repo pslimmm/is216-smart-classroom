@@ -50,7 +50,8 @@ function addStock() {
 function deleteItem() {
     emit('delete-item',
         {   
-            item_id: props.id
+            item_id: props.id,
+            image: props.image
         }
     )
 }
@@ -60,7 +61,7 @@ function deleteItem() {
     <div class="card shadow-sm h-100 rounded-4">
         <!-- Product Image -->
         <img :src="image" alt="Product image" class="card-img-top img-fluid object-fit-contain mt-3"
-            width="320" height="200" loading="lazy" decoding="async" />
+            width="320" height="200" loading="lazy" decoding="async" crossorigin="anonymous" />
 
         <!-- Product Details -->
         <div class="card-body d-flex flex-column justify-content-between">

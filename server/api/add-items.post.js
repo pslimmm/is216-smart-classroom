@@ -19,17 +19,22 @@ export default defineEventHandler(async (event) => {
             const buffer = Buffer.from(base64Data, 'base64');
             const blob = new Blob([buffer], { type: mimeType });
 
-            const { error: er3} = await supabaseClient
+            const { error: er3 } = await supabaseClient
                 .storage
                 .from('marketplace')
                 .upload(fileName, blob);
-            
-            const { data, error } = supabaseClient
-                .storage
-                .from('marketplace')
-                .getPublicUrl(fileName);
 
-            url = data.publicUrl;
+            if (!er3) {
+                const { data, error } = supabaseClient
+                    .storage
+                    .from('marketplace')
+                    .getPublicUrl(fileName);
+
+                url = data.publicUrl;
+
+            } else {
+                throw new Error(er3.message)
+            }
         }
 
         const { error } = await supabaseClient
