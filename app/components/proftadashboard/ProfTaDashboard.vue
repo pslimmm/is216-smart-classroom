@@ -959,19 +959,19 @@ onBeforeUnmount(() => {
                                             </td>
                                             <td v-if="role == 'prof'">
                                                 <div class="row">
-                                                    <div class="col-lg-6 col-12">
+                                                    <div class="col-12">
                                                         <button @click="approveCP(p)"
                                                             class="btn btn-success fs-4 fw-semibold w-100"
-                                                            
-                                                            :disabled="!['rejected', 'pending'].includes(p.status)">
+                                                            style
+                                                            v-if="['rejected', 'pending'].includes(p.status)">
                                                             Approve
                                                         </button>
 
                                                     </div>
-                                                    <div class="col-lg-6 col-12 mt-lg-0 mt-3">
+                                                    <div class=" col-12 mt-3">
                                                         <button @click="rejectCP(p)"
                                                             class="btn btn-danger fs-4 fw-semibold w-100"
-                                                            :disabled="!['approved', 'pending'].includes(p.status)">
+                                                            v-if="['approved', 'pending'].includes(p.status)">
                                                             {{ p.status == 'approved' ? 'Retract' : 'Reject' }}
                                                         </button>
 
