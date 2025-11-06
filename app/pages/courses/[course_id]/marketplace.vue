@@ -132,43 +132,54 @@ watch(showCartModal, (newVal) => {
     <CartModal v-if="showCartModal" v-model:showCartModal="showCartModal" :removeFromCart="removeFromCart"
         :products="products" :coins="coins" />
     <main class="container flex-grow-1">
-            <div class="mt-4 mb-4 row bg-white rounded-3 py-3 px-4 g-3 g-lg-0 align-items-center">
-                <h1 class="display-1 fw-bold gap-2 text-navy col-12 col-lg-6">
-                    <i class="bi bi-shop-window me-2"></i>
-                    Marketplace
-                </h1>
-                <div class="col-12 col-lg-6">
-                    <div class="d-flex flex-wrap align-items-center justify-content-lg-end gap-3">
-                        <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-lg-none"
-                        @click="navigateTo('martketplace-transactions')">Transaction History</button>
-                    <div v-if="role == 'student'" class="d-flex flex-wrap align-items-center gap-3 flex-lg-nowrap">
-                        <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-md-none"
-                            @click="navigateTo('/courses/' + course_id)">Course Dashboard</button>
-                        <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-md-none" @click="showCartModal = true">
-                            <i class="bi bi-cart me-1"></i>
-                            View Cart
-                        </button>
-                        <div
-                            class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold text-nowrap">
-                            <i class="bi bi-coin text-warning me-1"></i>
-                            {{ coins }}
-                        </div>
-                    </div>
-                    <div v-if="role == 'prof'" class="d-flex flex-wrap gap-3 justify-content-lg-end flex-fill flex-lg-none">
-                        <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-md-none"
-                            @click="showAddingModal = !showAddingModal">Add new items</button>
+        <div class="mt-4 mb-4 row bg-white rounded-3 py-3 px-4 g-3 g-lg-0 align-items-center">
+            <h1 class="display-1 fw-bold gap-2 text-navy col-12 col-lg-7">
+                <i class="bi bi-shop-window me-2"></i>
+                Marketplace
+            </h1>
+            <div class="col-12 col-lg-5 d-flex flex-column align-items-center justify-content-lg-end ">
+                <div class="row w-100">
+                    <div class="col-12">
+                        <button class="btn btn-navy fs-5 fw-semibold w-100"
+                            @click="navigateTo('martketplace-transactions')">Transaction History</button>
                     </div>
                 </div>
+                <div v-if="role == 'student'" class="row mt-3 w-100">
+                    <div class="col-lg-4 col-md-6 col-12 mb-3 mb-lg-0">
+                        <button class="btn btn-navy fs-5 fw-semibold w-100 h-100"
+                            @click="navigateTo('/courses/' + course_id)">Course Dashboard</button>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mb-3 mb-lg-0">
+                        <button class="btn btn-navy fs-5 fw-semibold w-100 h-100" @click="showCartModal = true">
+                            <i class="bi bi-cart"></i>
+                            View Cart
+                        </button>
+
+                    </div>
+                    <div class="col-lg-4 col-md-2 col-12 mb-3 mb-lg-0">
+                        <div class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold d-flex flex-row align-items-center w-100 h-100">
+                            <i class="bi bi-coin text-warning me-2"></i>
+                            {{ coins }}
+                        </div>
+
+                    </div>
+                </div>
+                <div v-if="role == 'prof'" class="d-flex flex-wrap gap-3 justify-content-lg-end flex-fill flex-lg-none">
+                    <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-md-none"
+                        @click="showAddingModal = !showAddingModal">Add new items</button>
                 </div>
             </div>
 
-            <div class="row g-4">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="obj in products" :key="obj.item_name">
-                    <ProductCard :id="obj.id" :name="obj.item_name" :price="obj.item_price" :image="obj.img_url"
-                        :stock="obj.item_count" @add-to-cart="addToCart" @remove-from-cart="removeFromCart"
-                        @delete-item="deleteItem" @add-item-stock="addItemStock" />
-                </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="obj in products" :key="obj.item_name">
+                <ProductCard :id="obj.id" :name="obj.item_name" :price="obj.item_price" :image="obj.img_url"
+                    :stock="obj.item_count" @add-to-cart="addToCart" @remove-from-cart="removeFromCart"
+                    @delete-item="deleteItem" @add-item-stock="addItemStock" />
             </div>
+        </div>
     </main>
 </template>
 
