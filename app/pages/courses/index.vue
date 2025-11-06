@@ -80,11 +80,11 @@ const courses = result.data;
                             </div>
                         </div>
 
-                        <div class="row row-cols-1 row-cols-lg-2 g-3 small mb-3">
-                            <div class="col">
-                                <div class="d-flex align-items-start gap-2">
-                                    <i class="bi bi-clock mt-1 fs-5" aria-hidden="true"></i>
-                                    <div class="min-w-0">
+                        <div class="row g-3 small mb-3">
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-start gap-2 flex-wrap">
+                                    <div class="min-w-0 flex-grow-1">
+                                        <i class="bi bi-clock mt-1 fs-5" aria-hidden="true"></i>
                                         <div class="text-uppercase small">Schedule</div>
                                         <div
                                             class="fw-semibold text-break"
@@ -95,10 +95,10 @@ const courses = result.data;
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="d-flex align-items-start gap-2">
-                                    <i class="bi bi-geo-alt mt-1 fs-5" aria-hidden="true"></i>
-                                    <div class="min-w-0">
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-start gap-2 flex-wrap">
+                                    <div class="min-w-0 flex-grow-1">
+                                        <i class="bi bi-geo-alt mt-1 fs-5" aria-hidden="true"></i>
                                         <div class="text-uppercase small">Location</div>
                                         <div
                                             class="fw-semibold text-break"
@@ -111,17 +111,17 @@ const courses = result.data;
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 d-sm-flex mt-auto">
+                        <div class="d-flex flex-column flex-md-row gap-2 align-items-stretch mt-auto w-100">
                             <button
                                 @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
-                                class="btn btn-outline-navy w-100 w-sm-auto flex-sm-fill"
+                                class="btn btn-outline-navy w-100 flex-fill"
                             >
                                 <i class="bi bi-speedometer2 me-1"></i>
                                 DASHBOARD
                             </button>
                             <button
                                 @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) + '/notes')"
-                                class="btn btn-navy w-100 w-sm-auto flex-sm-fill"
+                                class="btn btn-navy w-100 flex-fill"
                             >
                                 <i class="bi bi-journal-text me-1"></i>
                                 NOTES
@@ -201,6 +201,7 @@ const courses = result.data;
 .course-card .btn {
     font-size: 1.25rem;
     padding: 0.6rem 1.25rem;
+    min-width: 0;
 }
 
 .course-card .btn i {
