@@ -195,6 +195,8 @@ const createQualityChart = () => {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            resizeDelay: 150,
             scales: {
                 y: {
                     min: 0,
@@ -251,6 +253,8 @@ const createCountChart = () => {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            resizeDelay: 150,
             scales: {
                 y: {
                     min: 0,
@@ -308,7 +312,7 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4 h-100 d-flex flex-column">
                     <!-- Course Info Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">Course Information</div>
+                        <div class="fw-bold display-heading">Course Information</div>
                     </div>
                     <!-- Body -->
                     <div class="px-4 py-4 flex-grow-1">
@@ -330,7 +334,7 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4 h-100 d-flex flex-column">
                     <!-- Course Stats Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">Course Statistics</div>
+                        <div class="fw-bold display-heading">Course Statistics</div>
                     </div>
                     <!-- Body -->
                     <div class="px-4 py-4 flex-grow-1">
@@ -359,8 +363,7 @@ onBeforeUnmount(() => {
         <div class="col-12 mb-5">
             <div class="section-elev rounded-4 d-flex align-items-center">
                 <!-- Left Side: Title -->
-                <div class="fw-bold bg-navy text-white px-4 py-3 flex-shrink-0 rounded-start-4"
-                    style="font-size: 3.25rem;">
+                <div class="fw-bold bg-navy text-white px-4 py-3 flex-shrink-0 rounded-start-4 display-heading d-flex align-items-center justify-content-center justify-content-lg-start text-center text-lg-start">
                     This Week's Progress:
                 </div>
                 <!-- Right Side: Progress Bar -->
@@ -386,14 +389,14 @@ onBeforeUnmount(() => {
             <!-- Course Analytics Header -->
             <div class="section-elev rounded-4">
                 <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                    <div class="fw-bold" style="font-size: 3.25rem;">Course Analytics</div>
+                    <div class="fw-bold display-heading">Course Analytics</div>
                 </div>
 
                 <!-- Body -->
                 <div class="px-4 py-4">
                     <!-- Week Selector & Class Average -->
                     <div class="row g-3 g-md-4 py-2">
-                        <div class="col-12 col-md-6 d-flex align-items-center gap-2 flex-wrap px-5">
+                        <div class="col-12 col-md-6 d-flex align-items-center gap-2 flex-wrap px-3 px-md-4 px-lg-5">
                             <label for="weekSelect" class="form-label fs-2 text-navy fw-semibold">Select Week:</label>
                             <select id="weekSelect" v-model="selectedWeek"
                                 class="form-select form-select-sm w-auto fs-4">
@@ -416,7 +419,7 @@ onBeforeUnmount(() => {
                         <div class="col-12 col-lg-6">
                             <div class="border rounded-3 p-3 h-100">
                                 <h6 class="fw-semibold mb-3">Quality Rating: Me vs Class</h6>
-                                <div class="ratio ratio-16x9">
+                                <div class="ratio ratio-16x9 chart-wrap">
                                     <canvas id="qualityChart"></canvas>
                                 </div>
                             </div>
@@ -425,7 +428,7 @@ onBeforeUnmount(() => {
                         <div class="col-12 col-lg-6">
                             <div class="border rounded-3 p-3 h-100">
                                 <h6 class="fw-semibold mb-3">Weekly Participation</h6>
-                                <div class="ratio ratio-16x9">
+                                <div class="ratio ratio-16x9 chart-wrap">
                                     <canvas id="countChart"></canvas>
                                 </div>
                             </div>
@@ -440,7 +443,7 @@ onBeforeUnmount(() => {
             <div class="section-elev rounded-4">
                 <!-- Table Header -->
                 <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                    <div class="fw-bold" style="font-size: 3.25rem;">Participation History</div>
+                    <div class="fw-bold display-heading">Participation History</div>
                 </div>
                 <!-- Body -->
                 <div class="px-4 py-4">
@@ -461,7 +464,7 @@ onBeforeUnmount(() => {
                                     <td>
                                         <span class="fs-3">{{ p.week }}</span>
                                     </td>
-                                    <td class="text-truncate fs-3" style="max-width: 340px;">
+                                    <td class="text-truncate fs-3 truncate-md">
                                         {{ p.contribution }}
                                     </td>
                                     <td>
@@ -483,7 +486,7 @@ onBeforeUnmount(() => {
                                         <span class="text-white fw-semibold fs-3 text-capitalize" >{{ p.status }}
                                         </span>
                                     </td>
-                                    <td class="text-muted text-truncate fs-3">
+                                    <td class="text-muted text-truncate fs-3 truncate-md">
                                         {{ p.remarks }}
                                     </td>
                                 </tr>
@@ -506,6 +509,21 @@ onBeforeUnmount(() => {
 .section-elev {
     /* background-color: #f8f8ff; */
     background-color: white;
+}
+
+.display-heading {
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+    text-wrap: balance;
+}
+
+.truncate-md {
+    max-width: min(100%, 21rem);
+}
+
+@media (max-width: 576px) {
+    .truncate-md {
+        max-width: 100%;
+    }
 }
 
 .stat-tile {
@@ -560,7 +578,7 @@ onBeforeUnmount(() => {
 }
 
 .table-responsive {
-    max-height: 300px;
+    max-height: min(60vh, 320px);
     overflow-y: auto;
 }
 
@@ -605,7 +623,7 @@ onBeforeUnmount(() => {
 /* Table polish */
 .table thead th {
     font-weight: 600;
-    color: var(--navy);
+    color: navy;
 }
 
 .table tbody tr+tr {

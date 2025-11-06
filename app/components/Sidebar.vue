@@ -5,14 +5,21 @@
             <div class="sidebar-header">
                 <NuxtLink to="/" class="app-logo">
                     <div class="app-logo-text">
-                        <img src="/hand.png" alt="ClassParti logo" class="hand-icon" />
+                        <img src="/hand.png" alt="ClassParti logo" class="hand-icon" width="48" height="48" decoding="async" />
                         <span class="text-navy fw-bold">ClassParti</span>
                     </div>
                 </NuxtLink>
 
                 <!-- Toggle button (For mobile only; hidden on desktop via CSS)-->
                 <div class="toggle-btn-container rounded-5">
-                    <button @click="toggleSidebar" class="toggle-btn">
+                    <button
+                        @click="toggleSidebar"
+                        class="toggle-btn"
+                        type="button"
+                        :aria-expanded="isOpen"
+                        aria-controls="sidebar-nav"
+                        aria-label="Toggle navigation"
+                    >
                         <i :class="[
                             'sidebar-toggle-icon',
                             isOpen ? 'bi-x-lg' : 'bi-list'
@@ -22,7 +29,7 @@
                 </div>
             </div>
 
-            <nav>
+            <nav id="sidebar-nav">
                 <div class="nav-menu">
                     <button v-if="role" class="btn nav-item main-nav-item">
                         <NuxtLink to="/courses" class="nav-link w-100 text-start">
@@ -269,7 +276,7 @@ const toggleSidebar = () => {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     z-index: 998;
     background: rgba(0, 0, 0, 0.4)
 }
@@ -279,8 +286,8 @@ const toggleSidebar = () => {
 .sidebar-open {
     top: 0;
     left: 0;
-    width: 180px;
-    height: 100vh;
+    width: min(85vw, 18rem);
+    height: 100dvh;
     border-radius: 0;
     box-shadow: 2px 0 3px rgba(0, 0, 0, 0.1);
 
@@ -331,8 +338,8 @@ const toggleSidebar = () => {
     display: flex;
     flex-direction: column;
     padding: 0 1rem;
-    height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
 }
 
 .sidebar-open .toggle-btn-container {
@@ -383,7 +390,7 @@ const toggleSidebar = () => {
         top: 0;
         left: 0;
         width: 22.5rem;
-        height: 100vh;
+        height: 100dvh;
         border-radius: 0;
 
         display: flex;
@@ -465,8 +472,8 @@ const toggleSidebar = () => {
         flex-direction: column;
         flex: 1;
         padding: 0 1rem;
-        height: 100vh;
-        max-height: 100vh;
+        height: 100dvh;
+        max-height: 100dvh;
     }
 
     /* hide the mobile toggle button on desktop */

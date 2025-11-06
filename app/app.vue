@@ -21,19 +21,17 @@ const route = useRoute();
     this applies to mobile screens*/
 .main-content {
     position: relative;
-    overflow: auto; /* changed scroll -> auto for dynamic exp */
-    min-height: 100vh;
-    padding: 5rem 1rem 2rem;
+    overflow-x: hidden;
+    overflow-y: auto; /* allow section cards to scroll while preventing horizontal bleed */
+    min-height: 100dvh;
+    padding: clamp(3.5rem, 5vw, 5rem) var(--space-2) var(--space-3);
     background: #E1E7F4;
 }
 
 /* this applies to desktop screens */
 @media (min-width:768px) {
     .main-content {
-        padding: 0rem 0rem 0rem 22.5rem;
-        /* background: #f8f9fa; */
-        /* background: lightslategrey */
-        /* background-color: #f9f8f7; */
+        padding: var(--space-3) clamp(2rem, 4vw, 3.5rem) var(--space-3) clamp(18rem, 20vw, 22.5rem);
         background-color: #E1E7F4;
     }
 }

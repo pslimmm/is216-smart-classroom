@@ -218,7 +218,7 @@ onMounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1040;
   transition: opacity 0.3s ease;
@@ -229,8 +229,8 @@ onMounted(() => {
   position: fixed;
   top: 0;
   right: 0;
-  width: 600px;
-  height: 100vh;
+  width: min(600px, 92vw);
+  height: 100dvh;
   background-color: white;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1050;
@@ -245,6 +245,13 @@ onMounted(() => {
   transform: translateX(0) !important; /* Slide in - force override */
 }
 
+@supports not (height: 100dvh) {
+  .slide-panel-backdrop,
+  .slide-panel {
+    height: 100vh;
+  }
+}
+
 /* Tablet: Ensure panel fits */
 @media (max-width: 992px) {
   .slide-panel {
@@ -256,6 +263,7 @@ onMounted(() => {
 @media (max-width: 768px) {
   .slide-panel {
     width: 100vw !important;
+    height: 100dvh;
     left: 0;
     right: 0;
   }
@@ -472,7 +480,7 @@ onMounted(() => {
 @media (max-width: 768px) {
   .slide-panel {
     width: 100%;
-    right: -100%;
+    right: 0;
   }
 }
 

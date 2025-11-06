@@ -425,7 +425,8 @@ const createStudentCharts = () => {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
+                    resizeDelay: 150,
                     interaction: { intersect: false, mode: 'index' },
                     scales: {
                         y: {
@@ -500,7 +501,9 @@ const createStudentCharts = () => {
                     }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: true,
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    resizeDelay: 150,
                     interaction: { intersect: false, mode: 'index' },
                     scales: {
                         y: {
@@ -674,7 +677,7 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4 h-100 d-flex flex-column">
                     <!-- Submit Class Participation Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">Actions</div>
+                        <div class="fw-bold display-heading">Actions</div>
                     </div>
                     <!-- Submit Class Participation Body -->
                     <div class="px-4 py-4 flex-grow-1 d-flex flex-column justify-content-start gap-3">
@@ -698,8 +701,7 @@ onBeforeUnmount(() => {
             <div class="section-elev rounded-4 d-flex align-items-center">
 
                 <!-- Left Side: Title -->
-                <div class="fw-bold bg-navy text-white px-4 py-4 flex-shrink-0 rounded-start-4"
-                    style="font-size: 3.25rem;">
+                <div class="fw-bold bg-navy text-white px-4 my-0 flex-shrink-0 rounded-start-4 align-self-stretch d-flex align-items-center justify-content-center justify-content-lg-start display-heading text-center text-lg-start">
                     Class Participation Report:
                 </div>
 
@@ -744,7 +746,7 @@ onBeforeUnmount(() => {
             <div class="section-elev rounded-4 h-100 d-flex flex-column">
                 <!-- Select Student to View Details Header -->
                 <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                    <div class="fw-bold" style="font-size: 3.25rem;">Select Student to View Details</div>
+                    <div class="fw-bold display-heading">Select Student to View Details</div>
                 </div>
 
                 <!-- Select Student to View Details Body -->
@@ -815,7 +817,7 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4">
                     <!-- Selected Student Details Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">{{ selectedStudent.name }}'s Participation
+                        <div class="fw-bold display-heading">{{ selectedStudent.name }}'s Participation
                             Report</div>
                     </div>
 
@@ -848,7 +850,7 @@ onBeforeUnmount(() => {
 
                     <div class="px-4 py-4">
                         <div
-                            class="row row-cols-1 row-cols-sm-2 rol-cols-md-3 row-cols-lg-5 g-3 mb-4 align-items-center">
+                            class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3 mb-4 align-items-center">
                             <!-- Stats -->
                             <div class="col" v-for="stat in studentStats" :key="stat.label">
                                 <div class="d-flex flex-column align-items-center">
@@ -885,7 +887,7 @@ onBeforeUnmount(() => {
                         <div class="col-12 col-lg-6">
                             <div class="border rounded-3 p-3 h-100">
                                 <h6 class="fw-semibold mb-3">Quality Rating: Student vs Class</h6>
-                                <div class="ratio ratio-16x9">
+                                <div class="ratio ratio-16x9 chart-wrap">
                                     <canvas :id="'qualityChart-' + selectedStudent.id"></canvas>
                                 </div>
                             </div>
@@ -895,7 +897,7 @@ onBeforeUnmount(() => {
                         <div class="col-12 col-lg-6">
                             <div class="border rounded-3 p-3 h-100">
                                 <h6 class="fw-semibold mb-3">Week Participation</h6>
-                                <div class="ratio ratio-16x9">
+                                <div class="ratio ratio-16x9 chart-wrap">
                                     <canvas :id="'countChart-' + selectedStudent.id"></canvas>
                                 </div>
                             </div>
@@ -911,7 +913,7 @@ onBeforeUnmount(() => {
                 <div class="section-elev rounded-4">
                     <!-- Participation History Header -->
                     <div class="bg-navy text-white px-4 py-3 rounded-top-4">
-                        <div class="fw-bold" style="font-size: 3.25rem;">Participation History</div>
+                        <div class="fw-bold display-heading">Participation History</div>
                     </div>
 
                     <!-- Body -->
@@ -935,7 +937,7 @@ onBeforeUnmount(() => {
                                             <td>
                                                 <span class="fs-3">{{ p.week }}</span>
                                             </td>
-                                            <td class="text-truncate fs-3" style="max-width: 340px;">
+                                            <td class="text-truncate fs-3 truncate-md">
                                                 {{ p.contribution }}
                                             </td>
                                             <td>
@@ -951,7 +953,7 @@ onBeforeUnmount(() => {
                                                 <span class="text-white fw-semibold fs-3 text-capitalize"> {{ p.status }}
                                                 </span>
                                             </td>
-                                            <td class="text-muted text-truncate fs-3">
+                                            <td class="text-muted text-truncate fs-3 truncate-md">
                                                 {{ p.remarks }}
                                             </td>
                                             <td v-if="role == 'prof'">
@@ -985,19 +987,34 @@ onBeforeUnmount(() => {
     background-color: white;
 }
 
+.display-heading {
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+    text-wrap: balance;
+}
+
+.truncate-md {
+    max-width: min(100%, 21rem);
+}
+
+@media (max-width: 576px) {
+    .truncate-md {
+        max-width: 100%;
+    }
+}
+
 .suggestion-item {
     transition: background-color 0.2s;
 }
 
 /* Table polish */
 .table-responsive {
-    max-height: 300px;
+    max-height: min(60vh, 320px);
     overflow-y: auto;
 }
 
 .table thead th {
     font-weight: 600;
-    color: var(--navy);
+    color: navy;
 }
 
 .table tbody tr+tr {

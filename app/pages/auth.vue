@@ -23,16 +23,21 @@ const isSignUp = ref(false) // Default to "Login" tab instead of "Sign Up"
 </script>
 
 <template>
-    <div class="min-vh-100 d-flex justify-content-center align-items-center px-3 py-5" style="background-color: #E1E7F4;">
-        <div class="card shadow-lg rounded-5 p-0" style="width: 80%">
-            <div class="row g-0">
-                <div class="col-md-6 col-sm-12 mx-0 p-5">
-                            <LoginCard v-if="!isSignUp" v-model:is-sign-up="isSignUp"/>
-                            <RegisterCard v-else v-model:is-sign-up="isSignUp"/>
+    <div class="auth-wrapper min-screen d-flex justify-content-center align-items-center px-3 py-5">
+        <div class="card shadow-lg rounded-5 p-0 auth-card w-100">
+            <div class="row g-0 align-items-stretch">
+                <div class="col-12 col-lg-6 mx-0 p-4 p-md-5">
+                    <LoginCard v-if="!isSignUp" v-model:is-sign-up="isSignUp" />
+                    <RegisterCard v-else v-model:is-sign-up="isSignUp" />
                 </div>
-                <div class="col-6 d-md-block d-none mx-0 position-relative">
+                <div class="col-lg-6 d-none d-lg-block mx-0 position-relative">
                     <img src="/img/auth-picture.png"
-                        class="img-fluid position-absolute top-0 start-0 rounded-end-5 w-100 h-100 object-fit-cover">
+                        width="960"
+                        height="1080"
+                        class="img-fluid position-absolute top-0 start-0 rounded-end-5 w-100 h-100 object-fit-cover"
+                        alt="Students collaborating"
+                        loading="lazy"
+                        decoding="async">
                 </div>
             </div>
 
@@ -41,5 +46,17 @@ const isSignUp = ref(false) // Default to "Login" tab instead of "Sign Up"
 </template>
 
 <style scoped>
+.auth-wrapper {
+    background-color: #E1E7F4;
+}
 
+.auth-card {
+    max-width: min(960px, 100%);
+}
+
+@media (min-width: 992px) {
+    .auth-card {
+        margin-inline: auto;
+    }
+}
 </style>

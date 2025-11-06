@@ -37,6 +37,10 @@ const courses = result.data;
                             :src="result.imageUrl"
                             class="img-fluid rounded-top-4 w-100 h-100 object-fit-cover"
                             :alt="role == 'prof' ? course.course_name : course.course_info.course_name"
+                            width="640"
+                            height="360"
+                            loading="lazy"
+                            decoding="async"
                         >
                     </div>
 

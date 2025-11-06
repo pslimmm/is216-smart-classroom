@@ -161,7 +161,7 @@ watch(showCartModal, (newVal) => {
             </div>
 
             <div class="row g-4">
-                <div class="col-6 col-sm-4 col-md-3" v-for="obj in products" :key="obj.item_name">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="obj in products" :key="obj.item_name">
                     <ProductCard :id="obj.id" :name="obj.item_name" :price="obj.item_price" :image="obj.img_url"
                         :stock="obj.item_count" @add-to-cart="addToCart" @remove-from-cart="removeFromCart"
                         @delete-item="deleteItem" @add-item-stock="addItemStock" />
@@ -172,7 +172,13 @@ watch(showCartModal, (newVal) => {
 
 <style scoped>
 .marketplace {
-    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+@supports not (height: 100dvh) {
+    .marketplace {
+        min-height: 100vh;
+    }
 }
 
 .card-header i,

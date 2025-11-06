@@ -57,7 +57,8 @@ function deleteItem() {
 <template>
     <div class="card shadow-sm h-100 rounded-4">
         <!-- Product Image -->
-        <img :src="image" alt="Product image" class="card-img-top img-fluid object-fit-contain" />
+        <img :src="image" alt="Product image" class="card-img-top img-fluid object-fit-contain"
+            width="320" height="200" loading="lazy" decoding="async" />
 
         <!-- Product Details -->
         <div class="card-body d-flex flex-column justify-content-between">

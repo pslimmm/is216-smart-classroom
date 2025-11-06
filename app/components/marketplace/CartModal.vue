@@ -6,7 +6,7 @@
                 <h3 class="text-navy fs-1">Your Cart</h3>
                 <button class="btn btn-close" @click="showCartModal = false"></button>
             </div>
-            <div class="table-responsive" style="max-height: 350px; overflow-y: scroll;">
+            <div class="table-responsive cart-table-wrap">
                 <table class="table fs-5">
                     <thead class="sticky-top">
                         <tr>
@@ -150,18 +150,30 @@ const handleSubmit = async () => {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
+    min-height: 100dvh;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
 }
 
 .modal-wrapper {
     width: min(90vw, 750px);
     max-height: 65vh;
     overflow-y: auto;
+}
+
+.cart-table-wrap {
+    max-height: min(55vh, 350px);
+    overflow-y: auto;
+}
+
+@supports not (height: 100dvh) {
+    .overlay {
+        min-height: 100vh;
+    }
 }
 
 label {

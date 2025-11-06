@@ -10,7 +10,7 @@ const handleError = () => {
 </script>
 
 <template>
-  <div class="d-flex flex-column text-center justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="d-flex flex-column text-center justify-content-center align-items-center min-screen">
     <h1>{{ error?.statusCode }}</h1>
     <h4>{{ error?.statusMessage || "Something has gone wrong"}}</h4>
     <button @click="handleError" class="btn btn-success mt-3">{{ role ? 'Go back to dashboard' : 'Go back to homepage' }}</button>
