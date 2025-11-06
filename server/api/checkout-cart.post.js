@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
             .from('student_course')
             .update({ coin_balance: responseBody.updated_coin })
             .eq('student_id', responseBody.student_id)
+            .eq('course_id', responseBody.course_id)
 
         if (error2) {
             throw new Error(error2.message);

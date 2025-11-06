@@ -60,7 +60,6 @@
 </template>
 
 <script setup>
-import ErrorAlert from './ErrorAlert.vue';
 
 const showCartModal = defineModel("showCartModal");
 const { userID } = useAuthState();
@@ -71,6 +70,7 @@ const props = defineProps({
     products: Object,
     coins: Number
 })
+const emit = defineEmits(['checkout']);
 
 const cart = ref([]);
 const loadCart = async () => {
@@ -142,6 +142,7 @@ const loadCart = async () => {
             errorMsg.value = error.statusMessage;
             showErrorAlert.value = true;
         } else {
+            emit('checkout');
             showCartModal.value = false;
         }
     }

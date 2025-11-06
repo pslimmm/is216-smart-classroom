@@ -1,4 +1,5 @@
 <template>
+    <NuxtLoadingIndicator />
     <div class="mw-100" v-if="!['/forbidden', '/', '/auth'].includes(route.path)">
         <!-- <Navbar /> -->
         <Sidebar />

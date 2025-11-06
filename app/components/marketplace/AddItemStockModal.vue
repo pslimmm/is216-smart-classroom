@@ -24,6 +24,8 @@ const showAddItemModal = defineModel("showAddItemModal");
 const selectedItem = defineModel("selectedItem");
 const { userID } = useAuthState();
 
+const emit = defineEmits(['add-stock']);
+
 const item_stock = ref(0);
 
 
@@ -37,6 +39,7 @@ const handleSubmit = async () => {
     })
 
     if (!error) {
+        emit('add-stock')
         showAddItemModal.value = false;
     }
 

@@ -3,7 +3,6 @@ import AddItemsModal from '~/components/marketplace/AddItemsModal.vue';
 import AddItemStockModal from '~/components/marketplace/AddItemStockModal.vue';
 import CartModal from '~/components/marketplace/CartModal.vue';
 import ProductCard from '~/components/marketplace/ProductCard.vue';
-import SuccessAlert from '~/components/marketplace/SuccessAlert.vue';
 
 const route = useRoute();
 const course_id = route.params.course_id;
@@ -69,9 +68,8 @@ const addToCart = async (obj) => {
             action: 'add'
         }
     })
-    successMsg.value = 'Added to Cart';
-    showSuccessAlert.value = true;
-    setTimeout(() => showSuccessAlert.value = false, 2000)
+
+    successAlert('Added to Cart')
 };
 
 const removeFromCart = async (obj) => {
@@ -84,6 +82,8 @@ const removeFromCart = async (obj) => {
             action: 'delete'
         }
     })
+
+    successAlert('Removed From Cart')
 };
 
 // prof emit events
@@ -93,6 +93,7 @@ const selectedItem = ref({});
 const addItemStock = (obj) => {
     selectedItem.value = obj;
     showAddItemModal.value = true;
+    
 }
 
 watch(showAddItemModal, (newVal) => {
@@ -110,6 +111,7 @@ const deleteItem = async (obj) => {
     })
 
     loadProducts()
+    successAlert('Deleted item successfully')
 }
 
 // cart
@@ -121,16 +123,20 @@ watch(showCartModal, (newVal) => {
     }
 })
 
-
+const successAlert = (msg) => {
+    successMsg.value = msg;
+    showSuccessAlert.value = true;
+    setTimeout(() => showSuccessAlert.value = false, 2000)
+}
 </script>
 
 <template>
     <SuccessAlert :message="successMsg" v-model:showSuccessAlert="showSuccessAlert" />
-    <AddItemsModal v-if="showAddingModal" v-model:showAddingModal="showAddingModal" />
+    <AddItemsModal v-if="showAddingModal" v-model:showAddingModal="showAddingModal" @add-item="showSuccessAlert('Added new item successfully')"/>
     <AddItemStockModal v-if="showAddItemModal" v-model:showAddItemModal="showAddItemModal"
-        v-model:selectedItem="selectedItem" />
+        v-model:selectedItem="selectedItem"  @add-stock="successAlert('Stock added')"/>
     <CartModal v-if="showCartModal" v-model:showCartModal="showCartModal" :removeFromCart="removeFromCart"
-        :products="products" :coins="coins" />
+        :products="products" :coins="coins" @checkout="successAlert('Checked Out Successfully')"/>
     <main class="container flex-grow-1">
         <div class="mt-4 mb-4 row bg-white rounded-3 py-3 px-4 g-3 g-lg-0 align-items-center">
             <h1 class="display-3 fw-bold gap-2 text-navy col-12 col-lg-7">
@@ -176,10 +182,13 @@ watch(showCartModal, (newVal) => {
         </div>
 
         <div class="row g-4">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="obj in products" :key="obj.item_name">
+            <div v-if="products.length != 0" class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="obj in products" :key="obj.item_name">
                 <ProductCard :id="obj.id" :name="obj.item_name" :price="obj.item_price" :image="obj.img_url"
                     :stock="obj.item_count" @add-to-cart="addToCart" @remove-from-cart="removeFromCart"
                     @delete-item="deleteItem" @add-item-stock="addItemStock" />
+            </div>
+            <div v-else class="text-center text-muted">
+                No products available for now...
             </div>
         </div>
     </main>

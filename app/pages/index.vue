@@ -25,7 +25,7 @@
 
         <div class="d-flex flex-wrap gap-3 my-5">
           <NuxtLink to="/auth" class="btn btn-navy fw-semibold btn-lg px-4 py-3">Get Started</NuxtLink>
-          <NuxtLink to="/" class="btn btn-outline-navy fw-semibold btn-lg px-4 py-3">Watch Demo</NuxtLink>
+          <a href="https://youtu.be/kJ2W4HTW-84" class="btn btn-outline-navy fw-semibold btn-lg px-4 py-3">Watch Demo</a>
         </div>
 
         <div class="row text-center g-3 mb-4">

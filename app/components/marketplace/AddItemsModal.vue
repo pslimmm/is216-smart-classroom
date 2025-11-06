@@ -30,6 +30,8 @@ const route = useRoute();
 const showAddingModal = defineModel("showAddingModal");
 const { userID } = useAuthState();
 
+const emit = defineEmits(['add-item']);
+
 const item_name = ref('');
 const item_price = ref(0);
 const item_stock = ref(0);
@@ -76,6 +78,7 @@ const handleSubmit = async () => {
             }
         })
         if (!error) {
+            emit('add-item');
             showAddingModal.value = false;
         }
 

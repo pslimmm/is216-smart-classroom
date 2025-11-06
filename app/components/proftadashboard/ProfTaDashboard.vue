@@ -634,10 +634,11 @@ onBeforeUnmount(() => {
         if (chart && typeof chart.destroy === 'function') chart.destroy();
     });
 });
+
 </script>
 
 <template>
-    <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal" />
+    <SubmitClassPartModal v-if="showSubmitModal" v-model:showSubmitModal="showSubmitModal"/>
     <ApproveClassPartModal v-if="showApproveModal" v-model:showApproveModal="showApproveModal"
         :transaction="selectedTransaction" :student_name="selectedStudent.name" :student_id="selectedStudentId" />
     <RejectClassPartModal v-if="showRejectModal" v-model:showRejectModal="showRejectModal"
