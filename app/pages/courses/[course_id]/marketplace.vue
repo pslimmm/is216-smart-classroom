@@ -158,19 +158,21 @@ watch(showCartModal, (newVal) => {
 
                     </div>
                     <div class="col-lg-4 col-md-2 col-12 mb-3 mb-lg-0">
-                        <div class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold d-flex flex-row align-items-center w-100 h-100">
+                        <div
+                            class="border border-warning rounded-3 p-2 bg-navy text-light border-2 border-box fs-4 fw-semibold d-flex flex-row align-items-center w-100 h-100">
                             <i class="bi bi-coin text-warning me-2"></i>
                             {{ coins }}
                         </div>
 
                     </div>
                 </div>
-                <div v-if="role == 'prof'" class="d-flex flex-wrap gap-3 justify-content-lg-end flex-fill flex-lg-none">
-                    <button class="btn btn-navy fs-4 fw-semibold flex-fill flex-md-none"
-                        @click="showAddingModal = !showAddingModal">Add new items</button>
+                <div v-if="role == 'prof'" class="row mt-3 w-100">
+                    <div class="col-12">
+                        <button class="btn btn-navy fs-5 fw-semibold w-100"
+                            @click="showAddingModal = !showAddingModal">Add new items</button>
+                    </div>
                 </div>
             </div>
-
         </div>
 
         <div class="row g-4">

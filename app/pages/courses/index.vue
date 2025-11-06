@@ -18,39 +18,29 @@ const courses = result.data;
 </script>
 
 <template>
-    <div class="container py-5">
+    <div class="container pb-5">
         <div class="text-center mb-5">
             <!-- Changes depending on role -->
             <h1 v-if="role === 'prof'" class="fw-bold">Teaching Courses</h1>
-            <h1 v-else-if="role === 'ta'">Teaching Assistant Courses</h1>
-            <h1 v-else>My Courses</h1>
+            <h1 v-else-if="role === 'ta'" class="fw-bold">Teaching Assistant Courses</h1>
+            <h1 v-else class="fw-bold">My Courses</h1>
         </div>
 
         <div class="row g-5">
             <div class="col-12 col-sm-6 col-lg-4 d-flex" v-for="course in courses" :key="course.course_id">
-                <button
-                    class="course-card card h-100 w-100 rounded-4 shadow text-start border-0 bg-white p-0"
-                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) )"
-                >
+                <button class="course-card card h-100 w-100 rounded-4 shadow text-start border-0 bg-white p-0"
+                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))">
                     <div class="ratio ratio-16x9">
-                        <img
-                            :src="result.imageUrl"
-                            class="img-fluid rounded-top-4 w-100 h-100 object-fit-cover"
-                            :alt="role == 'prof' ? course.course_name : course.course_info.course_name"
-                            width="640"
-                            height="360"
-                            loading="lazy"
-                            decoding="async"
-                        >
+                        <img :src="result.imageUrl" class="img-fluid rounded-top-4 w-100 h-100 object-fit-cover"
+                            :alt="role == 'prof' ? course.course_name : course.course_info.course_name" width="640"
+                            height="360" loading="lazy" decoding="async">
                     </div>
 
                     <div class="card-body">
-                        <h4
-                            class="fw-bold mb-3 text-truncate-2"
-                            :title="(role=='prof' ? course.course_name : course.course_info.course_name)"
-                        >
-                            {{ role=='prof' ? (course.course_code + ' ' + course.course_name)
-                                            : (course.course_info.course_code + ' ' + course.course_info.course_name) }}
+                        <h4 class="fw-bold mb-3 text-truncate-2"
+                            :title="(role == 'prof' ? course.course_name : course.course_info.course_name)">
+                            {{ role == 'prof' ? (course.course_code + ' ' + course.course_name)
+                                : (course.course_info.course_code + ' ' + course.course_info.course_name) }}
                         </h4>
 
                         <div class="row align-items-start g-3 mb-3">
@@ -59,23 +49,25 @@ const courses = result.data;
                             </div>
                             <div class="col">
                                 <div class="text-uppercase small">Professor</div>
-                                <div
-                                    class="fs-5 fw-semibold text-break"
-                                    :title="role=='prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name"
-                                >
-                                    {{ role=='prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name }}
+                                <div class="fs-5 fw-semibold text-break"
+                                    :title="role == 'prof' ? course.prof_profile.full_name : course.course_info.prof_profile.full_name">
+                                    {{ role == 'prof' ? course.prof_profile.full_name :
+                                        course.course_info.prof_profile.full_name }}
                                 </div>
                             </div>
-                            <div class="col-12 col-md-auto small">
-                                <div class="d-flex flex-wrap align-items-center gap-3 text-md-end">
-                                    <span class="d-flex align-items-center gap-1">
-                                        <i class="bi bi-calendar-week fs-5"></i>
-                                        {{ role=='prof' ? course.course_term : course.course_info.course_term }}
+                            <div class="col-12 col-md-auto small w-100 row m-0">
+                                <div class="col-6 ps-0">
+                                    <span class="d-flex align-items-center">
+                                        <i class="bi bi-calendar-week fs-5 me-2"></i>
+                                        {{ role == 'prof' ? course.course_term : course.course_info.course_term }}
                                     </span>
-                                    <span class="d-flex align-items-center gap-1">
-                                        <i class="bi bi-diagram-3 fs-5"></i>
-                                        G{{ role=='prof' ? course.course_section : course.course_info.course_section }}
+                                </div>
+                                <div class="col-6">
+                                    <span class="d-flex align-items-center">
+                                        <i class="bi bi-diagram-3 fs-5 me-2"></i>
+                                        G{{ role == 'prof' ? course.course_section : course.course_info.course_section }}
                                     </span>
+
                                 </div>
                             </div>
                         </div>
@@ -86,11 +78,9 @@ const courses = result.data;
                                     <div class="min-w-0 flex-grow-1">
                                         <i class="bi bi-clock mt-1 fs-5" aria-hidden="true"></i>
                                         <div class="text-uppercase small">Schedule</div>
-                                        <div
-                                            class="fw-semibold text-break"
-                                            :title="role=='prof' ? course.course_time : course.course_info.course_time"
-                                        >
-                                            {{ role=='prof' ? course.course_time : course.course_info.course_time }}
+                                        <div class="fw-semibold text-break"
+                                            :title="role == 'prof' ? course.course_time : course.course_info.course_time">
+                                            {{ role == 'prof' ? course.course_time : course.course_info.course_time }}
                                         </div>
                                     </div>
                                 </div>
@@ -100,32 +90,33 @@ const courses = result.data;
                                     <div class="min-w-0 flex-grow-1">
                                         <i class="bi bi-geo-alt mt-1 fs-5" aria-hidden="true"></i>
                                         <div class="text-uppercase small">Location</div>
-                                        <div
-                                            class="fw-semibold text-break"
-                                            :title="role=='prof' ? course.course_location : course.course_info.course_location"
-                                        >
-                                            {{ role=='prof' ? course.course_location : course.course_info.course_location }}
+                                        <div class="fw-semibold text-break"
+                                            :title="role == 'prof' ? course.course_location : course.course_info.course_location">
+                                            {{ role == 'prof' ? course.course_location :
+                                                course.course_info.course_location }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="d-flex flex-column flex-md-row gap-2 align-items-stretch mt-auto w-100">
-                            <button
-                                @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
-                                class="btn btn-outline-navy w-100 flex-fill"
-                            >
-                                <i class="bi bi-speedometer2 me-1"></i>
-                                DASHBOARD
-                            </button>
-                            <button
-                                @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) + '/notes')"
-                                class="btn btn-navy w-100 flex-fill"
-                            >
-                                <i class="bi bi-journal-text me-1"></i>
-                                NOTES
-                            </button>
+                        <div class="row w-100">
+                            <div class="col-7">
+                                <button
+                                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id))"
+                                    class="btn btn-outline-navy w-100 h-100">
+                                    <i class="bi bi-speedometer2 me-1"></i>
+                                    DASHBOARD
+                                </button>
+                            </div>
+                            <div class="col-5 pe-0">
+                                <button
+                                    @click="navigateTo('/courses/' + (role == 'prof' ? course.id : course.course_id) + '/notes')"
+                                    class="btn btn-navy w-100 h-100">
+                                    <i class="bi bi-journal-text me-1"></i>
+                                    NOTES
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </button>
@@ -178,15 +169,15 @@ const courses = result.data;
 
 .course-card .small,
 .course-card .text-muted.small {
-    font-size: 1.09375rem;
+    font-size: 1rem;
 }
 
 .course-card .fs-5 {
-    font-size: 1.5625rem !important;
+    font-size: 1.5rem !important;
 }
 
 .course-card .fs-1 {
-    font-size: 3.125rem !important;
+    font-size: 3rem !important;
 }
 
 .course-card .row.g-3 {
@@ -199,7 +190,7 @@ const courses = result.data;
 }
 
 .course-card .btn {
-    font-size: 1.25rem;
+    font-size: 1rem;
     padding: 0.6rem 1.25rem;
     min-width: 0;
 }
@@ -220,5 +211,4 @@ const courses = result.data;
     /* max-height: calc(1.4em * 2); */
     word-break: keep-all;
 }
-
 </style>

@@ -320,10 +320,10 @@ onBeforeUnmount(() => {
                             {{ courseInfo?.course_name || 'Course' }}
                         </div>
                         <div>
-                            <div class="fs-1"><strong>Code:</strong> {{ courseInfo?.course_code }}</div>
-                            <div class="fs-1"><strong>Section:</strong> {{ courseInfo?.course_section }}</div>
-                            <div class="fs-1"><strong>Time:</strong> {{ courseInfo?.course_time }}</div>
-                            <div class="fs-1"><strong>Location:</strong> {{ courseInfo?.course_location }}</div>
+                            <div class="fs-2"><strong>Code:</strong> {{ courseInfo?.course_code }}</div>
+                            <div class="fs-2"><strong>Section:</strong> {{ courseInfo?.course_section }}</div>
+                            <div class="fs-2"><strong>Time:</strong> {{ courseInfo?.course_time }}</div>
+                            <div class="fs-2"><strong>Location:</strong> {{ courseInfo?.course_location }}</div>
                         </div>
                     </div>
                 </div>
@@ -347,8 +347,8 @@ onBeforeUnmount(() => {
                             ]" :key="stat.label">
                                 <div class="card shadow-sm border-0 h-100 stat-card text-center py-3">
                                     <div class="d-flex flex-column align-items-center">
-                                        <i class="bi fs-1 mb-2" :class="[stat.icon, stat.color]"></i>
-                                        <div class="fw-bold fs-3">{{ stat.value }}</div>
+                                        <i class="bi fs-2 mb-2" :class="[stat.icon, stat.color]"></i>
+                                        <div class="fw-bold fs-4">{{ stat.value }}</div>
                                         <small class="text-muted">{{ stat.label }}</small>
                                     </div>
                                 </div>
@@ -397,9 +397,9 @@ onBeforeUnmount(() => {
                     <!-- Week Selector & Class Average -->
                     <div class="row g-3 g-md-4 py-2">
                         <div class="col-12 col-md-6 d-flex align-items-center gap-2 flex-wrap px-3 px-md-4 px-lg-5">
-                            <label for="weekSelect" class="form-label fs-2 text-navy fw-semibold">Select Week:</label>
+                            <label for="weekSelect" class="form-label fs-3 text-navy fw-semibold">Select Week:</label>
                             <select id="weekSelect" v-model="selectedWeek"
-                                class="form-select form-select-sm w-auto fs-4">
+                                class="form-select form-select-sm w-auto fs-5">
                                 <option v-for="w in 14" :key="w" :value="w">
                                     {{ w }}
                                 </option>
@@ -407,8 +407,8 @@ onBeforeUnmount(() => {
                         </div>
 
                         <div class="col-12 col-md-6 d-flex align-items-center gap-2 flex-wrap">
-                            <div class="fs-2 text-navy fw-semibold">Class Average - Week {{ selectedWeek }} : </div>
-                            <div class="fs-2 fw-semibold">
+                            <div class="fs-3 text-navy fw-semibold">Class Average - Week {{ selectedWeek }} : </div>
+                            <div class="fs-3 fw-semibold">
                                 {{ (classAvgData[selectedWeek] || 0).toFixed(2) }}
                             </div>
                         </div>
@@ -449,7 +449,7 @@ onBeforeUnmount(() => {
                 <div class="px-4 py-4">
                     <div class="table-responsive rounded-3 border">
                         <table class="table align-middle mb-0">
-                            <thead class="table-light sticky-top fs-3">
+                            <thead class="table-light sticky-top fs-4">
                                 <tr class="text-center">
                                     <th>Week</th>
                                     <th>Contribution</th>
@@ -462,18 +462,18 @@ onBeforeUnmount(() => {
                             <tbody class="text-center">
                                 <tr v-for="p in participationHistory" :key="p.id">
                                     <td>
-                                        <span class="fs-3">{{ p.week }}</span>
+                                        <span class="fs-4">{{ p.week }}</span>
                                     </td>
-                                    <td class="text-truncate fs-3 truncate-md">
+                                    <td class="text-truncate fs-4 truncate-md">
                                         {{ p.contribution }}
                                     </td>
                                     <td>
-                                        <span class="text-navy fw-semibold fs-3">{{ p.rating.toFixed(0) }}
+                                        <span class="text-navy fw-semibold fs-4">{{ p.rating.toFixed(0) }}
                                             <i class="bi bi-star-fill text-warning"></i>
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="text-warning fw-semibold fs-3">
+                                        <span class="text-warning fw-semibold fs-4">
                                             <i class="bi bi-coin"></i>
                                             {{ p.coinsEarned }}
                                         </span>
@@ -483,15 +483,15 @@ onBeforeUnmount(() => {
                                             'bg-warning': p.status === 'pending',
                                             'bg-success': p.status === 'approved'
                                         }" class="border-bottom-0">
-                                        <span class="text-white fw-semibold fs-3 text-capitalize" >{{ p.status }}
+                                        <span class="text-white fw-semibold fs-4 text-capitalize" >{{ p.status }}
                                         </span>
                                     </td>
-                                    <td class="text-muted text-truncate fs-3 truncate-md">
+                                    <td class="text-muted text-truncate fs-4 truncate-md">
                                         {{ p.remarks }}
                                     </td>
                                 </tr>
                                 <tr v-if="!participationHistory.length">
-                                    <td colspan="6" class="text-center fs-3 fw-semibold py-4">
+                                    <td colspan="6" class="text-center fs-4 fw-semibold py-4">
                                         No participation records found
                                     </td>
                                 </tr>
@@ -512,7 +512,7 @@ onBeforeUnmount(() => {
 }
 
 .display-heading {
-    font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+    font-size: clamp(1rem, 1rem + 2vw, 2rem);
     text-wrap: balance;
 }
 
