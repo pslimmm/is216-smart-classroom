@@ -31,7 +31,7 @@ const route = useRoute();
 /* this applies to desktop screens */
 @media (min-width:768px) {
     .main-content {
-        padding: var(--space-3) clamp(2rem, 4vw, 3.5rem) var(--space-3) clamp(18rem, 20vw, 22.5rem);
+        padding: var(--space-3) clamp(2rem, 4vw, 3.5rem) var(--space-3) calc(var(--sidebar-width, 22.5rem) + var(--space-2));
         background-color: #E1E7F4;
     }
 }

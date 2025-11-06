@@ -286,7 +286,7 @@ const toggleSidebar = () => {
 .sidebar-open {
     top: 0;
     left: 0;
-    width: min(85vw, 18rem);
+    width: min(85vw, var(--sidebar-width, 18rem));
     height: 100dvh;
     border-radius: 0;
     box-shadow: 2px 0 3px rgba(0, 0, 0, 0.1);
@@ -389,7 +389,7 @@ const toggleSidebar = () => {
     .sidebar {
         top: 0;
         left: 0;
-        width: 22.5rem;
+        width: var(--sidebar-width, 22.5rem);
         height: 100dvh;
         border-radius: 0;
 
