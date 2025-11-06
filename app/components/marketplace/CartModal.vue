@@ -18,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                        <tr v-if="cart.length != 0" v-for="item in cart">
+                        <tr v-if="cart.length != 0" v-for="item in cart" :key="item.item.id">
                             <td class="text-capitalize">{{ item.item.item_name }}</td>
                             <td>
                                 <i class="bi bi-coin text-warning ms-1"></i>
@@ -72,7 +72,7 @@ const props = defineProps({
     coins: Number
 })
 
-const cart = ref({});
+const cart = ref([]);
 const loadCart = async () => {
 
     const result = await $fetch('/api/get-cart', {
@@ -82,65 +82,69 @@ const loadCart = async () => {
             student_id: userID.value
         }
     })
-
-    cart.value = result.cart
-}
-loadCart();
-
-const totalPrice = computed(() => {
-    return cart.value.reduce((sum, item) => sum + item.item.item_price * item.qty, 0)
-});
-
-const showErrorAlert = ref(false);
-const errorMsg = ref('');
-const handleSubmit = async () => {
-    if (totalPrice.value > props.coins) {
-        errorMsg.value = "Insufficient coins";
+    if (result.error) {
+        errorMsg.value = result.error.statusMessage;
         showErrorAlert.value = true;
-        return;
+    } else {
+        cart.value = result.cart
     }
-    const toCheckout = [];
-    for (const cartItem of cart.value) {
-        for (const item of props.products) {
-            if (cartItem.item_id != item.id) {
-                continue
-            } else {
+}
+    loadCart();
 
-                const today = new Date().toISOString().split('T')[0];
-                toCheckout.push({
-                    item_id: cartItem.item_id,
-                    student_id: userID.value,
-                    date: today,
-                    qty: cartItem.qty,
-                    price: cartItem.item.item_price,
-                    course_id: course_id
-                });
-                if (cartItem.qty > item.item_count) {
-                    errorMsg.value = "Insufficient quantity for " + item.item_name;
-                    showErrorAlert.value = true;
-                    return;
+    const totalPrice = computed(() => {
+        return cart.value.reduce((sum, item) => sum + item.item.item_price * item.qty, 0)
+    });
+
+    const showErrorAlert = ref(false);
+    const errorMsg = ref('');
+    const handleSubmit = async () => {
+        if (totalPrice.value > props.coins) {
+            errorMsg.value = "Insufficient coins";
+            showErrorAlert.value = true;
+            return;
+        }
+        const toCheckout = [];
+        for (const cartItem of cart.value) {
+            for (const item of props.products) {
+                if (cartItem.item_id != item.id) {
+                    continue
+                } else {
+
+                    const today = new Date().toISOString().split('T')[0];
+                    toCheckout.push({
+                        item_id: cartItem.item_id,
+                        student_id: userID.value,
+                        date: today,
+                        qty: cartItem.qty,
+                        price: cartItem.item.item_price,
+                        course_id: course_id
+                    });
+                    if (cartItem.qty > item.item_count) {
+                        errorMsg.value = "Insufficient quantity for " + item.item_name;
+                        showErrorAlert.value = true;
+                        return;
+                    }
                 }
             }
         }
-    }
 
-    const { error } = await $fetch('/api/checkout-cart', {
-        method: "POST",
-        body: {
-            data: toCheckout,
-            updated_coin: props.coins - totalPrice.value,
-            student_id: userID.value,
-            course_id: course_id,
+        const { error } = await $fetch('/api/checkout-cart', {
+            method: "POST",
+            body: {
+                data: toCheckout,
+                updated_coin: props.coins - totalPrice.value,
+                student_id: userID.value,
+                course_id: course_id,
+            }
+        })
+
+        if (error) {
+            errorMsg.value = error.statusMessage;
+            showErrorAlert.value = true;
+        } else {
+            showCartModal.value = false;
         }
-    })
-
-    if (error) {
-        errorMsg.value = error.statusMessage;
-        showErrorAlert.value = true;
-    } else {
-        showCartModal.value = false;
     }
-}
 
 </script>
 

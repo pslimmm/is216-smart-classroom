@@ -46,7 +46,6 @@ const handleSubmit = async () => {
         const reader = new FileReader()
         reader.onload = async () => {
             const base64Image = reader.result
-
             const { ok, error } = await $fetch('/api/add-items', {
                 method: 'POST',
                 body: {

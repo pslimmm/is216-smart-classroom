@@ -14,7 +14,9 @@ const props = defineProps({
 // emits an event
 const emit = defineEmits([
     'add-to-cart',
-    'remove-from-cart'
+    'remove-from-cart',
+    'add-item-stock',
+    'delete-item'
 ]);
 
 
@@ -57,7 +59,7 @@ function deleteItem() {
 <template>
     <div class="card shadow-sm h-100 rounded-4">
         <!-- Product Image -->
-        <img :src="image" alt="Product image" class="card-img-top img-fluid object-fit-contain"
+        <img :src="image" alt="Product image" class="card-img-top img-fluid object-fit-contain mt-3"
             width="320" height="200" loading="lazy" decoding="async" />
 
         <!-- Product Details -->
